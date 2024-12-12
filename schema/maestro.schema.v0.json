@@ -117,6 +117,10 @@
                 }
             ],
             "description": "Command to assert whether a given value is true, non-empty, or truthy."
+        },
+        "back": {
+            "type": "null",
+            "description": "Command to navigate the user to the previous screen (Android-only)."
         }
     },
     "additionalProperties": false
