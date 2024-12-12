@@ -564,16 +564,118 @@
                     "type": "object",
                     "properties": {
                         "visible": {
-                            "type": [
-                                "string",
-                                "object"
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "A shorthand selector for text."
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "text": {
+                                            "type": "string",
+                                            "description": "Matches element with the specified text."
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Matches element with the specified ID."
+                                        },
+                                        "index": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "description": "0-based index of the view."
+                                        },
+                                        "point": {
+                                            "type": "string",
+                                            "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                            "description": "Position on screen."
+                                        },
+                                        "width": {
+                                            "type": "integer",
+                                            "description": "Matches element with the specified width."
+                                        },
+                                        "height": {
+                                            "type": "integer",
+                                            "description": "Matches element with the specified height."
+                                        },
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified enabled state."
+                                        },
+                                        "checked": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified checked state."
+                                        },
+                                        "focused": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified focused state."
+                                        },
+                                        "selected": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified selected state."
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "description": "Selector object to find the element."
+                                }
                             ],
                             "description": "Repeat while the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
                         },
                         "notVisible": {
-                            "type": [
-                                "string",
-                                "object"
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "description": "A shorthand selector for text."
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "text": {
+                                            "type": "string",
+                                            "description": "Matches element with the specified text."
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Matches element with the specified ID."
+                                        },
+                                        "index": {
+                                            "type": "integer",
+                                            "minimum": 0,
+                                            "description": "0-based index of the view."
+                                        },
+                                        "point": {
+                                            "type": "string",
+                                            "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                            "description": "Position on screen."
+                                        },
+                                        "width": {
+                                            "type": "integer",
+                                            "description": "Matches element with the specified width."
+                                        },
+                                        "height": {
+                                            "type": "integer",
+                                            "description": "Matches element with the specified height."
+                                        },
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified enabled state."
+                                        },
+                                        "checked": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified checked state."
+                                        },
+                                        "focused": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified focused state."
+                                        },
+                                        "selected": {
+                                            "type": "boolean",
+                                            "description": "Matches element with the specified selected state."
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "description": "Selector object to find the element."
+                                }
                             ],
                             "description": "Repeat while the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
                         },
@@ -659,6 +761,173 @@
                 }
             ],
             "description": "Command to run a flow from a specified file or execute inline commands."
+        },
+        "runScript": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "Runs the specified JavaScript file (e.g., 'myScript.js')."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "file": {
+                            "type": "string",
+                            "description": "The file path of the JavaScript file to execute."
+                        },
+                        "env": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "description": "Key-value pairs of environment variables to pass to the script."
+                            },
+                            "description": "Environment variables to pass to the JavaScript script."
+                        },
+                        "when": {
+                            "type": "object",
+                            "properties": {
+                                "visible": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string",
+                                            "description": "A shorthand selector for text."
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "text": {
+                                                    "type": "string",
+                                                    "description": "Matches element with the specified text."
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "description": "Matches element with the specified ID."
+                                                },
+                                                "index": {
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "description": "0-based index of the view."
+                                                },
+                                                "point": {
+                                                    "type": "string",
+                                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                    "description": "Position on screen."
+                                                },
+                                                "width": {
+                                                    "type": "integer",
+                                                    "description": "Matches element with the specified width."
+                                                },
+                                                "height": {
+                                                    "type": "integer",
+                                                    "description": "Matches element with the specified height."
+                                                },
+                                                "enabled": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified enabled state."
+                                                },
+                                                "checked": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified checked state."
+                                                },
+                                                "focused": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified focused state."
+                                                },
+                                                "selected": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified selected state."
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "description": "Selector object to find the element."
+                                        }
+                                    ],
+                                    "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
+                                },
+                                "notVisible": {
+                                    "oneOf": [
+                                        {
+                                            "type": "string",
+                                            "description": "A shorthand selector for text."
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "text": {
+                                                    "type": "string",
+                                                    "description": "Matches element with the specified text."
+                                                },
+                                                "id": {
+                                                    "type": "string",
+                                                    "description": "Matches element with the specified ID."
+                                                },
+                                                "index": {
+                                                    "type": "integer",
+                                                    "minimum": 0,
+                                                    "description": "0-based index of the view."
+                                                },
+                                                "point": {
+                                                    "type": "string",
+                                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                    "description": "Position on screen."
+                                                },
+                                                "width": {
+                                                    "type": "integer",
+                                                    "description": "Matches element with the specified width."
+                                                },
+                                                "height": {
+                                                    "type": "integer",
+                                                    "description": "Matches element with the specified height."
+                                                },
+                                                "enabled": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified enabled state."
+                                                },
+                                                "checked": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified checked state."
+                                                },
+                                                "focused": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified focused state."
+                                                },
+                                                "selected": {
+                                                    "type": "boolean",
+                                                    "description": "Matches element with the specified selected state."
+                                                }
+                                            },
+                                            "additionalProperties": false,
+                                            "description": "Selector object to find the element."
+                                        }
+                                    ],
+                                    "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
+                                },
+                                "true": {
+                                    "type": "string",
+                                    "description": "A JavaScript expression to evaluate. Runs the script if the expression evaluates to true."
+                                },
+                                "platform": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Android",
+                                        "iOS",
+                                        "Web"
+                                    ],
+                                    "description": "Runs the script if the current platform matches the specified platform."
+                                }
+                            },
+                            "additionalProperties": false,
+                            "description": "Conditions to determine whether the script should run."
+                        }
+                    },
+                    "required": [
+                        "file"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Runs a JavaScript file with optional environment variables and conditional execution."
+                }
+            ],
+            "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally."
         }
     },
     "additionalProperties": false
