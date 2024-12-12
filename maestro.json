@@ -10,6 +10,113 @@
             },
             "minItems": 1,
             "description": "List of media file paths to add to the device's gallery. Supported mime types are PNG, JPEG, JPG, GIF, and MP4."
+        },
+        "assertVisible": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "The text to assert visibility for a single view with specific text."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "description": "Text in a view to check visibility."
+                        },
+                        "id": {
+                            "type": "string",
+                            "description": "ID of a view to check visibility."
+                        },
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "True if the view is enabled."
+                        },
+                        "checked": {
+                            "type": "boolean",
+                            "description": "True if the view is checked."
+                        },
+                        "focused": {
+                            "type": "boolean",
+                            "description": "True if the view has keyboard focus."
+                        },
+                        "selected": {
+                            "type": "boolean",
+                            "description": "True if the view is selected."
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "Selector object to specify the conditions for visibility."
+                }
+            ],
+            "description": "Command to assert whether an element is visible. Can take a string for text or an object with selector parameters."
+        },
+        "assertNotVisible": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "The text to assert non-visibility for a single view with specific text."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "text": {
+                            "type": "string",
+                            "description": "Text in a view to check non-visibility."
+                        },
+                        "id": {
+                            "type": "string",
+                            "description": "ID of a view to check non-visibility."
+                        },
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "True if the view is enabled."
+                        },
+                        "checked": {
+                            "type": "boolean",
+                            "description": "True if the view is checked."
+                        },
+                        "focused": {
+                            "type": "boolean",
+                            "description": "True if the view has keyboard focus."
+                        },
+                        "selected": {
+                            "type": "boolean",
+                            "description": "True if the view is selected."
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "Selector object to specify the conditions for non-visibility."
+                }
+            ],
+            "description": "Command to assert whether an element is not visible. Can take a string for text or an object with selector parameters."
+        },
+        "assertTrue": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "A JavaScript expression to assert its truthiness."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "condition": {
+                            "type": "string",
+                            "description": "A JavaScript expression to assert its truthiness."
+                        },
+                        "label": {
+                            "type": "string",
+                            "description": "A label to describe the assertion, typically for debugging or failure messages."
+                        }
+                    },
+                    "required": [
+                        "condition"
+                    ],
+                    "additionalProperties": false,
+                    "description": "An object defining a JavaScript expression to assert and an optional label."
+                }
+            ],
+            "description": "Command to assert whether a given value is true, non-empty, or truthy."
         }
     },
     "additionalProperties": false
