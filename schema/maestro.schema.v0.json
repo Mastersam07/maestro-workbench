@@ -217,6 +217,148 @@
                 }
             ],
             "description": "Command to erase characters from the currently selected text field."
+        },
+        "extendedWaitUntil": {
+            "type": "object",
+            "properties": {
+                "visible": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "description": "A shorthand selector for text."
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string",
+                                    "description": "Matches element with the specified text."
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Matches element with the specified ID."
+                                },
+                                "index": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "description": "0-based index of the view."
+                                },
+                                "point": {
+                                    "type": "string",
+                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                    "description": "Position on screen."
+                                },
+                                "width": {
+                                    "type": "integer",
+                                    "description": "Matches element with the specified width."
+                                },
+                                "height": {
+                                    "type": "integer",
+                                    "description": "Matches element with the specified height."
+                                },
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified enabled state."
+                                },
+                                "checked": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified checked state."
+                                },
+                                "focused": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified focused state."
+                                },
+                                "selected": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified selected state."
+                                }
+                            },
+                            "additionalProperties": false,
+                            "description": "Selector object to find the element."
+                        }
+                    ],
+                    "description": "Waits until the element becomes visible."
+                },
+                "notVisible": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "description": "A shorthand selector for text."
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string",
+                                    "description": "Matches element with the specified text."
+                                },
+                                "id": {
+                                    "type": "string",
+                                    "description": "Matches element with the specified ID."
+                                },
+                                "index": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "description": "0-based index of the view."
+                                },
+                                "point": {
+                                    "type": "string",
+                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                    "description": "Position on screen."
+                                },
+                                "width": {
+                                    "type": "integer",
+                                    "description": "Matches element with the specified width."
+                                },
+                                "height": {
+                                    "type": "integer",
+                                    "description": "Matches element with the specified height."
+                                },
+                                "enabled": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified enabled state."
+                                },
+                                "checked": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified checked state."
+                                },
+                                "focused": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified focused state."
+                                },
+                                "selected": {
+                                    "type": "boolean",
+                                    "description": "Matches element with the specified selected state."
+                                }
+                            },
+                            "additionalProperties": false,
+                            "description": "Selector object to find the element."
+                        }
+                    ],
+                    "description": "Waits until the element is no longer visible."
+                },
+                "timeout": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Timeout in milliseconds for the wait operation."
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "visible",
+                        "timeout"
+                    ]
+                },
+                {
+                    "required": [
+                        "notVisible",
+                        "timeout"
+                    ]
+                }
+            ],
+            "additionalProperties": false,
+            "description": "Command to wait until an element becomes visible or disappears within a specified timeout."
         }
     },
     "additionalProperties": false
