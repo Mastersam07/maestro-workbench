@@ -553,47 +553,69 @@
             "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command."
         },
         "repeat": {
-  "type": "object",
-  "properties": {
-    "times": {
-      "type": "integer",
-      "minimum": 1,
-      "description": "Number of times to repeat the commands."
-    },
-    "while": {
-      "type": "object",
-      "properties": {
-        "visible": {
-          "type": ["string", "object"],
-          "description": "Repeat while the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
-        },
-        "notVisible": {
-          "type": ["string", "object"],
-          "description": "Repeat while the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
-        },
-        "true": {
-          "type": "string",
-          "description": "A JavaScript expression to evaluate. Repeat while the expression evaluates to true."
+            "type": "object",
+            "properties": {
+                "times": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Number of times to repeat the commands."
+                },
+                "while": {
+                    "type": "object",
+                    "properties": {
+                        "visible": {
+                            "type": [
+                                "string",
+                                "object"
+                            ],
+                            "description": "Repeat while the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
+                        },
+                        "notVisible": {
+                            "type": [
+                                "string",
+                                "object"
+                            ],
+                            "description": "Repeat while the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
+                        },
+                        "true": {
+                            "type": "string",
+                            "description": "A JavaScript expression to evaluate. Repeat while the expression evaluates to true."
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "Condition to evaluate while repeating the commands."
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "oneOf": [
+                            {
+                                "$ref": "#"
+                            }
+                        ]
+                    },
+                    "description": "The set of commands to execute in each iteration."
+                }
+            },
+            "oneOf": [
+                {
+                    "required": [
+                        "times",
+                        "commands"
+                    ]
+                },
+                {
+                    "required": [
+                        "while",
+                        "commands"
+                    ]
+                }
+            ],
+            "additionalProperties": false,
+            "description": "Command to repeat a set of commands either a specific number of times or until a condition is met."
         }
-      },
-      "additionalProperties": false,
-      "description": "Condition to evaluate while repeating the commands."
-    },
-    "commands": {
-      "type": "array",
-      "items": { "type": "object" },
-      "minItems": 1,
-      "description": "Commands to execute in each iteration of the loop."
-    }
-  },
-  "oneOf": [
-    { "required": ["times", "commands"] },
-    { "required": ["while", "commands"] }
-  ],
-  "additionalProperties": false,
-  "description": "Command to repeat a set of commands either a specific number of times or until a condition is met."
-}
-
     },
     "additionalProperties": false
 }
