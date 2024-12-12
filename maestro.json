@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "addMedia": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
+            },
+            "minItems": 1,
+            "description": "List of media file paths to add to the device's gallery. Supported mime types are PNG, JPEG, JPG, GIF, and MP4."
+        }
+    },
+    "additionalProperties": false
+}
