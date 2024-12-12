@@ -203,6 +203,20 @@
                 "graaljs"
             ],
             "description": "Specifies the JavaScript engine to use for script evaluation. Defaults to 'rhino' but supports 'graaljs' for ECMAScript 2022 compliance."
+        },
+        "eraseText": {
+            "oneOf": [
+                {
+                    "type": "null",
+                    "description": "Removes up to 50 characters from the currently selected text field."
+                },
+                {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Removes up to the specified number of characters from the currently selected text field."
+                }
+            ],
+            "description": "Command to erase characters from the currently selected text field."
         }
     },
     "additionalProperties": false
