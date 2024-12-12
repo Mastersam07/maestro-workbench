@@ -359,6 +359,46 @@
             ],
             "additionalProperties": false,
             "description": "Command to wait until an element becomes visible or disappears within a specified timeout."
+        },
+        "hideKeyboard": {
+            "type": "null",
+            "description": "Command to hide the software keyboard. Note: May be flaky on iOS."
+        },
+        "inputText": {
+            "type": "string",
+            "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android."
+        },
+        "inputRandomEmail": {
+            "type": "null",
+            "description": "Inputs a randomly generated email address."
+        },
+        "inputRandomPersonName": {
+            "type": "null",
+            "description": "Inputs a randomly generated person name."
+        },
+        "inputRandomNumber": {
+            "type": "object",
+            "properties": {
+                "length": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Specifies the length of the random number. Defaults to 8."
+                }
+            },
+            "additionalProperties": false,
+            "description": "Inputs a randomly generated number with an optional specified length."
+        },
+        "inputRandomText": {
+            "type": "object",
+            "properties": {
+                "length": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Specifies the length of the random text. Defaults to 8."
+                }
+            },
+            "additionalProperties": false,
+            "description": "Inputs randomly generated unstructured text with an optional specified length."
         }
     },
     "additionalProperties": false
