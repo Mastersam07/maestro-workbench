@@ -932,6 +932,19 @@
         "scroll": {
             "type": "null",
             "description": "Command to do a simple vertical scroll."
+        },
+        "stopApp": {
+            "oneOf": [
+                {
+                    "type": "null",
+                    "description": "Stops current application if it is running."
+                },
+                {
+                    "type": "string",
+                    "description": "Stops an arbitrary app specified by its ID."
+                }
+            ],
+            "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
         }
     },
     "additionalProperties": false
