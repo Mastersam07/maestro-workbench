@@ -121,6 +121,23 @@
         "back": {
             "type": "null",
             "description": "Command to navigate the user to the previous screen (Android-only)."
+        },
+        "clearKeychain": {
+            "type": "null",
+            "description": "Command to clear the entire iOS keychain (not applicable on Android)."
+        },
+        "clearState": {
+            "oneOf": [
+                {
+                    "type": "null",
+                    "description": "Clears the state of the current app."
+                },
+                {
+                    "type": "string",
+                    "description": "Clears the state of an arbitrary app specified by its ID."
+                }
+            ],
+            "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
         }
     },
     "additionalProperties": false
