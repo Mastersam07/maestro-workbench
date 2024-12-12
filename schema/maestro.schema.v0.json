@@ -615,6 +615,50 @@
             ],
             "additionalProperties": false,
             "description": "Command to repeat a set of commands either a specific number of times or until a condition is met."
+        },
+        "runFlow": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "Runs a flow from the specified file (e.g., 'anotherFlow.yaml')."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "file": {
+                            "type": "string",
+                            "description": "The file path of the flow to run."
+                        },
+                        "env": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "description": "Key-value pairs of environment variables to pass to the subflow."
+                            },
+                            "description": "Environment variables to pass to the subflow."
+                        },
+                        "commands": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "oneOf": [
+                                    {
+                                        "$ref": "#"
+                                    }
+                                ]
+                            },
+                            "description": "Inline commands to execute if not using a file."
+                        }
+                    },
+                    "required": [
+                        "file"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Runs a flow from another file or inline commands, with optional environment variables."
+                }
+            ],
+            "description": "Command to run a flow from a specified file or execute inline commands."
         }
     },
     "additionalProperties": false
