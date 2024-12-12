@@ -191,6 +191,18 @@
             },
             "additionalProperties": false,
             "description": "Command to copy text from an element and save it in memory for use in subsequent actions."
+        },
+        "evalScript": {
+            "type": "string",
+            "description": "Command to execute a JavaScript expression directly within the Maestro flow. Typically used for simple computations or operations."
+        },
+        "jsEngine": {
+            "type": "string",
+            "enum": [
+                "rhino",
+                "graaljs"
+            ],
+            "description": "Specifies the JavaScript engine to use for script evaluation. Defaults to 'rhino' but supports 'graaljs' for ECMAScript 2022 compliance."
         }
     },
     "additionalProperties": false
