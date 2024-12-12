@@ -399,6 +399,87 @@
             },
             "additionalProperties": false,
             "description": "Inputs randomly generated unstructured text with an optional specified length."
+        },
+        "killApp": {
+            "type": "null",
+            "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp."
+        },
+        "launchApp": {
+            "oneOf": [
+                {
+                    "type": "null",
+                    "description": "Launches the app under test without additional configurations."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "appId": {
+                            "type": "string",
+                            "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
+                        },
+                        "clearState": {
+                            "type": "boolean",
+                            "description": "Indicates whether to clear the app's state before launching. Defaults to false."
+                        },
+                        "clearKeychain": {
+                            "type": "boolean",
+                            "description": "Clears the entire iOS keychain. Applicable only for iOS."
+                        },
+                        "stopApp": {
+                            "type": "boolean",
+                            "description": "Stops the app before launching. Defaults to true."
+                        },
+                        "permissions": {
+                            "type": "object",
+                            "properties": {
+                                "all": {
+                                    "type": "string",
+                                    "enum": [
+                                        "allow",
+                                        "deny",
+                                        "unset"
+                                    ],
+                                    "description": "Sets the permission state for all permissions."
+                                }
+                            },
+                            "additionalProperties": {
+                                "type": "string",
+                                "enum": [
+                                    "allow",
+                                    "deny",
+                                    "unset"
+                                ],
+                                "description": "Sets the permission state (allow, deny, unset) for a specific permission."
+                            },
+                            "description": "Overrides permissions for the app."
+                        },
+                        "arguments": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "oneOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "boolean"
+                                    },
+                                    {
+                                        "type": "number"
+                                    }
+                                ],
+                                "description": "Launch arguments as key-value pairs. Supports String, Boolean, Double, and Integer."
+                            },
+                            "description": "Additional arguments to pass while launching the app."
+                        }
+                    },
+                    "required": [
+                        "appId"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Launches an app with the specified configuration."
+                }
+            ],
+            "description": "Command to launch the app under test or an arbitrary app with specified configurations."
         }
     },
     "additionalProperties": false
