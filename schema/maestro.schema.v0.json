@@ -138,6 +138,59 @@
                 }
             ],
             "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
+        },
+        "copyTextFrom": {
+            "type": "object",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "Finds an element with text or accessibility text matching the given regular expression."
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Finds an element with an accessibility identifier matching the given regular expression."
+                },
+                "index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Zero-based index of the view to select among those that match all other criteria."
+                },
+                "point": {
+                    "type": "string",
+                    "pattern": "^\\d+%, \\d+%$|^\\d+, \\d+$",
+                    "description": "Relative or exact position on the screen."
+                },
+                "width": {
+                    "type": "integer",
+                    "description": "Finds an element of a given width."
+                },
+                "height": {
+                    "type": "integer",
+                    "description": "Finds an element of a given height."
+                },
+                "tolerance": {
+                    "type": "integer",
+                    "description": "Tolerance to apply when comparing width and height."
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Searches for a view with a given 'enabled' state."
+                },
+                "checked": {
+                    "type": "boolean",
+                    "description": "Searches for a view with a given 'checked' state."
+                },
+                "focused": {
+                    "type": "boolean",
+                    "description": "Searches for a view with a given 'focused' state."
+                },
+                "selected": {
+                    "type": "boolean",
+                    "description": "Searches for a view with a given 'selected' state."
+                }
+            },
+            "additionalProperties": false,
+            "description": "Command to copy text from an element and save it in memory for use in subsequent actions."
         }
     },
     "additionalProperties": false
