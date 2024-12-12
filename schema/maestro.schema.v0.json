@@ -928,6 +928,10 @@
                 }
             ],
             "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally."
+        },
+        "scroll": {
+            "type": "null",
+            "description": "Command to do a simple vertical scroll."
         }
     },
     "additionalProperties": false
