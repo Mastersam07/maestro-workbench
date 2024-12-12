@@ -512,6 +512,41 @@
                 }
             ],
             "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
+        },
+        "pressKey": {
+            "type": "string",
+            "enum": [
+                "home",
+                "lock",
+                "enter",
+                "backspace",
+                "volume up",
+                "volume down",
+                "back",
+                "power",
+                "tab",
+                "Remote Dpad Up",
+                "Remote Dpad Down",
+                "Remote Dpad Left",
+                "Remote Dpad Right",
+                "Remote Dpad Center",
+                "Remote Media Play Pause",
+                "Remote Media Stop",
+                "Remote Media Next",
+                "Remote Media Previous",
+                "Remote Media Rewind",
+                "Remote Media Fast Forward",
+                "Remote System Navigation Up",
+                "Remote System Navigation Down",
+                "Remote Button A",
+                "Remote Button B",
+                "Remote Menu",
+                "TV Input",
+                "TV Input HDMI 1",
+                "TV Input HDMI 2",
+                "TV Input HDMI 3"
+            ],
+            "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls."
         }
     },
     "additionalProperties": false
