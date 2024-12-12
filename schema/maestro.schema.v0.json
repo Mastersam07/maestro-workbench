@@ -480,6 +480,38 @@
                 }
             ],
             "description": "Command to launch the app under test or an arbitrary app with specified configurations."
+        },
+        "openLink": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "description": "Opens the specified link on the device (i.e., a deep link)."
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "link": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "The URL or deep link to open on the device."
+                        },
+                        "autoVerify": {
+                            "type": "boolean",
+                            "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
+                        },
+                        "browser": {
+                            "type": "boolean",
+                            "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                        }
+                    },
+                    "required": [
+                        "link"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Opens a link on the device with additional options like auto-verification or browser preference."
+                }
+            ],
+            "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
         }
     },
     "additionalProperties": false
