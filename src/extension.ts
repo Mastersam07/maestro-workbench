@@ -3,6 +3,8 @@ import * as cp from 'child_process';
 import * as os from 'os';
 import { MaestroWorkBenchTreeViewProvider } from './treeView';
 
+let maestroTerminal: vscode.Terminal | undefined;
+
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Maestro-workbench is now active!');
@@ -17,14 +19,26 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', async () => {
-			const terminal = vscode.window.createTerminal({
-				name: "Maestro Studio",
-				shellPath: "maestro",
-				shellArgs: ["studio"],
-			});
+		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', () => {
+			if (!maestroTerminal) {
+				maestroTerminal = vscode.window.createTerminal({
+					name: "Maestro Studio",
+				});
 
-			terminal.show();
+				maestroTerminal.sendText("maestro studio");
+			}
+
+			maestroTerminal.show();
+
+			maestroTerminal.processId.then((pid) => {
+				console.log(`process id: ${pid}`)
+				vscode.window.onDidCloseTerminal((closedTerminal) => {
+					console.log(`closedTerminal: ${closedTerminal}`)
+					if (closedTerminal.name === "Maestro Studio") {
+						maestroTerminal = undefined;
+					}
+				});
+			});
 		})
 	);
 
@@ -58,7 +72,6 @@ export function activate(context: vscode.ExtensionContext) {
 		'{maestro,**/.maestro}/**/*.{yaml,yml}'
 	);
 
-	// File watcher events
 	fileWatcher.onDidCreate(() => {
 		console.log('File created. Refreshing tree view...');
 		treeDataProvider.refresh();
