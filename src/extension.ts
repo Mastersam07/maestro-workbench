@@ -12,6 +12,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
 			treeDataProvider.refresh();
 		}),
+	);
+
+	context.subscriptions.push(
 		vscode.languages.registerCompletionItemProvider(
 			{ language: 'yaml', scheme: 'file' },
 			{
@@ -36,6 +39,28 @@ export function activate(context: vscode.ExtensionContext) {
 			'-' // Trigger completion after typing "-"
 		)
 	);
+
+	const fileWatcher = vscode.workspace.createFileSystemWatcher(
+		'{maestro,**/.maestro}/**/*.{yaml,yml}'
+	);
+
+	// File watcher events
+	fileWatcher.onDidCreate(() => {
+		console.log('File created. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	fileWatcher.onDidChange(() => {
+		console.log('File changed. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	fileWatcher.onDidDelete(() => {
+		console.log('File deleted. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	context.subscriptions.push(fileWatcher);
 
 	const diagnosticCollection = vscode.languages.createDiagnosticCollection('maestro');
 
