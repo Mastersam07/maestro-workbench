@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> =
@@ -13,21 +12,43 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
     getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
         if (!element) {
+            return Promise.resolve([
+                new MaestroTreeItem("Maestro Files", vscode.TreeItemCollapsibleState.Collapsed, "filesSection"),
+                new MaestroTreeItem("Actions", vscode.TreeItemCollapsibleState.None, "actionsSection"),
+            ]);
+        }
+
+        // Add children to the collapsible "Maestro Files" section
+        if (element.contextValue === "filesSection") {
             const yamlFiles = vscode.workspace.findFiles("{maestro,**/.maestro}/**/*.{yaml,yml}");
             return yamlFiles.then((files) =>
                 files.map(
                     (file) =>
-                        new vscode.TreeItem(
+                        new MaestroTreeItem(
                             vscode.workspace.asRelativePath(file),
                             vscode.TreeItemCollapsibleState.None
                         )
                 )
             );
         }
+
         return Promise.resolve([]);
     }
 
     public refresh(): void {
         this._onDidChangeTreeData.fire();
+    }
+}
+
+class MaestroTreeItem extends vscode.TreeItem {
+    constructor(
+        public readonly label: string,
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public readonly contextValue?: string,
+        public readonly command?: vscode.Command
+    ) {
+        super(label, collapsibleState);
+        this.contextValue = contextValue;
+        this.command = command;
     }
 }

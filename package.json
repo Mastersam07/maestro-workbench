@@ -44,11 +44,31 @@
       ]
     },
     "commands": [
-      {
-        "command": "maestroWorkbench.refreshTree",
-        "title": "Refresh Maestro Tree"
-      }
-    ]
+        {
+            "command": "maestroWorkbench.openMaestroStudio",
+            "title": "Open Maestro Studio",
+            "icon": "$(debug-console)"
+        },
+        {
+            "command": "maestroWorkbench.refreshTree",
+            "title": "Refresh Maestro Tree",
+            "icon": "$(refresh)"
+        }
+    ],
+    "menus": {
+        "view/title": [
+            {
+                "command": "maestroWorkbench.openMaestroStudio",
+                "when": "view == maestroBenchTreeView",
+                "group": "navigation"
+            },
+            {
+                "command": "maestroWorkbench.refreshTree",
+                "when": "view == maestroBenchTreeView",
+                "group": "navigation"
+            }
+        ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
