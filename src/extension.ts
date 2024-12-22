@@ -17,38 +17,16 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-        vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', async () => {
-            try {
-                const command = os.platform() === 'win32' ? 'maestro.cmd' : 'maestro';
-                const child = cp.spawn(command, ['studio'], {
-                    shell: true,
-                    cwd: vscode.workspace.workspaceFolders
-                        ? vscode.workspace.workspaceFolders[0].uri.fsPath
-                        : undefined,
-                });
+		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', async () => {
+			const terminal = vscode.window.createTerminal({
+				name: "Maestro Studio",
+				shellPath: "maestro",
+				shellArgs: ["studio"],
+			});
 
-                child.stdout.on('data', (data) => {
-                    vscode.window.showInformationMessage(`Maestro Studio: ${data.toString()}`);
-                });
-
-                child.stderr.on('data', (data) => {
-                    vscode.window.showErrorMessage(`Maestro Studio Error: ${data.toString()}`);
-                });
-
-                child.on('close', (code) => {
-                    if (code === 0) {
-                        vscode.window.showInformationMessage('Maestro Studio exited successfully.');
-                    } else {
-                        vscode.window.showErrorMessage(`Maestro Studio exited with code ${code}.`);
-                    }
-                });
-            } catch (error) {
-				console.log(error)
-				const message = (error as Error).message;
-                vscode.window.showErrorMessage(`Failed to launch Maestro Studio: ${message}`);
-            }
-        })
-    );
+			terminal.show();
+		})
+	);
 
 	context.subscriptions.push(
 		vscode.languages.registerCompletionItemProvider(
