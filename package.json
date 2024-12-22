@@ -9,13 +9,44 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:maestro",
+    "workspaceContains:.maestro"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "yaml",
+        "extensions": [
+          ".yaml",
+          ".yml"
+        ],
+        "aliases": ["YAML", "yaml"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "maestroWorkbench",
+          "title": "Maestro Workbench",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "maestroWorkbench": [
+        {
+          "id": "maestroBenchTreeView",
+          "name": "Maestro Workbench"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "maestro-workbench.helloWorld",
-        "title": "Hello World"
+        "command": "maestroWorkbench.refreshTree",
+        "title": "Refresh Maestro Tree"
       }
     ]
   },

@@ -1,26 +1,65 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { MaestroWorkBenchTreeViewProvider } from './treeView';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "maestro-workbench" is now active!');
+	console.log('Maestro-workbench is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('maestro-workbench.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Maestro Workbench!');
+	const treeDataProvider = new MaestroWorkBenchTreeViewProvider();
+	vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
+			treeDataProvider.refresh();
+		}),
+		vscode.languages.registerCompletionItemProvider(
+			{ language: 'yaml', scheme: 'file' },
+			{
+				provideCompletionItems(document, position, token, context) {
+					const commands = [
+						'tapOn',
+						'assertVisible',
+						'assertNotVisible',
+						'runFlow',
+						'repeat',
+						'launchApp'
+					];
+
+					return commands.map((cmd) => {
+						const item = new vscode.CompletionItem(cmd, vscode.CompletionItemKind.Method);
+						item.detail = `Maestro Command: ${cmd}`;
+						item.documentation = `Insert the ${cmd} command in your Maestro YAML flow.`;
+						return item;
+					});
+				}
+			},
+			'-' // Trigger completion after typing "-"
+		)
+	);
+
+	const diagnosticCollection = vscode.languages.createDiagnosticCollection('maestro');
+
+	vscode.workspace.onDidChangeTextDocument((event) => {
+		if (event.document.languageId === 'yaml') {
+			const diagnostics: vscode.Diagnostic[] = [];
+			const text = event.document.getText();
+
+			if (!text.includes('appId:')) {
+				const firstLine = event.document.lineAt(0).range;
+				diagnostics.push(
+					new vscode.Diagnostic(
+						firstLine,
+						'Missing required "appId" property in Maestro YAML.',
+						vscode.DiagnosticSeverity.Error
+					)
+				);
+			}
+
+			diagnosticCollection.set(event.document.uri, diagnostics);
+		}
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(diagnosticCollection);
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
