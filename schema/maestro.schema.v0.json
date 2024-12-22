@@ -1,951 +1,1093 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "properties": {
-        "addMedia": {
+    "title": "Maestro Flow Schema",
+    "description": "Schema for Maestro flow YAML files",
+    "items": [
+        {
+            "type": "object",
+            "properties": {
+                "appId": {
+                    "type": "string",
+                    "description": "The app ID to launch for testing"
+                }
+            }
+        },
+        {
             "type": "array",
             "items": {
-                "type": "string",
-                "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
-            },
-            "minItems": 1,
-            "description": "List of media file paths to add to the device's gallery. Supported mime types are PNG, JPEG, JPG, GIF, and MP4."
-        },
-        "assertVisible": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "The text to assert visibility for a single view with specific text."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "text": {
-                            "type": "string",
-                            "description": "Text in a view to check visibility."
-                        },
-                        "id": {
-                            "type": "string",
-                            "description": "ID of a view to check visibility."
-                        },
-                        "enabled": {
-                            "type": "boolean",
-                            "description": "True if the view is enabled."
-                        },
-                        "checked": {
-                            "type": "boolean",
-                            "description": "True if the view is checked."
-                        },
-                        "focused": {
-                            "type": "boolean",
-                            "description": "True if the view has keyboard focus."
-                        },
-                        "selected": {
-                            "type": "boolean",
-                            "description": "True if the view is selected."
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "addMedia": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
+                                },
+                                "minItems": 1,
+                                "description": "List of media file paths to add to the device's gallery"
+                            }
                         }
                     },
-                    "additionalProperties": false,
-                    "description": "Selector object to specify the conditions for visibility."
-                }
-            ],
-            "description": "Command to assert whether an element is visible. Can take a string for text or an object with selector parameters."
-        },
-        "assertNotVisible": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "The text to assert non-visibility for a single view with specific text."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "text": {
-                            "type": "string",
-                            "description": "Text in a view to check non-visibility."
-                        },
-                        "id": {
-                            "type": "string",
-                            "description": "ID of a view to check non-visibility."
-                        },
-                        "enabled": {
-                            "type": "boolean",
-                            "description": "True if the view is enabled."
-                        },
-                        "checked": {
-                            "type": "boolean",
-                            "description": "True if the view is checked."
-                        },
-                        "focused": {
-                            "type": "boolean",
-                            "description": "True if the view has keyboard focus."
-                        },
-                        "selected": {
-                            "type": "boolean",
-                            "description": "True if the view is selected."
-                        }
-                    },
-                    "additionalProperties": false,
-                    "description": "Selector object to specify the conditions for non-visibility."
-                }
-            ],
-            "description": "Command to assert whether an element is not visible. Can take a string for text or an object with selector parameters."
-        },
-        "assertTrue": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "A JavaScript expression to assert its truthiness."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "condition": {
-                            "type": "string",
-                            "description": "A JavaScript expression to assert its truthiness."
-                        },
-                        "label": {
-                            "type": "string",
-                            "description": "A label to describe the assertion, typically for debugging or failure messages."
-                        }
-                    },
-                    "required": [
-                        "condition"
-                    ],
-                    "additionalProperties": false,
-                    "description": "An object defining a JavaScript expression to assert and an optional label."
-                }
-            ],
-            "description": "Command to assert whether a given value is true, non-empty, or truthy."
-        },
-        "back": {
-            "type": "null",
-            "description": "Command to navigate the user to the previous screen (Android-only)."
-        },
-        "clearKeychain": {
-            "type": "null",
-            "description": "Command to clear the entire iOS keychain (not applicable on Android)."
-        },
-        "clearState": {
-            "oneOf": [
-                {
-                    "type": "null",
-                    "description": "Clears the state of the current app."
-                },
-                {
-                    "type": "string",
-                    "description": "Clears the state of an arbitrary app specified by its ID."
-                }
-            ],
-            "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
-        },
-        "copyTextFrom": {
-            "type": "object",
-            "properties": {
-                "text": {
-                    "type": "string",
-                    "description": "Finds an element with text or accessibility text matching the given regular expression."
-                },
-                "id": {
-                    "type": "string",
-                    "description": "Finds an element with an accessibility identifier matching the given regular expression."
-                },
-                "index": {
-                    "type": "integer",
-                    "minimum": 0,
-                    "description": "Zero-based index of the view to select among those that match all other criteria."
-                },
-                "point": {
-                    "type": "string",
-                    "pattern": "^\\d+%, \\d+%$|^\\d+, \\d+$",
-                    "description": "Relative or exact position on the screen."
-                },
-                "width": {
-                    "type": "integer",
-                    "description": "Finds an element of a given width."
-                },
-                "height": {
-                    "type": "integer",
-                    "description": "Finds an element of a given height."
-                },
-                "tolerance": {
-                    "type": "integer",
-                    "description": "Tolerance to apply when comparing width and height."
-                },
-                "enabled": {
-                    "type": "boolean",
-                    "description": "Searches for a view with a given 'enabled' state."
-                },
-                "checked": {
-                    "type": "boolean",
-                    "description": "Searches for a view with a given 'checked' state."
-                },
-                "focused": {
-                    "type": "boolean",
-                    "description": "Searches for a view with a given 'focused' state."
-                },
-                "selected": {
-                    "type": "boolean",
-                    "description": "Searches for a view with a given 'selected' state."
-                }
-            },
-            "additionalProperties": false,
-            "description": "Command to copy text from an element and save it in memory for use in subsequent actions."
-        },
-        "evalScript": {
-            "type": "string",
-            "description": "Command to execute a JavaScript expression directly within the Maestro flow. Typically used for simple computations or operations."
-        },
-        "jsEngine": {
-            "type": "string",
-            "enum": [
-                "rhino",
-                "graaljs"
-            ],
-            "description": "Specifies the JavaScript engine to use for script evaluation. Defaults to 'rhino' but supports 'graaljs' for ECMAScript 2022 compliance."
-        },
-        "eraseText": {
-            "oneOf": [
-                {
-                    "type": "null",
-                    "description": "Removes up to 50 characters from the currently selected text field."
-                },
-                {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Removes up to the specified number of characters from the currently selected text field."
-                }
-            ],
-            "description": "Command to erase characters from the currently selected text field."
-        },
-        "extendedWaitUntil": {
-            "type": "object",
-            "properties": {
-                "visible": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "description": "A shorthand selector for text."
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "Matches element with the specified text."
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Matches element with the specified ID."
-                                },
-                                "index": {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "description": "0-based index of the view."
-                                },
-                                "point": {
-                                    "type": "string",
-                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                    "description": "Position on screen."
-                                },
-                                "width": {
-                                    "type": "integer",
-                                    "description": "Matches element with the specified width."
-                                },
-                                "height": {
-                                    "type": "integer",
-                                    "description": "Matches element with the specified height."
-                                },
-                                "enabled": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified enabled state."
-                                },
-                                "checked": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified checked state."
-                                },
-                                "focused": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified focused state."
-                                },
-                                "selected": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified selected state."
-                                }
-                            },
-                            "additionalProperties": false,
-                            "description": "Selector object to find the element."
-                        }
-                    ],
-                    "description": "Waits until the element becomes visible."
-                },
-                "notVisible": {
-                    "oneOf": [
-                        {
-                            "type": "string",
-                            "description": "A shorthand selector for text."
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "text": {
-                                    "type": "string",
-                                    "description": "Matches element with the specified text."
-                                },
-                                "id": {
-                                    "type": "string",
-                                    "description": "Matches element with the specified ID."
-                                },
-                                "index": {
-                                    "type": "integer",
-                                    "minimum": 0,
-                                    "description": "0-based index of the view."
-                                },
-                                "point": {
-                                    "type": "string",
-                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                    "description": "Position on screen."
-                                },
-                                "width": {
-                                    "type": "integer",
-                                    "description": "Matches element with the specified width."
-                                },
-                                "height": {
-                                    "type": "integer",
-                                    "description": "Matches element with the specified height."
-                                },
-                                "enabled": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified enabled state."
-                                },
-                                "checked": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified checked state."
-                                },
-                                "focused": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified focused state."
-                                },
-                                "selected": {
-                                    "type": "boolean",
-                                    "description": "Matches element with the specified selected state."
-                                }
-                            },
-                            "additionalProperties": false,
-                            "description": "Selector object to find the element."
-                        }
-                    ],
-                    "description": "Waits until the element is no longer visible."
-                },
-                "timeout": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Timeout in milliseconds for the wait operation."
-                }
-            },
-            "oneOf": [
-                {
-                    "required": [
-                        "visible",
-                        "timeout"
-                    ]
-                },
-                {
-                    "required": [
-                        "notVisible",
-                        "timeout"
-                    ]
-                }
-            ],
-            "additionalProperties": false,
-            "description": "Command to wait until an element becomes visible or disappears within a specified timeout."
-        },
-        "hideKeyboard": {
-            "type": "null",
-            "description": "Command to hide the software keyboard. Note: May be flaky on iOS."
-        },
-        "inputText": {
-            "type": "string",
-            "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android."
-        },
-        "inputRandomEmail": {
-            "type": "null",
-            "description": "Inputs a randomly generated email address."
-        },
-        "inputRandomPersonName": {
-            "type": "null",
-            "description": "Inputs a randomly generated person name."
-        },
-        "inputRandomNumber": {
-            "type": "object",
-            "properties": {
-                "length": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Specifies the length of the random number. Defaults to 8."
-                }
-            },
-            "additionalProperties": false,
-            "description": "Inputs a randomly generated number with an optional specified length."
-        },
-        "inputRandomText": {
-            "type": "object",
-            "properties": {
-                "length": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Specifies the length of the random text. Defaults to 8."
-                }
-            },
-            "additionalProperties": false,
-            "description": "Inputs randomly generated unstructured text with an optional specified length."
-        },
-        "killApp": {
-            "type": "null",
-            "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp."
-        },
-        "launchApp": {
-            "oneOf": [
-                {
-                    "type": "null",
-                    "description": "Launches the app under test without additional configurations."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "appId": {
-                            "type": "string",
-                            "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
-                        },
-                        "clearState": {
-                            "type": "boolean",
-                            "description": "Indicates whether to clear the app's state before launching. Defaults to false."
-                        },
-                        "clearKeychain": {
-                            "type": "boolean",
-                            "description": "Clears the entire iOS keychain. Applicable only for iOS."
-                        },
-                        "stopApp": {
-                            "type": "boolean",
-                            "description": "Stops the app before launching. Defaults to true."
-                        },
-                        "permissions": {
-                            "type": "object",
-                            "properties": {
-                                "all": {
-                                    "type": "string",
-                                    "enum": [
-                                        "allow",
-                                        "deny",
-                                        "unset"
-                                    ],
-                                    "description": "Sets the permission state for all permissions."
-                                }
-                            },
-                            "additionalProperties": {
-                                "type": "string",
-                                "enum": [
-                                    "allow",
-                                    "deny",
-                                    "unset"
-                                ],
-                                "description": "Sets the permission state (allow, deny, unset) for a specific permission."
-                            },
-                            "description": "Overrides permissions for the app."
-                        },
-                        "arguments": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "oneOf": [
-                                    {
+                    {
+                        "type": "object",
+                        "properties": {
+                            "swipe": {
+                                "type": "object",
+                                "properties": {
+                                    "start": {
                                         "type": "string"
                                     },
-                                    {
-                                        "type": "boolean"
+                                    "end": {
+                                        "type": "string"
                                     },
-                                    {
-                                        "type": "number"
+                                    "duration": {
+                                        "type": "integer"
                                     }
+                                },
+                                "required": [
+                                    "start",
+                                    "end",
+                                    "duration"
                                 ],
-                                "description": "Launch arguments as key-value pairs. Supports String, Boolean, Double, and Integer."
-                            },
-                            "description": "Additional arguments to pass while launching the app."
-                        }
-                    },
-                    "required": [
-                        "appId"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Launches an app with the specified configuration."
-                }
-            ],
-            "description": "Command to launch the app under test or an arbitrary app with specified configurations."
-        },
-        "openLink": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "Opens the specified link on the device (i.e., a deep link)."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "link": {
-                            "type": "string",
-                            "format": "uri",
-                            "description": "The URL or deep link to open on the device."
-                        },
-                        "autoVerify": {
-                            "type": "boolean",
-                            "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
-                        },
-                        "browser": {
-                            "type": "boolean",
-                            "description": "Forces the link to open in the web browser on Android. Defaults to false."
-                        }
-                    },
-                    "required": [
-                        "link"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Opens a link on the device with additional options like auto-verification or browser preference."
-                }
-            ],
-            "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
-        },
-        "pressKey": {
-            "type": "string",
-            "enum": [
-                "home",
-                "lock",
-                "enter",
-                "backspace",
-                "volume up",
-                "volume down",
-                "back",
-                "power",
-                "tab",
-                "Remote Dpad Up",
-                "Remote Dpad Down",
-                "Remote Dpad Left",
-                "Remote Dpad Right",
-                "Remote Dpad Center",
-                "Remote Media Play Pause",
-                "Remote Media Stop",
-                "Remote Media Next",
-                "Remote Media Previous",
-                "Remote Media Rewind",
-                "Remote Media Fast Forward",
-                "Remote System Navigation Up",
-                "Remote System Navigation Down",
-                "Remote Button A",
-                "Remote Button B",
-                "Remote Menu",
-                "TV Input",
-                "TV Input HDMI 1",
-                "TV Input HDMI 2",
-                "TV Input HDMI 3"
-            ],
-            "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls."
-        },
-        "pasteText": {
-            "type": "null",
-            "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command."
-        },
-        "repeat": {
-            "type": "object",
-            "properties": {
-                "times": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "Number of times to repeat the commands."
-                },
-                "while": {
-                    "type": "object",
-                    "properties": {
-                        "visible": {
-                            "oneOf": [
-                                {
-                                    "type": "string",
-                                    "description": "A shorthand selector for text."
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "text": {
-                                            "type": "string",
-                                            "description": "Matches element with the specified text."
-                                        },
-                                        "id": {
-                                            "type": "string",
-                                            "description": "Matches element with the specified ID."
-                                        },
-                                        "index": {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "description": "0-based index of the view."
-                                        },
-                                        "point": {
-                                            "type": "string",
-                                            "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                            "description": "Position on screen."
-                                        },
-                                        "width": {
-                                            "type": "integer",
-                                            "description": "Matches element with the specified width."
-                                        },
-                                        "height": {
-                                            "type": "integer",
-                                            "description": "Matches element with the specified height."
-                                        },
-                                        "enabled": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified enabled state."
-                                        },
-                                        "checked": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified checked state."
-                                        },
-                                        "focused": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified focused state."
-                                        },
-                                        "selected": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified selected state."
-                                        }
-                                    },
-                                    "additionalProperties": false,
-                                    "description": "Selector object to find the element."
-                                }
-                            ],
-                            "description": "Repeat while the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
-                        },
-                        "notVisible": {
-                            "oneOf": [
-                                {
-                                    "type": "string",
-                                    "description": "A shorthand selector for text."
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "text": {
-                                            "type": "string",
-                                            "description": "Matches element with the specified text."
-                                        },
-                                        "id": {
-                                            "type": "string",
-                                            "description": "Matches element with the specified ID."
-                                        },
-                                        "index": {
-                                            "type": "integer",
-                                            "minimum": 0,
-                                            "description": "0-based index of the view."
-                                        },
-                                        "point": {
-                                            "type": "string",
-                                            "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                            "description": "Position on screen."
-                                        },
-                                        "width": {
-                                            "type": "integer",
-                                            "description": "Matches element with the specified width."
-                                        },
-                                        "height": {
-                                            "type": "integer",
-                                            "description": "Matches element with the specified height."
-                                        },
-                                        "enabled": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified enabled state."
-                                        },
-                                        "checked": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified checked state."
-                                        },
-                                        "focused": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified focused state."
-                                        },
-                                        "selected": {
-                                            "type": "boolean",
-                                            "description": "Matches element with the specified selected state."
-                                        }
-                                    },
-                                    "additionalProperties": false,
-                                    "description": "Selector object to find the element."
-                                }
-                            ],
-                            "description": "Repeat while the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
-                        },
-                        "true": {
-                            "type": "string",
-                            "description": "A JavaScript expression to evaluate. Repeat while the expression evaluates to true."
-                        }
-                    },
-                    "additionalProperties": false,
-                    "description": "Condition to evaluate while repeating the commands."
-                },
-                "commands": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "oneOf": [
-                            {
-                                "$ref": "#"
+                                "additionalProperties": false
                             }
-                        ]
+                        }
                     },
-                    "description": "The set of commands to execute in each iteration."
-                }
-            },
-            "oneOf": [
-                {
-                    "required": [
-                        "times",
-                        "commands"
-                    ]
-                },
-                {
-                    "required": [
-                        "while",
-                        "commands"
-                    ]
-                }
-            ],
-            "additionalProperties": false,
-            "description": "Command to repeat a set of commands either a specific number of times or until a condition is met."
-        },
-        "runFlow": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "Runs a flow from the specified file (e.g., 'anotherFlow.yaml')."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "file": {
-                            "type": "string",
-                            "description": "The file path of the flow to run."
-                        },
-                        "env": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string",
-                                "description": "Key-value pairs of environment variables to pass to the subflow."
-                            },
-                            "description": "Environment variables to pass to the subflow."
-                        },
-                        "commands": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": false,
+                    {
+                        "type": "object",
+                        "properties": {
+                            "assertVisible": {
                                 "oneOf": [
                                     {
-                                        "$ref": "#"
+                                        "type": "string",
+                                        "description": "The text to assert visibility for a single view with specific text."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "enabled": {
+                                                "type": "boolean"
+                                            },
+                                            "checked": {
+                                                "type": "boolean"
+                                            },
+                                            "focused": {
+                                                "type": "boolean"
+                                            },
+                                            "selected": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "additionalProperties": false
                                     }
                                 ]
-                            },
-                            "description": "Inline commands to execute if not using a file."
+                            }
                         }
                     },
-                    "required": [
-                        "file"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Runs a flow from another file or inline commands, with optional environment variables."
-                }
-            ],
-            "description": "Command to run a flow from a specified file or execute inline commands."
-        },
-        "runScript": {
-            "oneOf": [
-                {
-                    "type": "string",
-                    "description": "Runs the specified JavaScript file (e.g., 'myScript.js')."
-                },
-                {
-                    "type": "object",
-                    "properties": {
-                        "file": {
-                            "type": "string",
-                            "description": "The file path of the JavaScript file to execute."
-                        },
-                        "env": {
-                            "type": "object",
-                            "additionalProperties": {
+                    {
+                        "type": "object",
+                        "properties": {
+                            "assertNotVisible": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "The text to assert non-visibility for a single view with specific text."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "enabled": {
+                                                "type": "boolean"
+                                            },
+                                            "checked": {
+                                                "type": "boolean"
+                                            },
+                                            "focused": {
+                                                "type": "boolean"
+                                            },
+                                            "selected": {
+                                                "type": "boolean"
+                                            }
+                                        },
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "assertTrue": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "A JavaScript expression to assert its truthiness."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "condition": {
+                                                "type": "string"
+                                            },
+                                            "label": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "condition"
+                                        ],
+                                        "additionalProperties": false
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "back": {
+                                "type": "null"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "clearKeychain": {
+                                "type": "null"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "clearState": {
+                                "oneOf": [
+                                    {
+                                        "type": "null"
+                                    },
+                                    {
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "copyTextFrom": {
+                                "type": "object",
+                                "properties": {
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "index": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    },
+                                    "point": {
+                                        "type": "string",
+                                        "pattern": "^\\d+%, \\d+%$|^\\d+, \\d+$"
+                                    },
+                                    "width": {
+                                        "type": "integer"
+                                    },
+                                    "height": {
+                                        "type": "integer"
+                                    },
+                                    "tolerance": {
+                                        "type": "integer"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "checked": {
+                                        "type": "boolean"
+                                    },
+                                    "focused": {
+                                        "type": "boolean"
+                                    },
+                                    "selected": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "evalScript": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "jsEngine": {
                                 "type": "string",
-                                "description": "Key-value pairs of environment variables to pass to the script."
-                            },
-                            "description": "Environment variables to pass to the JavaScript script."
-                        },
-                        "when": {
-                            "type": "object",
-                            "properties": {
-                                "visible": {
-                                    "oneOf": [
-                                        {
-                                            "type": "string",
-                                            "description": "A shorthand selector for text."
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "text": {
-                                                    "type": "string",
-                                                    "description": "Matches element with the specified text."
-                                                },
-                                                "id": {
-                                                    "type": "string",
-                                                    "description": "Matches element with the specified ID."
-                                                },
-                                                "index": {
-                                                    "type": "integer",
-                                                    "minimum": 0,
-                                                    "description": "0-based index of the view."
-                                                },
-                                                "point": {
-                                                    "type": "string",
-                                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                                    "description": "Position on screen."
-                                                },
-                                                "width": {
-                                                    "type": "integer",
-                                                    "description": "Matches element with the specified width."
-                                                },
-                                                "height": {
-                                                    "type": "integer",
-                                                    "description": "Matches element with the specified height."
-                                                },
-                                                "enabled": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified enabled state."
-                                                },
-                                                "checked": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified checked state."
-                                                },
-                                                "focused": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified focused state."
-                                                },
-                                                "selected": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified selected state."
-                                                }
-                                            },
-                                            "additionalProperties": false,
-                                            "description": "Selector object to find the element."
-                                        }
-                                    ],
-                                    "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
-                                },
-                                "notVisible": {
-                                    "oneOf": [
-                                        {
-                                            "type": "string",
-                                            "description": "A shorthand selector for text."
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "text": {
-                                                    "type": "string",
-                                                    "description": "Matches element with the specified text."
-                                                },
-                                                "id": {
-                                                    "type": "string",
-                                                    "description": "Matches element with the specified ID."
-                                                },
-                                                "index": {
-                                                    "type": "integer",
-                                                    "minimum": 0,
-                                                    "description": "0-based index of the view."
-                                                },
-                                                "point": {
-                                                    "type": "string",
-                                                    "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
-                                                    "description": "Position on screen."
-                                                },
-                                                "width": {
-                                                    "type": "integer",
-                                                    "description": "Matches element with the specified width."
-                                                },
-                                                "height": {
-                                                    "type": "integer",
-                                                    "description": "Matches element with the specified height."
-                                                },
-                                                "enabled": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified enabled state."
-                                                },
-                                                "checked": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified checked state."
-                                                },
-                                                "focused": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified focused state."
-                                                },
-                                                "selected": {
-                                                    "type": "boolean",
-                                                    "description": "Matches element with the specified selected state."
-                                                }
-                                            },
-                                            "additionalProperties": false,
-                                            "description": "Selector object to find the element."
-                                        }
-                                    ],
-                                    "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
-                                },
-                                "true": {
-                                    "type": "string",
-                                    "description": "A JavaScript expression to evaluate. Runs the script if the expression evaluates to true."
-                                },
-                                "platform": {
-                                    "type": "string",
-                                    "enum": [
-                                        "Android",
-                                        "iOS",
-                                        "Web"
-                                    ],
-                                    "description": "Runs the script if the current platform matches the specified platform."
-                                }
-                            },
-                            "additionalProperties": false,
-                            "description": "Conditions to determine whether the script should run."
+                                "enum": [
+                                    "rhino",
+                                    "graaljs"
+                                ]
+                            }
                         }
                     },
-                    "required": [
-                        "file"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Runs a JavaScript file with optional environment variables and conditional execution."
-                }
-            ],
-            "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally."
-        },
-        "scroll": {
-            "type": "null",
-            "description": "Command to do a simple vertical scroll."
-        },
-        "stopApp": {
-            "oneOf": [
-                {
-                    "type": "null",
-                    "description": "Stops current application if it is running."
-                },
-                {
-                    "type": "string",
-                    "description": "Stops an arbitrary app specified by its ID."
-                }
-            ],
-            "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
+                    {
+                        "type": "object",
+                        "properties": {
+                            "eraseText": {
+                                "oneOf": [
+                                    {
+                                        "type": "null"
+                                    },
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "extendedWaitUntil": {
+                                "type": "object",
+                                "properties": {
+                                    "visible": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "description": "A shorthand selector for text."
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "text": {
+                                                        "type": "string",
+                                                        "description": "Matches element with the specified text."
+                                                    },
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches element with the specified ID."
+                                                    },
+                                                    "index": {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "description": "0-based index of the view."
+                                                    },
+                                                    "point": {
+                                                        "type": "string",
+                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                        "description": "Position on screen."
+                                                    },
+                                                    "width": {
+                                                        "type": "integer",
+                                                        "description": "Matches element with the specified width."
+                                                    },
+                                                    "height": {
+                                                        "type": "integer",
+                                                        "description": "Matches element with the specified height."
+                                                    },
+                                                    "enabled": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified enabled state."
+                                                    },
+                                                    "checked": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified checked state."
+                                                    },
+                                                    "focused": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified focused state."
+                                                    },
+                                                    "selected": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified selected state."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Selector object to find the element."
+                                            }
+                                        ],
+                                        "description": "Waits until the element becomes visible."
+                                    },
+                                    "notVisible": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "description": "A shorthand selector for text."
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "text": {
+                                                        "type": "string",
+                                                        "description": "Matches element with the specified text."
+                                                    },
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches element with the specified ID."
+                                                    },
+                                                    "index": {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "description": "0-based index of the view."
+                                                    },
+                                                    "point": {
+                                                        "type": "string",
+                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                        "description": "Position on screen."
+                                                    },
+                                                    "width": {
+                                                        "type": "integer",
+                                                        "description": "Matches element with the specified width."
+                                                    },
+                                                    "height": {
+                                                        "type": "integer",
+                                                        "description": "Matches element with the specified height."
+                                                    },
+                                                    "enabled": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified enabled state."
+                                                    },
+                                                    "checked": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified checked state."
+                                                    },
+                                                    "focused": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified focused state."
+                                                    },
+                                                    "selected": {
+                                                        "type": "boolean",
+                                                        "description": "Matches element with the specified selected state."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Selector object to find the element."
+                                            }
+                                        ],
+                                        "description": "Waits until the element is no longer visible."
+                                    },
+                                    "timeout": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "description": "Timeout in milliseconds for the wait operation."
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "visible",
+                                            "timeout"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "notVisible",
+                                            "timeout"
+                                        ]
+                                    }
+                                ],
+                                "additionalProperties": false,
+                                "description": "Command to wait until an element becomes visible or disappears within a specified timeout."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "hideKeyboard": {
+                                "type": "null",
+                                "description": "Command to hide the software keyboard. Note: May be flaky on iOS."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "inputText": {
+                                "type": "string",
+                                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "inputRandomEmail": {
+                                "type": "null",
+                                "description": "Inputs a randomly generated email address."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "inputRandomPersonName": {
+                                "type": "null",
+                                "description": "Inputs a randomly generated person name."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "inputRandomNumber": {
+                                "type": "object",
+                                "properties": {
+                                    "length": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "description": "Specifies the length of the random number. Defaults to 8."
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "description": "Inputs a randomly generated number with an optional specified length."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "inputRandomText": {
+                                "type": "object",
+                                "properties": {
+                                    "length": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "description": "Specifies the length of the random text. Defaults to 8."
+                                    }
+                                },
+                                "additionalProperties": false,
+                                "description": "Inputs randomly generated unstructured text with an optional specified length."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "killApp": {
+                                "type": "null",
+                                "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "launchApp": {
+                                "oneOf": [
+                                    {
+                                        "type": "null",
+                                        "description": "Launches the app under test without additional configurations."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "appId": {
+                                                "type": "string",
+                                                "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
+                                            },
+                                            "clearState": {
+                                                "type": "boolean",
+                                                "description": "Indicates whether to clear the app's state before launching. Defaults to false."
+                                            },
+                                            "clearKeychain": {
+                                                "type": "boolean",
+                                                "description": "Clears the entire iOS keychain. Applicable only for iOS."
+                                            },
+                                            "stopApp": {
+                                                "type": "boolean",
+                                                "description": "Stops the app before launching. Defaults to true."
+                                            },
+                                            "permissions": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "all": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "allow",
+                                                            "deny",
+                                                            "unset"
+                                                        ],
+                                                        "description": "Sets the permission state for all permissions."
+                                                    }
+                                                },
+                                                "additionalProperties": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "allow",
+                                                        "deny",
+                                                        "unset"
+                                                    ],
+                                                    "description": "Sets the permission state (allow, deny, unset) for a specific permission."
+                                                },
+                                                "description": "Overrides permissions for the app."
+                                            },
+                                            "arguments": {
+                                                "type": "object",
+                                                "additionalProperties": {
+                                                    "oneOf": [
+                                                        {
+                                                            "type": "string"
+                                                        },
+                                                        {
+                                                            "type": "boolean"
+                                                        },
+                                                        {
+                                                            "type": "number"
+                                                        }
+                                                    ],
+                                                    "description": "Launch arguments as key-value pairs. Supports String, Boolean, Double, and Integer."
+                                                },
+                                                "description": "Additional arguments to pass while launching the app."
+                                            }
+                                        },
+                                        "required": [
+                                            "appId"
+                                        ],
+                                        "additionalProperties": false,
+                                        "description": "Launches an app with the specified configuration."
+                                    }
+                                ],
+                                "description": "Command to launch the app under test or an arbitrary app with specified configurations."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "openLink": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Opens the specified link on the device (i.e., a deep link)."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "link": {
+                                                "type": "string",
+                                                "format": "uri",
+                                                "description": "The URL or deep link to open on the device."
+                                            },
+                                            "autoVerify": {
+                                                "type": "boolean",
+                                                "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
+                                            },
+                                            "browser": {
+                                                "type": "boolean",
+                                                "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                                            }
+                                        },
+                                        "required": [
+                                            "link"
+                                        ],
+                                        "additionalProperties": false,
+                                        "description": "Opens a link on the device with additional options like auto-verification or browser preference."
+                                    }
+                                ],
+                                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "pressKey": {
+                                "type": "string",
+                                "enum": [
+                                    "home",
+                                    "lock",
+                                    "enter",
+                                    "backspace",
+                                    "volume up",
+                                    "volume down",
+                                    "back",
+                                    "power",
+                                    "tab",
+                                    "Remote Dpad Up",
+                                    "Remote Dpad Down",
+                                    "Remote Dpad Left",
+                                    "Remote Dpad Right",
+                                    "Remote Dpad Center",
+                                    "Remote Media Play Pause",
+                                    "Remote Media Stop",
+                                    "Remote Media Next",
+                                    "Remote Media Previous",
+                                    "Remote Media Rewind",
+                                    "Remote Media Fast Forward",
+                                    "Remote System Navigation Up",
+                                    "Remote System Navigation Down",
+                                    "Remote Button A",
+                                    "Remote Button B",
+                                    "Remote Menu",
+                                    "TV Input",
+                                    "TV Input HDMI 1",
+                                    "TV Input HDMI 2",
+                                    "TV Input HDMI 3"
+                                ],
+                                "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "pasteText": {
+                                "type": "null",
+                                "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "repeat": {
+                                "type": "object",
+                                "properties": {
+                                    "times": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "description": "Number of times to repeat the commands."
+                                    },
+                                    "while": {
+                                        "type": "object",
+                                        "properties": {
+                                            "visible": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "description": "A shorthand selector for text."
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "text": {
+                                                                "type": "string",
+                                                                "description": "Matches element with the specified text."
+                                                            },
+                                                            "id": {
+                                                                "type": "string",
+                                                                "description": "Matches element with the specified ID."
+                                                            },
+                                                            "index": {
+                                                                "type": "integer",
+                                                                "minimum": 0,
+                                                                "description": "0-based index of the view."
+                                                            },
+                                                            "point": {
+                                                                "type": "string",
+                                                                "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                                "description": "Position on screen."
+                                                            },
+                                                            "width": {
+                                                                "type": "integer",
+                                                                "description": "Matches element with the specified width."
+                                                            },
+                                                            "height": {
+                                                                "type": "integer",
+                                                                "description": "Matches element with the specified height."
+                                                            },
+                                                            "enabled": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified enabled state."
+                                                            },
+                                                            "checked": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified checked state."
+                                                            },
+                                                            "focused": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified focused state."
+                                                            },
+                                                            "selected": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified selected state."
+                                                            }
+                                                        },
+                                                        "additionalProperties": false,
+                                                        "description": "Selector object to find the element."
+                                                    }
+                                                ],
+                                                "description": "Repeat while the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
+                                            },
+                                            "notVisible": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "description": "A shorthand selector for text."
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "text": {
+                                                                "type": "string",
+                                                                "description": "Matches element with the specified text."
+                                                            },
+                                                            "id": {
+                                                                "type": "string",
+                                                                "description": "Matches element with the specified ID."
+                                                            },
+                                                            "index": {
+                                                                "type": "integer",
+                                                                "minimum": 0,
+                                                                "description": "0-based index of the view."
+                                                            },
+                                                            "point": {
+                                                                "type": "string",
+                                                                "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                                "description": "Position on screen."
+                                                            },
+                                                            "width": {
+                                                                "type": "integer",
+                                                                "description": "Matches element with the specified width."
+                                                            },
+                                                            "height": {
+                                                                "type": "integer",
+                                                                "description": "Matches element with the specified height."
+                                                            },
+                                                            "enabled": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified enabled state."
+                                                            },
+                                                            "checked": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified checked state."
+                                                            },
+                                                            "focused": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified focused state."
+                                                            },
+                                                            "selected": {
+                                                                "type": "boolean",
+                                                                "description": "Matches element with the specified selected state."
+                                                            }
+                                                        },
+                                                        "additionalProperties": false,
+                                                        "description": "Selector object to find the element."
+                                                    }
+                                                ],
+                                                "description": "Repeat while the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
+                                            },
+                                            "true": {
+                                                "type": "string",
+                                                "description": "A JavaScript expression to evaluate. Repeat while the expression evaluates to true."
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "description": "Condition to evaluate while repeating the commands."
+                                    },
+                                    "commands": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "additionalProperties": false,
+                                            "oneOf": [
+                                                {
+                                                    "$ref": "#"
+                                                }
+                                            ]
+                                        },
+                                        "description": "The set of commands to execute in each iteration."
+                                    }
+                                },
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "times",
+                                            "commands"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "while",
+                                            "commands"
+                                        ]
+                                    }
+                                ],
+                                "additionalProperties": false,
+                                "description": "Command to repeat a set of commands either a specific number of times or until a condition is met."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "runFlow": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Runs a flow from the specified file (e.g., 'anotherFlow.yaml')."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "file": {
+                                                "type": "string",
+                                                "description": "The file path of the flow to run."
+                                            },
+                                            "env": {
+                                                "type": "object",
+                                                "additionalProperties": {
+                                                    "type": "string",
+                                                    "description": "Key-value pairs of environment variables to pass to the subflow."
+                                                },
+                                                "description": "Environment variables to pass to the subflow."
+                                            },
+                                            "commands": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "additionalProperties": false,
+                                                    "oneOf": [
+                                                        {
+                                                            "$ref": "#"
+                                                        }
+                                                    ]
+                                                },
+                                                "description": "Inline commands to execute if not using a file."
+                                            }
+                                        },
+                                        "required": [
+                                            "file"
+                                        ],
+                                        "additionalProperties": false,
+                                        "description": "Runs a flow from another file or inline commands, with optional environment variables."
+                                    }
+                                ],
+                                "description": "Command to run a flow from a specified file or execute inline commands."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "runScript": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Runs the specified JavaScript file (e.g., 'myScript.js')."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "file": {
+                                                "type": "string",
+                                                "description": "The file path of the JavaScript file to execute."
+                                            },
+                                            "env": {
+                                                "type": "object",
+                                                "additionalProperties": {
+                                                    "type": "string",
+                                                    "description": "Key-value pairs of environment variables to pass to the script."
+                                                },
+                                                "description": "Environment variables to pass to the JavaScript script."
+                                            },
+                                            "when": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "visible": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string",
+                                                                "description": "A shorthand selector for text."
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "text": {
+                                                                        "type": "string",
+                                                                        "description": "Matches element with the specified text."
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string",
+                                                                        "description": "Matches element with the specified ID."
+                                                                    },
+                                                                    "index": {
+                                                                        "type": "integer",
+                                                                        "minimum": 0,
+                                                                        "description": "0-based index of the view."
+                                                                    },
+                                                                    "point": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                                        "description": "Position on screen."
+                                                                    },
+                                                                    "width": {
+                                                                        "type": "integer",
+                                                                        "description": "Matches element with the specified width."
+                                                                    },
+                                                                    "height": {
+                                                                        "type": "integer",
+                                                                        "description": "Matches element with the specified height."
+                                                                    },
+                                                                    "enabled": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified enabled state."
+                                                                    },
+                                                                    "checked": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified checked state."
+                                                                    },
+                                                                    "focused": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified focused state."
+                                                                    },
+                                                                    "selected": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified selected state."
+                                                                    }
+                                                                },
+                                                                "additionalProperties": false,
+                                                                "description": "Selector object to find the element."
+                                                            }
+                                                        ],
+                                                        "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object)."
+                                                    },
+                                                    "notVisible": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string",
+                                                                "description": "A shorthand selector for text."
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "text": {
+                                                                        "type": "string",
+                                                                        "description": "Matches element with the specified text."
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "string",
+                                                                        "description": "Matches element with the specified ID."
+                                                                    },
+                                                                    "index": {
+                                                                        "type": "integer",
+                                                                        "minimum": 0,
+                                                                        "description": "0-based index of the view."
+                                                                    },
+                                                                    "point": {
+                                                                        "type": "string",
+                                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                                        "description": "Position on screen."
+                                                                    },
+                                                                    "width": {
+                                                                        "type": "integer",
+                                                                        "description": "Matches element with the specified width."
+                                                                    },
+                                                                    "height": {
+                                                                        "type": "integer",
+                                                                        "description": "Matches element with the specified height."
+                                                                    },
+                                                                    "enabled": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified enabled state."
+                                                                    },
+                                                                    "checked": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified checked state."
+                                                                    },
+                                                                    "focused": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified focused state."
+                                                                    },
+                                                                    "selected": {
+                                                                        "type": "boolean",
+                                                                        "description": "Matches element with the specified selected state."
+                                                                    }
+                                                                },
+                                                                "additionalProperties": false,
+                                                                "description": "Selector object to find the element."
+                                                            }
+                                                        ],
+                                                        "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object)."
+                                                    },
+                                                    "true": {
+                                                        "type": "string",
+                                                        "description": "A JavaScript expression to evaluate. Runs the script if the expression evaluates to true."
+                                                    },
+                                                    "platform": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Android",
+                                                            "iOS",
+                                                            "Web"
+                                                        ],
+                                                        "description": "Runs the script if the current platform matches the specified platform."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Conditions to determine whether the script should run."
+                                            }
+                                        },
+                                        "required": [
+                                            "file"
+                                        ],
+                                        "additionalProperties": false,
+                                        "description": "Runs a JavaScript file with optional environment variables and conditional execution."
+                                    }
+                                ],
+                                "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "scroll": {
+                                "type": "null",
+                                "description": "Command to do a simple vertical scroll."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "stopApp": {
+                                "oneOf": [
+                                    {
+                                        "type": "null",
+                                        "description": "Stops current application if it is running."
+                                    },
+                                    {
+                                        "type": "string",
+                                        "description": "Stops an arbitrary app specified by its ID."
+                                    }
+                                ],
+                                "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
+                            }
+                        }
+                    }
+                ]
+            }
         }
-    },
-    "additionalProperties": false
+    ],
+    "minItems": 2,
+    "maxItems": 2
 }
