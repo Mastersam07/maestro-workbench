@@ -31,9 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 			maestroTerminal.show();
 
 			maestroTerminal.processId.then((pid) => {
-				console.log(`process id: ${pid}`)
 				vscode.window.onDidCloseTerminal((closedTerminal) => {
-					console.log(`closedTerminal: ${closedTerminal}`)
 					if (closedTerminal.name === "Maestro Studio") {
 						maestroTerminal = undefined;
 					}
