@@ -62,10 +62,21 @@ export function activate(context: vscode.ExtensionContext) {
 							}, {})
 						);
 
+						const commandDescriptions = commands.reduce((acc: any, cmd: string) => {
+							const commandSchema = schema.items[1].items.oneOf.find(
+								(item: any) => item.properties && item.properties[cmd]
+							);
+							const description =
+								commandSchema && commandSchema.properties[cmd]?.description;
+
+							acc[cmd] = description || `Insert the ${cmd} command in your Maestro YAML flow.`;
+							return acc;
+						}, {});
+
 						return commands.map((cmd) => {
 							const item = new vscode.CompletionItem(cmd, vscode.CompletionItemKind.Method);
 							item.detail = `Maestro Command: ${cmd}`;
-							item.documentation = `Insert the ${cmd} command in your Maestro YAML flow.`;
+							item.documentation = commandDescriptions[cmd];
 							return item;
 						});
 					}
