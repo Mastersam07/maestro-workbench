@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
-import * as os from 'os';
 import * as fs from "fs";
 import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './treeView';
@@ -54,7 +52,6 @@ export function activate(context: vscode.ExtensionContext) {
 			{
 				provideCompletionItems(document, position, token, context) {
 					const line = document.lineAt(position).text;
-					console.log(`line: ${line}`)
 					if (line.trim().startsWith("-")) {
 						const commands = Object.keys(
 							schema.items[1].items.oneOf.reduce((acc: any, item: any) => {
@@ -115,8 +112,6 @@ export function activate(context: vscode.ExtensionContext) {
 			while ((match = rootRegex.exec(text)) !== null) {
 				rootProperties.add(match[1]);
 			}
-
-			console.log("Root-level properties found in YAML:", Array.from(rootProperties));
 
 			if (!rootProperties.has('appId')) {
 				const firstLine = event.document.lineAt(0).range;
