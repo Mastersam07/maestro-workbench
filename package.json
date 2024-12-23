@@ -15,6 +15,12 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "yaml.schemas": {
+      "./schema/maestro.schema.v0.json": [
+        "*.yaml",
+        "*.yml"
+      ]
+    },
     "languages": [
       {
         "id": "yaml",
@@ -22,7 +28,10 @@
           ".yaml",
           ".yml"
         ],
-        "aliases": ["YAML", "yaml"],
+        "aliases": [
+          "YAML",
+          "yaml"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -44,30 +53,30 @@
       ]
     },
     "commands": [
-        {
-            "command": "maestroWorkbench.openMaestroStudio",
-            "title": "Open Maestro Studio",
-            "icon": "$(debug-console)"
-        },
-        {
-            "command": "maestroWorkbench.refreshTree",
-            "title": "Refresh Maestro Tree",
-            "icon": "$(refresh)"
-        }
+      {
+        "command": "maestroWorkbench.openMaestroStudio",
+        "title": "Open Maestro Studio",
+        "icon": "$(debug-console)"
+      },
+      {
+        "command": "maestroWorkbench.refreshTree",
+        "title": "Refresh Maestro Tree",
+        "icon": "$(refresh)"
+      }
     ],
     "menus": {
-        "view/title": [
-            {
-                "command": "maestroWorkbench.openMaestroStudio",
-                "when": "view == maestroBenchTreeView",
-                "group": "navigation"
-            },
-            {
-                "command": "maestroWorkbench.refreshTree",
-                "when": "view == maestroBenchTreeView",
-                "group": "navigation"
-            }
-        ]
+      "view/title": [
+        {
+          "command": "maestroWorkbench.openMaestroStudio",
+          "when": "view == maestroBenchTreeView",
+          "group": "navigation"
+        },
+        {
+          "command": "maestroWorkbench.refreshTree",
+          "when": "view == maestroBenchTreeView",
+          "group": "navigation"
+        }
+      ]
     }
   },
   "scripts": {
