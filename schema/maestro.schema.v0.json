@@ -38,21 +38,67 @@
                                 "type": "object",
                                 "properties": {
                                     "start": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                        "description": "Start coordinates for the swipe gesture. Can be in percentages (e.g., '90%, 50%') or absolute pixels (e.g., '100, 200')."
                                     },
                                     "end": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                        "description": "End coordinates for the swipe gesture. Can be in percentages (e.g., '10%, 50%') or absolute pixels (e.g., '300, 400')."
+                                    },
+                                    "direction": {
+                                        "type": "string",
+                                        "enum": [
+                                            "LEFT",
+                                            "RIGHT",
+                                            "UP",
+                                            "DOWN"
+                                        ],
+                                        "description": "Direction of the swipe gesture. Swiping starts from the center of the screen or the specified element."
+                                    },
+                                    "from": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "description": "ID of the element to swipe from."
+                                            },
+                                            "text": {
+                                                "type": "string",
+                                                "description": "Text of the element to swipe from."
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "description": "Element to swipe from, specified using a selector."
                                     },
                                     "duration": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Duration of the swipe in milliseconds. Longer durations result in slower swipes. Defaults to 400 ms."
                                     }
                                 },
-                                "required": [
-                                    "start",
-                                    "end",
-                                    "duration"
+                                "oneOf": [
+                                    {
+                                        "required": [
+                                            "start",
+                                            "end"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "direction"
+                                        ]
+                                    },
+                                    {
+                                        "required": [
+                                            "from",
+                                            "direction"
+                                        ]
+                                    }
                                 ],
-                                "additionalProperties": false
+                                "additionalProperties": false,
+                                "description": "Command to perform swipe gestures with control over start and end points, direction, speed, and optional element targeting."
                             }
                         }
                     },
@@ -1081,6 +1127,615 @@
                                     }
                                 ],
                                 "description": "Command to clear the application state, removing all app-related data (e.g., shared preferences, databases, accounts, etc.)."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "scrollUntilVisible": {
+                                "type": "object",
+                                "properties": {
+                                    "element": {
+                                        "oneOf": [
+                                            {
+                                                "type": "string",
+                                                "description": "Shorthand selector for text."
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "text": {
+                                                        "type": "string",
+                                                        "description": "Finds element with text or accessibility text matching the regular expression."
+                                                    },
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Finds element with accessibility identifier matching the regular expression."
+                                                    },
+                                                    "index": {
+                                                        "type": "integer",
+                                                        "minimum": 0,
+                                                        "description": "0-based index of the view to select among those that match all other criteria."
+                                                    },
+                                                    "point": {
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "string",
+                                                                "pattern": "^\\d+%, \\d+%$",
+                                                                "description": "Relative position on screen, e.g., '50%, 50%' for the middle of the screen."
+                                                            },
+                                                            {
+                                                                "type": "string",
+                                                                "pattern": "^\\d+, \\d+$",
+                                                                "description": "Exact coordinates on screen, e.g., '50, 75' in pixels."
+                                                            }
+                                                        ],
+                                                        "description": "Position on the screen."
+                                                    },
+                                                    "width": {
+                                                        "type": "integer",
+                                                        "description": "Finds element of a given width."
+                                                    },
+                                                    "height": {
+                                                        "type": "integer",
+                                                        "description": "Finds element of a given height."
+                                                    },
+                                                    "tolerance": {
+                                                        "type": "integer",
+                                                        "description": "Tolerance to apply when comparing width and height."
+                                                    },
+                                                    "enabled": {
+                                                        "type": "boolean",
+                                                        "description": "Searches for a view with a given 'enabled' state."
+                                                    },
+                                                    "checked": {
+                                                        "type": "boolean",
+                                                        "description": "Searches for a view with a given 'checked' state."
+                                                    },
+                                                    "focused": {
+                                                        "type": "boolean",
+                                                        "description": "Searches for a view with a given 'focused' state."
+                                                    },
+                                                    "selected": {
+                                                        "type": "boolean",
+                                                        "description": "Searches for a view with a given 'selected' state."
+                                                    },
+                                                    "below": {
+                                                        "type": "string",
+                                                        "description": "Matches a view below another view with the specified text."
+                                                    },
+                                                    "above": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "description": "Matches a view below another view with the specified ID."
+                                                            }
+                                                        },
+                                                        "additionalProperties": false,
+                                                        "description": "Matches a view above another view with the specified ID."
+                                                    },
+                                                    "leftOf": {
+                                                        "type": "string",
+                                                        "description": "Matches a view to the left of another view with the specified text."
+                                                    },
+                                                    "rightOf": {
+                                                        "type": "string",
+                                                        "description": "Matches a view to the right of another view with the specified text."
+                                                    },
+                                                    "containsChild": {
+                                                        "type": "string",
+                                                        "description": "Matches a view that has a direct child view with the specified text."
+                                                    },
+                                                    "childOf": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "description": "Matches a view that is a child of a view with the specified ID."
+                                                            },
+                                                            "text": {
+                                                                "type": "string",
+                                                                "description": "Matches a view that is a child of a view with the specified text."
+                                                            }
+                                                        },
+                                                        "additionalProperties": false,
+                                                        "description": "Matches a view that is a child of another view with specified properties."
+                                                    },
+                                                    "containsDescendants": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "string",
+                                                                    "description": "Matches a descendant view with the specified ID."
+                                                                },
+                                                                "text": {
+                                                                    "type": "string",
+                                                                    "description": "Matches a descendant view with the specified text."
+                                                                }
+                                                            },
+                                                            "additionalProperties": false,
+                                                            "description": "Properties of the descendant view to match."
+                                                        },
+                                                        "description": "Matches a view that has all the specified descendant views."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Detailed selector object for the element."
+                                            }
+                                        ],
+                                        "description": "Selector for the element to scroll until visible."
+                                    },
+                                    "direction": {
+                                        "type": "string",
+                                        "enum": [
+                                            "DOWN",
+                                            "UP",
+                                            "LEFT",
+                                            "RIGHT"
+                                        ],
+                                        "default": "DOWN",
+                                        "description": "Direction to scroll. Defaults to DOWN."
+                                    },
+                                    "timeout": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "default": 20000,
+                                        "description": "Timeout in milliseconds to scroll and look for the element. Defaults to 20000."
+                                    },
+                                    "speed": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100,
+                                        "default": 40,
+                                        "description": "Scroll speed (0-100). Defaults to 40."
+                                    },
+                                    "visibilityPercentage": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100,
+                                        "default": 100,
+                                        "description": "Percentage of the element visible in the viewport to consider as visible. Defaults to 100."
+                                    },
+                                    "centerElement": {
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Indicates whether to center the element when it becomes visible. Defaults to false."
+                                    }
+                                },
+                                "required": [
+                                    "element"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Command to scroll towards a direction until the specified element becomes visible."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "setLocation": {
+                                "type": "object",
+                                "properties": {
+                                    "latitude": {
+                                        "type": "number",
+                                        "minimum": -90,
+                                        "maximum": 90,
+                                        "description": "The latitude of the location to set. Must be a value between -90 and 90."
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "minimum": -180,
+                                        "maximum": 180,
+                                        "description": "The longitude of the location to set. Must be a value between -180 and 180."
+                                    }
+                                },
+                                "required": [
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Command to apply a mock geolocation to the device. Note: This works only on Android API level 31 or above."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "startRecording": {
+                                "type": "string",
+                                "description": "Command to start a screen recording. The value specifies the name of the recording file."
+                            }
+                        },
+                        "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow."
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "stopRecording": {
+                                "type": "null",
+                                "description": "Command to stop a running screen recording."
+                            }
+                        },
+                        "description": "Command to stop a screen recording that was previously started with startRecording."
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "takeScreenshot": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Short form of the command specifying the path to save the screenshot, relative to the Maestro workspace directory."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "path": {
+                                                "type": "string",
+                                                "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
+                                            }
+                                        },
+                                        "required": [
+                                            "path"
+                                        ],
+                                        "additionalProperties": false,
+                                        "description": "Detailed form of the command specifying the path to save the screenshot."
+                                    }
+                                ],
+                                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "tapOn": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Shorthand selector for text to tap on."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string",
+                                                "description": "Matches element with the specified text. Supports regular expressions."
+                                            },
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                            },
+                                            "index": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "0-based index to specify which element to select among similar matches."
+                                            },
+                                            "point": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                        "description": "Relative (e.g., '50%, 50%') or absolute (e.g., '100, 200') coordinates for tapping."
+                                                    }
+                                                ],
+                                                "description": "Point on the screen to tap on, either relative or absolute."
+                                            },
+                                            "width": {
+                                                "type": "integer",
+                                                "description": "Matches element with the specified width."
+                                            },
+                                            "height": {
+                                                "type": "integer",
+                                                "description": "Matches element with the specified height."
+                                            },
+                                            "tolerance": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "Tolerance to apply when comparing width and height."
+                                            },
+                                            "enabled": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified enabled state."
+                                            },
+                                            "checked": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified checked state."
+                                            },
+                                            "focused": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified focused state."
+                                            },
+                                            "selected": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified selected state."
+                                            },
+                                            "below": {
+                                                "type": "string",
+                                                "description": "Matches an element that is below another element with the specified text."
+                                            },
+                                            "above": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is above another element with the specified ID."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Matches an element that is above another element."
+                                            },
+                                            "leftOf": {
+                                                "type": "string",
+                                                "description": "Matches an element to the left of another element with the specified text."
+                                            },
+                                            "rightOf": {
+                                                "type": "string",
+                                                "description": "Matches an element to the right of another element with the specified text."
+                                            },
+                                            "containsChild": {
+                                                "type": "string",
+                                                "description": "Matches an element that contains a child with the specified text."
+                                            },
+                                            "childOf": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is a child of another element with the specified ID."
+                                                    },
+                                                    "text": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is a child of another element with the specified text."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Matches an element that is a child of another element."
+                                            },
+                                            "containsDescendants": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "description": "Matches a descendant element with the specified ID."
+                                                        },
+                                                        "text": {
+                                                            "type": "string",
+                                                            "description": "Matches a descendant element with the specified text."
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                "description": "Matches an element that has all the specified descendant elements."
+                                            },
+                                            "repeat": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "description": "Number of times to repeat the tap action."
+                                            },
+                                            "delay": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "Delay in milliseconds between repeated taps. Default is 100ms."
+                                            },
+                                            "retryTapIfNoChange": {
+                                                "type": "boolean",
+                                                "default": true,
+                                                "description": "Determines whether to retry the tap if no hierarchy change is detected."
+                                            },
+                                            "waitToSettleTimeoutMs": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "Time in milliseconds to wait for the screen to settle after the tap."
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "description": "Detailed configuration for tapping on a view or point, with support for advanced selectors."
+                                    }
+                                ],
+                                "description": "Command to tap on a view, specified using text, ID, point, or detailed selectors."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "doubleTapOn": {
+                                "oneOf": [
+                                    {
+                                        "type": "string",
+                                        "description": "Shorthand selector for text to double tap on."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string",
+                                                "description": "Matches element with the specified text. Supports regular expressions."
+                                            },
+                                            "id": {
+                                                "type": "string",
+                                                "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                            },
+                                            "index": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "0-based index to specify which element to select among similar matches."
+                                            },
+                                            "point": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "string",
+                                                        "pattern": "^(\\d+%, \\d+%)|(\\d+, \\d+)$",
+                                                        "description": "Relative (e.g., '50%, 50%') or absolute (e.g., '100, 200') coordinates for double tapping."
+                                                    }
+                                                ],
+                                                "description": "Point on the screen to double tap on, either relative or absolute."
+                                            },
+                                            "width": {
+                                                "type": "integer",
+                                                "description": "Matches element with the specified width."
+                                            },
+                                            "height": {
+                                                "type": "integer",
+                                                "description": "Matches element with the specified height."
+                                            },
+                                            "tolerance": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "description": "Tolerance to apply when comparing width and height."
+                                            },
+                                            "enabled": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified enabled state."
+                                            },
+                                            "checked": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified checked state."
+                                            },
+                                            "focused": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified focused state."
+                                            },
+                                            "selected": {
+                                                "type": "boolean",
+                                                "description": "Matches element with the specified selected state."
+                                            },
+                                            "below": {
+                                                "type": "string",
+                                                "description": "Matches an element that is below another element with the specified text."
+                                            },
+                                            "above": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is above another element with the specified ID."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Matches an element that is above another element."
+                                            },
+                                            "leftOf": {
+                                                "type": "string",
+                                                "description": "Matches an element to the left of another element with the specified text."
+                                            },
+                                            "rightOf": {
+                                                "type": "string",
+                                                "description": "Matches an element to the right of another element with the specified text."
+                                            },
+                                            "containsChild": {
+                                                "type": "string",
+                                                "description": "Matches an element that contains a child with the specified text."
+                                            },
+                                            "childOf": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is a child of another element with the specified ID."
+                                                    },
+                                                    "text": {
+                                                        "type": "string",
+                                                        "description": "Matches an element that is a child of another element with the specified text."
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "description": "Matches an element that is a child of another element."
+                                            },
+                                            "containsDescendants": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "description": "Matches a descendant element with the specified ID."
+                                                        },
+                                                        "text": {
+                                                            "type": "string",
+                                                            "description": "Matches a descendant element with the specified text."
+                                                        }
+                                                    },
+                                                    "additionalProperties": false
+                                                },
+                                                "description": "Matches an element that has all the specified descendant elements."
+                                            },
+                                            "delay": {
+                                                "type": "integer",
+                                                "minimum": 0,
+                                                "default": 100,
+                                                "description": "Delay in milliseconds between double taps. Default is 100ms."
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "description": "Detailed configuration for double tapping on a view or point, with support for advanced selectors."
+                                    }
+                                ],
+                                "description": "Command to double tap on a view, specified using text, ID, point, or detailed selectors."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "travel": {
+                                "type": "object",
+                                "properties": {
+                                    "points": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "pattern": "^(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)$",
+                                            "description": "A pair of latitude and longitude coordinates in the format 'latitude,longitude'."
+                                        },
+                                        "minItems": 2,
+                                        "description": "An array of lat/long coordinates representing the path of user motion. At least two points are required."
+                                    },
+                                    "speed": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "Speed in meters per second. For example, 7900 represents 7.9 km/s (orbital velocity)."
+                                    }
+                                },
+                                "required": [
+                                    "points",
+                                    "speed"
+                                ],
+                                "additionalProperties": false,
+                                "description": "Command to mock user motion by specifying a set of lat/long coordinates and a speed."
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "waitForAnimationToEnd": {
+                                "oneOf": [
+                                    {
+                                        "type": "null",
+                                        "description": "Waits until an ongoing animation/video is finished and the screen becomes static."
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "timeout": {
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "description": "Optional timeout in milliseconds after which the command is marked as successful and the flow continues."
+                                            }
+                                        },
+                                        "additionalProperties": false,
+                                        "description": "Waits until an animation/video is finished with an optional timeout."
+                                    }
+                                ],
+                                "description": "Command to wait until an ongoing animation or video ends and the screen becomes static."
                             }
                         }
                     }
