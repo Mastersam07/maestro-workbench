@@ -42,7 +42,8 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
-	// Auto complete items
+	// Auto complete items and diagnostic
+	const diagnosticCollection = vscode.languages.createDiagnosticCollection('maestro');
 	const schemaPath = path.join(context.extensionPath, "schema", "maestro.schema.v0.json");
 	const schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8"));
 
@@ -86,31 +87,6 @@ export function activate(context: vscode.ExtensionContext) {
 			"-"
 		)
 	);
-
-	// File watcher for changes
-	const fileWatcher = vscode.workspace.createFileSystemWatcher(
-		'{maestro,**/.maestro}/**/*.{yaml,yml}'
-	);
-
-	fileWatcher.onDidCreate(() => {
-		console.log('File created. Refreshing tree view...');
-		treeDataProvider.refresh();
-	});
-
-	fileWatcher.onDidChange(() => {
-		console.log('File changed. Refreshing tree view...');
-		treeDataProvider.refresh();
-	});
-
-	fileWatcher.onDidDelete(() => {
-		console.log('File deleted. Refreshing tree view...');
-		treeDataProvider.refresh();
-	});
-
-	context.subscriptions.push(fileWatcher);
-
-	// Diagnostic
-	const diagnosticCollection = vscode.languages.createDiagnosticCollection('maestro');
 
 	vscode.workspace.onDidChangeTextDocument((event) => {
 		if (event.document.languageId === 'yaml') {
@@ -184,6 +160,28 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(diagnosticCollection);
+
+	// File watcher for changes
+	const fileWatcher = vscode.workspace.createFileSystemWatcher(
+		'{maestro,**/.maestro}/**/*.{yaml,yml}'
+	);
+
+	fileWatcher.onDidCreate(() => {
+		console.log('File created. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	fileWatcher.onDidChange(() => {
+		console.log('File changed. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	fileWatcher.onDidDelete(() => {
+		console.log('File deleted. Refreshing tree view...');
+		treeDataProvider.refresh();
+	});
+
+	context.subscriptions.push(fileWatcher);
 }
 
 export function deactivate() { }
