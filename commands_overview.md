@@ -27,13 +27,13 @@
 | scroll                | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | scrollUntilVisible    | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | setLocation           | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| startRecording        | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| startRecording        | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | stopApp               | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| stopRecording         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| stopRecording         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | swipe                 | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | takeScreenshot        | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | tapOn                 | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | longPressOn           | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | doubleTapOn           | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| travel                | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| travel                | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | waitForAnimationToEnd | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |

@@ -894,6 +894,76 @@
                         "timeout": 5000
                     }
                 ]
+            },
+            "startRecording": {
+                "title": "startRecording",
+                "type": "string",
+                "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                "examples": [
+                    "recording1.mp4",
+                    "session_test.mp4"
+                ]
+            },
+            "stopRecording": {
+                "title": "stopRecording",
+                "type": "null",
+                "description": "Command to stop a running screen recording.",
+                "examples": [
+                    null
+                ]
+            },
+            "travel": {
+                "title": "travel",
+                "type": "object",
+                "properties": {
+                    "points": {
+                        "title": "travel.points",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^(-?\\d+(\\.\\d+)?),\\s*(-?\\d+(\\.\\d+)?)$",
+                            "description": "A pair of latitude and longitude coordinates in the format 'latitude,longitude'."
+                        },
+                        "minItems": 2,
+                        "description": "An array of lat/long coordinates representing the path of user motion. At least two points are required."
+                    },
+                    "speed": {
+                        "title": "travel.speed",
+                        "type": "number",
+                        "minimum": 0,
+                        "description": "Speed in meters per second. For example, 7900 represents 7.9 km/s (orbital velocity)."
+                    }
+                },
+                "required": [
+                    "points",
+                    "speed"
+                ],
+                "additionalProperties": false,
+                "description": "Command to mock user motion by specifying a set of lat/long coordinates and a speed.",
+                "examples": [
+                    {
+                        "points": [
+                            "37.7749,-122.4194",
+                            "34.0522,-118.2437"
+                        ],
+                        "speed": 50
+                    },
+                    {
+                        "points": [
+                            "37.7749,-122.4194",
+                            "36.7783,-119.4179",
+                            "34.0522,-118.2437"
+                        ],
+                        "speed": 100
+                    },
+                    {
+                        "points": [
+                            "40.7128,-74.0060",
+                            "34.0522,-118.2437"
+                        ],
+                        "speed": 7900
+                    }
+                ]
             }
         }
     },
