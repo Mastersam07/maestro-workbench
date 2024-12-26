@@ -176,7 +176,18 @@
                             }
                         }
                     }
-                }
+                },
+                "examples": [
+                    {
+                        "appId": "com.example.myapp",
+                        "clearState": true,
+                        "permissions": {
+                            "notifications": "allow",
+                            "location": "deny",
+                            "all": "unset"
+                        }
+                    }
+                ]
             },
             "pressKey": {
                 "title": "Press a set of special keys",
@@ -358,6 +369,17 @@
                             "from",
                             "direction"
                         ]
+                    }
+                ],
+                "examples": [
+                    {
+                        "start": "50%,50%",
+                        "end": "10%,50%",
+                        "duration": 500
+                    },
+                    {
+                        "direction": "LEFT",
+                        "duration": 400
                     }
                 ]
             },
