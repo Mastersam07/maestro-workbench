@@ -1,5 +1,5 @@
-| Command               | Implemented   | Description   | Title   | Example |
-|-----------------------|-------------  |-------------  |-------  |---------|
+| Command               | Implemented                       | Description                       | Title                       | Example                       |
+|-----------------------|-------------                      |-----------------------------------|-----------------------------|-------------------------------|
 | addMedia              | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | assertVisible         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | assertNotVisible      | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
