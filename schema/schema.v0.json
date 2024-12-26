@@ -151,6 +151,30 @@
                     "stopApp": {
                         "type": "boolean",
                         "description": "Stops the app before launching. Defaults to true."
+                    },
+                    "permissions": {
+                        "type": "object",
+                        "description": "Overrides permissions for the app.",
+                        "additionalProperties": {
+                            "type": "string",
+                            "enum": [
+                                "allow",
+                                "deny",
+                                "unset"
+                            ],
+                            "description": "Sets the permission state (allow, deny, unset) for a specific permission."
+                        },
+                        "properties": {
+                            "all": {
+                                "type": "string",
+                                "enum": [
+                                    "allow",
+                                    "deny",
+                                    "unset"
+                                ],
+                                "description": "Sets the permission state for all permissions."
+                            }
+                        }
                     }
                 }
             },
@@ -204,7 +228,7 @@
                 ]
             },
             "runFlow": {
-                "title": "Runs a flow from a specified file.",
+                "description": "Command to run a flow from a specified file or execute inline commands.",
                 "type": [
                     "object",
                     "string"
@@ -233,6 +257,13 @@
                             "notVisible": {
                                 "$ref": "#/$defs/Element"
                             }
+                        }
+                    },
+                    "commands": {
+                        "type": "array",
+                        "description": "Inline commands to execute if not using a file.",
+                        "items": {
+                            "$ref": "#/items"
                         }
                     }
                 }
@@ -295,12 +326,12 @@
                     },
                     "start": {
                         "type": "string",
-                        "pattern": "(\\d+%, \\d+%|\\d+, \\d+)$",
+                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$",
                         "description": "Start coordinates for the swipe gesture. Can be in percentages (e.g., '90%, 50%') or absolute pixels (e.g., '100, 200')."
                     },
                     "end": {
                         "type": "string",
-                        "pattern": "(\\d+%, \\d+%|\\d+, \\d+)$",
+                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$",
                         "description": "End coordinates for the swipe gesture. Can be in percentages (e.g., '10%, 50%') or absolute pixels (e.g., '300, 400')."
                     },
                     "duration": {
