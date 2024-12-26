@@ -964,6 +964,79 @@
                         "speed": 7900
                     }
                 ]
+            },
+            "killApp": {
+                "title": "killApp",
+                "type": "null",
+                "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp.",
+                "examples": [
+                    null
+                ]
+            },
+            "stopApp": {
+                "title": "stopApp",
+                "type": [
+                    "null",
+                    "string"
+                ],
+                "description": "Command to stop current application if it is running or an arbitrary app specified by its ID.",
+                "examples": [
+                    null,
+                    "com.example.someapp"
+                ]
+            },
+            "openLink": {
+                "title": "openLink",
+                "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "properties": {
+                    "link": {
+                        "title": "openLink.link",
+                        "type": "string",
+                        "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
+                        "format": "uri",
+                        "description": "The URL or deep link to open on the device."
+                    },
+                    "autoVerify": {
+                        "title": "openLink.autoVerify",
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
+                    },
+                    "browser": {
+                        "title": "openLink.browser",
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                    }
+                },
+                "required": ["link"],
+                "examples": [
+                    {
+                        "description": "Open a simple link as a string",
+                        "example": "- openLink: \"https://example.com\""
+                    },
+                    {
+                        "description": "Open a link with autoVerify enabled",
+                        "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
+                    },
+                    {
+                        "description": "Open a link in the browser",
+                        "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
+                    }
+                ],
+                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
+            },
+            "pasteText": {
+                "title": "pasteText",
+                "type": "null",
+                "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                "examples": [
+                    null
+                ]
             }
         }
     },
