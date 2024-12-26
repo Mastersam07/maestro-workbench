@@ -34,6 +34,6 @@
 | takeScreenshot        | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | tapOn                 | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | longPressOn           | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
-| doubleTapOn           | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| doubleTapOn           | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | travel                | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | waitForAnimationToEnd | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
