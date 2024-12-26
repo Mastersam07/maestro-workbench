@@ -121,6 +121,7 @@
                 ]
             },
             "extendedWaitUntil": {
+                "title": "extendedWaitUntil",
                 "description": "Command to wait until an element becomes visible or disappears within a specified timeout.",
                 "type": "object",
                 "additionalProperties": false,
@@ -152,6 +153,34 @@
                             "notVisible",
                             "timeout"
                         ]
+                    }
+                ],
+                "examples": [
+                    {
+                        "visible": "Submit Button",
+                        "timeout": 5000
+                    },
+                    {
+                        "visible": {
+                            "text": "Welcome",
+                            "id": "welcome_message",
+                            "focused": true
+                        },
+                        "timeout": 10000
+                    },
+                    {
+                        "notVisible": {
+                            "text": "Loading Spinner",
+                            "enabled": true
+                        },
+                        "timeout": 3000
+                    },
+                    {
+                        "visible": {
+                            "id": "progress_bar",
+                            "selected": false
+                        },
+                        "timeout": 7000
                     }
                 ]
             },
