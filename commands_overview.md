@@ -14,7 +14,7 @@
 | eraseText             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | extendedWaitUntil     | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | extractTextWithAI     | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| hideKeyboard          | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| hideKeyboard          | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | inputText             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | killApp               | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | launchApp             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |

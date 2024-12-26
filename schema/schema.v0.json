@@ -1067,6 +1067,14 @@
                     null,
                     "com.example.someapp"
                 ]
+            },
+            "hideKeyboard": {
+                "title": "hideKeyboard",
+                "type": "null",
+                "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                "examples": [
+                    null
+                ]
             }
         }
     },
