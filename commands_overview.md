@@ -1,38 +1,38 @@
 | Command               | Implemented   | Description   | Title   | Example |
 |-----------------------|-------------  |-------------  |-------  |---------|
-| addMedia              | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| assertVisible         | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| assertNotVisible      | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| assertTrue            | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| assertWithAI          | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| assertNoDefectsWithAi | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| back                  | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| clearKeychain         | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| clearState            | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| copyTextFrom          | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| evalScript            | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| eraseText             | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| extendedWaitUntil     | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| extractTextWithAI     | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| hideKeyboard          | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| inputText             | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| killApp               | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| launchApp             | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| openLink              | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| pressKey              | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| pasteText             | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| repeat                | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| runFlow               | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| runScript             | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| scroll                | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| scrollUntilVisible    | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| setLocation           | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| startRecording        | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| stopApp               | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| stopRecording         | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| swipe                 | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| takeScreenshot        | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| tapOn                 | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| doubleTapOn           | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| travel                | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
-| waitForAnimationToEnd | - [ ]         | - [ ]         | - [ ]   | - [ ]     |
+| addMedia              | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| assertVisible         | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| assertNotVisible      | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| assertTrue            | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| assertWithAI          | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| assertNoDefectsWithAi | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| back                  | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| clearKeychain         | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| clearState            | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| copyTextFrom          | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| evalScript            | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| eraseText             | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| extendedWaitUntil     | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| extractTextWithAI     | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| hideKeyboard          | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| inputText             | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| killApp               | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| launchApp             | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| openLink              | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| pressKey              | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| pasteText             | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| repeat                | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| runFlow               | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| runScript             | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| scroll                | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| scrollUntilVisible    | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| setLocation           | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| startRecording        | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| stopApp               | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| stopRecording         | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| swipe                 | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| takeScreenshot        | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| tapOn                 | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| doubleTapOn           | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| travel                | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
+| waitForAnimationToEnd | <li>[ ]</li>         | <li>[ ]</li>         | <li>[ ]</li>   | <li>[ ]</li>     |
