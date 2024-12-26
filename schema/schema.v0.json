@@ -10,16 +10,24 @@
         "additionalProperties": false,
         "properties": {
             "addMedia": {
+                "title": "addMedia",
                 "type": "array",
                 "items": {
                     "type": "string",
                     "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
                 },
                 "minItems": 1,
-                "description": "List of media file paths to add to the device's gallery"
+                "description": "List of media file paths to add to the device's gallery",
+                "examples": [
+                    [
+                        "./assets/image1.png",
+                        "./assets/video1.mp4"
+                    ]
+                ]
             },
             "assertNotVisible": {
-                "title": "Assert whether an element is not visible.",
+                "title": "assertNotVisible",
+                "description": "Assert whether an element is not visible.",
                 "type": [
                     "string",
                     "object"
@@ -47,10 +55,22 @@
                     "index": {
                         "type": "integer"
                     }
-                }
+                },
+                "examples": [
+                    "Loading Spinner",
+                    {
+                        "text": "Error Message",
+                        "checked": false
+                    },
+                    {
+                        "id": "progress_bar",
+                        "enabled": false
+                    }
+                ]
             },
             "assertVisible": {
-                "title": "Assert whether an element is visible.",
+                "title": "assertVisible",
+                "description": "Assert whether an element is visible.",
                 "type": [
                     "string",
                     "object"
@@ -78,13 +98,26 @@
                     "selected": {
                         "type": "boolean"
                     }
-                }
+                },
+                "examples": [
+                    "Login Button",
+                    {
+                        "text": "Sign In",
+                        "id": "sign_in_button",
+                        "focused": true
+                    }
+                ]
             },
             "eraseText": {
-                "title": "Remove up to n characters from the currently selected text field (if any)",
+                "title": "eraseText",
+                "description": "Remove up to n characters from the currently selected text field (if any)",
                 "type": [
                     "null",
                     "integer"
+                ],
+                "examples": [
+                    10,
+                    null
                 ]
             },
             "extendedWaitUntil": {
