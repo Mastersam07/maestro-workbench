@@ -185,8 +185,14 @@
                 ]
             },
             "inputText": {
-                "title": "Inputs text (regardless of whether any text field is currently focused or not).",
-                "type": "string"
+                "title": "inputText",
+                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
+                "type": "string",
+                "examples": [
+                    "Hello, World!",
+                    "user@example.com",
+                    "${DYNAMIC_VARIABLE}"
+                ]
             },
             "launchApp": {
                 "title": "Launch the app.",
@@ -252,7 +258,8 @@
                 ]
             },
             "pressKey": {
-                "title": "Press a set of special keys",
+                "title": "pressKey",
+                "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls.",
                 "type": "string",
                 "enum": [
                     "home",
@@ -273,23 +280,33 @@
                     "Remote Media Previous",
                     "Remote Media Rewind",
                     "Remote Media Fast Forward"
+                ],
+                "examples": [
+                    "home",
+                    "enter",
+                    "volume up",
+                    "Remote Dpad Center"
                 ]
             },
             "repeat": {
-                "title": "Repeat a set of commands.",
+                "title": "repeat",
+                "description": "Command to repeat a set of commands either a specific number of times or until a condition is met.",
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
                     "times": {
-                        "title": "Repeat a set of commands N times.",
+                        "title": "Number of times to repeat the commands.",
+                        "minimum": 1,
                         "type": "integer"
                     },
                     "while": {
-                        "title": "Repeat a set of commands until a condition satisfies.",
+                        "title": "while",
+                        "description": "Condition to evaluate while repeating the commands.",
                         "$ref": "#/$defs/Condition"
                     },
                     "commands": {
                         "type": "array",
+                        "description": "The set of commands to execute in each iteration.",
                         "items": {
                             "$ref": "#/items"
                         }
@@ -298,6 +315,46 @@
                 "required": [
                     "commands",
                     "times"
+                ],
+                "examples": [
+                    {
+                        "times": 3,
+                        "commands": [
+                            {
+                                "inputText": "Retry"
+                            },
+                            {
+                                "pressKey": "enter"
+                            }
+                        ]
+                    },
+                    {
+                        "while": {
+                            "visible": {
+                                "text": "Retry Button"
+                            }
+                        },
+                        "commands": [
+                            {
+                                "tapOn": "Retry"
+                            }
+                        ]
+                    },
+                    {
+                        "times": 5,
+                        "commands": [
+                            {
+                                "swipe": {
+                                    "direction": "DOWN"
+                                }
+                            },
+                            {
+                                "tapOn": {
+                                    "text": "Load More"
+                                }
+                            }
+                        ]
+                    }
                 ]
             },
             "runFlow": {

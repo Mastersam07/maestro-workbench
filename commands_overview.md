@@ -15,13 +15,13 @@
 | extendedWaitUntil     | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | extractTextWithAI     | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | hideKeyboard          | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| inputText             | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| inputText             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | killApp               | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | launchApp             | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | openLink              | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| pressKey              | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| pressKey              | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | pasteText             | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
-| repeat                | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| repeat                | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | runFlow               | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | runScript             | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | scroll                | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
