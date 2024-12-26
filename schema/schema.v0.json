@@ -1,0 +1,598 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Maestro Flow Schema",
+    "description": "Schema for Maestro flow YAML files",
+    "type": [
+        "object",
+        "array"
+    ],
+    "items": {
+        "additionalProperties": false,
+        "properties": {
+            "addMedia": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
+                },
+                "minItems": 1,
+                "description": "List of media file paths to add to the device's gallery"
+            },
+            "assertNotVisible": {
+                "title": "Assert whether an element is not visible.",
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "checked": {
+                        "type": "boolean"
+                    },
+                    "focused": {
+                        "type": "boolean"
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    },
+                    "index": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "assertVisible": {
+                "title": "Assert whether an element is visible.",
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "index": {
+                        "type": "integer"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "checked": {
+                        "type": "boolean"
+                    },
+                    "focused": {
+                        "type": "boolean"
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "eraseText": {
+                "title": "Remove up to n characters from the currently selected text field (if any)",
+                "type": [
+                    "null",
+                    "integer"
+                ]
+            },
+            "extendedWaitUntil": {
+                "description": "Command to wait until an element becomes visible or disappears within a specified timeout.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "visible": {
+                        "$ref": "#/$defs/Element",
+                        "description": "Waits until the element becomes visible."
+                    },
+                    "notVisible": {
+                        "$ref": "#/$defs/Element",
+                        "description": "Selector object to find the element."
+                    },
+                    "timeout": {
+                        "minimum": 1,
+                        "default": 1,
+                        "description": "Timeout in milliseconds for the wait operation.",
+                        "type": "integer"
+                    }
+                },
+                "oneOf": [
+                    {
+                        "required": [
+                            "visible",
+                            "timeout"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "notVisible",
+                            "timeout"
+                        ]
+                    }
+                ]
+            },
+            "inputText": {
+                "title": "Inputs text (regardless of whether any text field is currently focused or not).",
+                "type": "string"
+            },
+            "launchApp": {
+                "title": "Launch the app.",
+                "description": "Launches the app under test without additional configurations.",
+                "type": [
+                    "null",
+                    "string",
+                    "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "appId": {
+                        "type": "string",
+                        "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
+                    },
+                    "clearState": {
+                        "type": "boolean",
+                        "description": "Indicates whether to clear the app's state before launching. Defaults to false."
+                    },
+                    "clearKeychain": {
+                        "type": "boolean",
+                        "description": "Clears the entire iOS keychain. Applicable only for iOS."
+                    },
+                    "stopApp": {
+                        "type": "boolean",
+                        "description": "Stops the app before launching. Defaults to true."
+                    }
+                }
+            },
+            "pressKey": {
+                "title": "Press a set of special keys",
+                "type": "string",
+                "enum": [
+                    "home",
+                    "lock",
+                    "enter",
+                    "backspace",
+                    "volume up",
+                    "volume down",
+                    "back",
+                    "Remote Dpad Up",
+                    "Remote Dpad Down",
+                    "Remote Dpad Left",
+                    "Remote Dpad Right",
+                    "Remote Dpad Center",
+                    "Remote Media Play Pause",
+                    "Remote Media Stop",
+                    "Remote Media Next",
+                    "Remote Media Previous",
+                    "Remote Media Rewind",
+                    "Remote Media Fast Forward"
+                ]
+            },
+            "repeat": {
+                "title": "Repeat a set of commands.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "times": {
+                        "title": "Repeat a set of commands N times.",
+                        "type": "integer"
+                    },
+                    "while": {
+                        "title": "Repeat a set of commands until a condition satisfies.",
+                        "$ref": "#/$defs/Condition"
+                    },
+                    "commands": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/items"
+                        }
+                    }
+                },
+                "required": [
+                    "commands",
+                    "times"
+                ]
+            },
+            "runFlow": {
+                "title": "Runs a flow from a specified file.",
+                "type": [
+                    "object",
+                    "string"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "description": "The file path of the flow to run."
+                    },
+                    "env": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string",
+                            "description": "Key-value pairs of environment variables to pass to the subflow."
+                        },
+                        "description": "Environment variables to pass to the subflow."
+                    },
+                    "when": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                            "visible": {
+                                "$ref": "#/$defs/Element"
+                            },
+                            "notVisible": {
+                                "$ref": "#/$defs/Element"
+                            }
+                        }
+                    }
+                }
+            },
+            "runScript": {
+                "title": "Run a provided JavaScript file.",
+                "properties": {
+                    "file": {
+                        "type": "string"
+                    },
+                    "env": {
+                        "type": "object"
+                    }
+                }
+            },
+            "scrollUntilVisible": {
+                "title": "Scroll towards a direction until an element becomes visible in the view hierarchy.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "element": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "direction": {
+                        "$ref": "#/$defs/Direction"
+                    },
+                    "timeout": {
+                        "type": "integer"
+                    },
+                    "speed": {
+                        "type": "integer"
+                    },
+                    "visibilityPercentage": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "swipe": {
+                "description": "Command to perform swipe gestures with control over start and end points, direction, speed, and optional element targeting.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "direction": {
+                        "description": "Direction of the swipe gesture. Swiping starts from the center of the screen or the specified element.",
+                        "$ref": "#/$defs/Direction"
+                    },
+                    "from": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "ID of the element to swipe from."
+                            },
+                            "text": {
+                                "type": "string",
+                                "description": "Text of the element to swipe from."
+                            }
+                        }
+                    },
+                    "start": {
+                        "type": "string",
+                        "pattern": "(\\d+%, \\d+%|\\d+, \\d+)$",
+                        "description": "Start coordinates for the swipe gesture. Can be in percentages (e.g., '90%, 50%') or absolute pixels (e.g., '100, 200')."
+                    },
+                    "end": {
+                        "type": "string",
+                        "pattern": "(\\d+%, \\d+%|\\d+, \\d+)$",
+                        "description": "End coordinates for the swipe gesture. Can be in percentages (e.g., '10%, 50%') or absolute pixels (e.g., '300, 400')."
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "default": 1,
+                        "description": "Duration of the swipe in milliseconds. Longer durations result in slower swipes. Defaults to 400 ms."
+                    }
+                },
+                "oneOf": [
+                    {
+                        "required": [
+                            "start",
+                            "end"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "direction"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "from",
+                            "direction"
+                        ]
+                    }
+                ]
+            },
+            "tapOn": {
+                "title": "Tap on a view on the screen.",
+                "type": [
+                    "object",
+                    "string"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "index": {
+                        "type": "number"
+                    },
+                    "width": {
+                        "type": "number"
+                    },
+                    "height": {
+                        "type": "number"
+                    },
+                    "tolerance": {
+                        "type": "number"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "checked": {
+                        "type": "boolean"
+                    },
+                    "focused": {
+                        "type": "boolean"
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    },
+                    "optional": {
+                        "type": "boolean"
+                    },
+                    "retryTapIfNoChange": {
+                        "type": "boolean"
+                    },
+                    "below": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "above": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "leftOf": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "rightOf": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "containsChild": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "point": {
+                        "type": "string"
+                    },
+                    "containsDescendants": {
+                        "title": "Searches for view that has all the descendant views given below",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/Element"
+                        }
+                    },
+                    "repeat": {
+                        "type": "number"
+                    },
+                    "delay": {
+                        "type": "number"
+                    }
+                }
+            },
+            "longPressOn": {
+                "title": "Long press a view on the screen.",
+                "type": [
+                    "object",
+                    "string"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "index": {
+                        "type": "number"
+                    },
+                    "width": {
+                        "type": "number"
+                    },
+                    "height": {
+                        "type": "number"
+                    },
+                    "tolerance": {
+                        "type": "number"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "checked": {
+                        "type": "boolean"
+                    },
+                    "focused": {
+                        "type": "boolean"
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    },
+                    "optional": {
+                        "type": "boolean"
+                    },
+                    "retryTapIfNoChange": {
+                        "type": "boolean"
+                    },
+                    "below": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "above": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "leftOf": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "rightOf": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "containsChild": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "point": {
+                        "type": "string"
+                    },
+                    "containsDescendants": {
+                        "title": "Searches for view that has all the descendant views given below",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/Element"
+                        }
+                    }
+                }
+            },
+            "waitForAnimationToEnd": {
+                "title": "Waits until an ongoing animation/video is fully finished and screen becomes static.",
+                "type": [
+                    "null",
+                    "object"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "timeout": {
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    },
+    "properties": {
+        "appId": {
+            "type": "string",
+            "description": "The app ID to launch for testing"
+        },
+        "name": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "array"
+        },
+        "jsEngine": {
+            "type": "string",
+            "description": "JavaScript engine",
+            "enum": [
+                "rhino",
+                "graaljs"
+            ]
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "appId"
+    ],
+    "$defs": {
+        "Condition": {
+            "type": "object",
+            "$comment": "`true` doesn't seem to work as a property, so we allow additional properties",
+            "additionalProperties": true,
+            "properties": {
+                "visible": {
+                    "$ref": "#/$defs/Element"
+                },
+                "notVisible": {
+                    "$ref": "#/$defs/Element"
+                }
+            }
+        },
+        "Direction": {
+            "type": "string",
+            "enum": [
+                "UP",
+                "DOWN",
+                "LEFT",
+                "RIGHT"
+            ]
+        },
+        "Element": {
+            "type": [
+                "string",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "title": "Finds text that matches regexp"
+                },
+                "id": {
+                    "type": "string",
+                    "title": "Finds id that matches regexp"
+                },
+                "index": {
+                    "type": "number",
+                    "title": "0-based index of the view to select among those that match all other criteria"
+                },
+                "width": {
+                    "type": "number",
+                    "title": "Finds element of a given width"
+                },
+                "height": {
+                    "type": "number",
+                    "title": "Finds element of a given height"
+                },
+                "tolerance": {
+                    "type": "number",
+                    "title": "Tolerance to apply when comparing width and height"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"enabled\" state"
+                },
+                "checked": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"checked\" state"
+                },
+                "focused": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"focused\" state"
+                },
+                "selected": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"selected\" state"
+                },
+                "optional": {
+                    "type": "boolean",
+                    "title": "If set to true, test won't fail if view can't be found",
+                    "default": false
+                }
+            }
+        }
+    }
+}

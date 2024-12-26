@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 			maestroTerminal.show();
 
-			maestroTerminal.processId.then((pid) => {
+			maestroTerminal.processId.then((_) => {
 				vscode.window.onDidCloseTerminal((closedTerminal) => {
 					if (closedTerminal.name === "Maestro Studio") {
 						maestroTerminal = undefined;
@@ -42,124 +42,20 @@ export function activate(context: vscode.ExtensionContext) {
 		})
 	);
 
-	// Auto complete items and diagnostic
-	const diagnosticCollection = vscode.languages.createDiagnosticCollection('maestro');
-	const schemaPath = path.join(context.extensionPath, "schema", "maestro.schema.v0.json");
-	const schema = JSON.parse(fs.readFileSync(schemaPath, "utf-8"));
+	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 
-	context.subscriptions.push(
-		vscode.languages.registerCompletionItemProvider(
-			{ language: "yaml", scheme: "file" },
-			{
-				provideCompletionItems(document, position, token, context) {
-					const line = document.lineAt(position).text;
-					if (line.trim().startsWith("-")) {
-						const commands = Object.keys(
-							schema.items[1].items.oneOf.reduce((acc: any, item: any) => {
-								if (item.properties) {
-									return { ...acc, ...item.properties };
-								}
-								return acc;
-							}, {})
-						);
-
-						const commandDescriptions = commands.reduce((acc: any, cmd: string) => {
-							const commandSchema = schema.items[1].items.oneOf.find(
-								(item: any) => item.properties && item.properties[cmd]
-							);
-							const description =
-								commandSchema && commandSchema.properties[cmd]?.description;
-
-							acc[cmd] = description || `Insert the ${cmd} command in your Maestro YAML flow.`;
-							return acc;
-						}, {});
-
-						return commands.map((cmd) => {
-							const item = new vscode.CompletionItem(cmd, vscode.CompletionItemKind.Method);
-							item.detail = `Maestro Command: ${cmd}`;
-							item.documentation = commandDescriptions[cmd];
-							return item;
-						});
-					}
-					return [];
-				},
-			},
-			"-"
-		)
+	vscode.workspace.getConfiguration().update(
+		'yaml.schemas',
+		{
+			[schemaPath]: [
+				'maestro.yaml',
+				'**/*.maestro.yaml',
+				'**/maestro/**',
+				'**/.maestro/**',
+			],
+		},
+		vscode.ConfigurationTarget.Workspace
 	);
-
-	vscode.workspace.onDidChangeTextDocument((event) => {
-		if (event.document.languageId === 'yaml') {
-			const diagnostics: vscode.Diagnostic[] = [];
-			const text = event.document.getText();
-
-			const rootRegex = /^(\w+):/gm;
-			const rootProperties = new Set();
-			let match;
-			while ((match = rootRegex.exec(text)) !== null) {
-				rootProperties.add(match[1]);
-			}
-
-			if (!rootProperties.has('appId')) {
-				const firstLine = event.document.lineAt(0).range;
-				diagnostics.push(
-					new vscode.Diagnostic(
-						firstLine,
-						'Missing required "appId" property in Maestro YAML.',
-						vscode.DiagnosticSeverity.Error
-					)
-				);
-			}
-
-			if (!rootProperties.has("jsEngine")) {
-				const firstLine = event.document.lineAt(0).range;
-				diagnostics.push(
-					new vscode.Diagnostic(
-						firstLine,
-						'Optional "jsEngine" property is missing. The default value is "rhino". You can specify "graaljs" if needed.',
-						vscode.DiagnosticSeverity.Information
-					)
-				);
-			}
-
-			const lines = text.split("\n");
-			const commandRegex = /^-\s*(\w+)/;
-			const definedCommands = Object.keys(
-				schema.items[1].items.oneOf.reduce((acc: any, item: any) => {
-					if (item.properties) {
-						return { ...acc, ...item.properties };
-					}
-					return acc;
-				}, {})
-			);
-
-			lines.forEach((line, index) => {
-				const match = commandRegex.exec(line.trim());
-				if (match) {
-					const command = match[1];
-					if (!definedCommands.includes(command)) {
-						const range = new vscode.Range(index, 0, index, line.length);
-						const diagnostic = new vscode.Diagnostic(
-							range,
-							`This command is not a valid Maestro command. Visit api reference for full list of commands`,
-							vscode.DiagnosticSeverity.Error
-						);
-
-						diagnostic.code = {
-							value: "https://maestro.mobile.dev/api-reference/commands",
-							target: vscode.Uri.parse("https://maestro.mobile.dev/api-reference/commands"),
-						};
-
-						diagnostics.push(diagnostic);
-					}
-				}
-			});
-
-			diagnosticCollection.set(event.document.uri, diagnostics);
-		}
-	});
-
-	context.subscriptions.push(diagnosticCollection);
 
 	// File watcher for changes
 	const fileWatcher = vscode.workspace.createFileSystemWatcher(
