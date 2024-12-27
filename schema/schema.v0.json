@@ -1194,6 +1194,28 @@
                 "examples": [
                     null
                 ]
+            },
+            "takeScreenshot": {
+                "title": "takeScreenshot",
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "properties": {
+                    "path": {
+                        "title": "takeScreenshot.path",
+                        "type": "string",
+                        "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
+                    }
+                },
+                "required": [
+                    "path"
+                ],
+                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
+                "examples": [
+                    null,
+                    "com.example.someapp"
+                ]
             }
         }
     },
