@@ -1,10 +1,12 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+import * as yaml from 'js-yaml';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
     private fileItemCache: Map<string, FileItem> = new Map();
+    private dependencyMap: Map<string, string[]> = new Map();
 
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> =
         new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
@@ -29,11 +31,40 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
         if (element) {
+            console.log(`element.contextValue: ${element.contextValue}`)
+            if (element.contextValue === FileType.File) {
+                const dependencies = this.dependencyMap.get(element.resourceUri.fsPath) || [];
+                const uniqueDependencies = new Set(dependencies);
+                return Array.from(uniqueDependencies).map((dep) => {
+                    const isMissing = !fs.existsSync(dep);
+                    return new FileItem(
+                        path.basename(dep),
+                        vscode.TreeItemCollapsibleState.None,
+                        vscode.Uri.file(dep),
+                        FileType.Dependency,
+                        isMissing ? 'Missing dependency' : 'Dependency',
+                        isMissing ? 'error' : 'link'
+                    );
+                });
+            }
+
             return this.getFilesInFolder(element.resourceUri.fsPath);
         } else {
             const allFiles = await this.findFiles();
+            this.analyzeDependencies(allFiles);
             const treeItems = this.createTreeItemsFromPaths(allFiles, workspaceFolder);
-            treeItems.forEach(item => this.fileItemCache.set(item.resourceUri.fsPath, item));
+
+            treeItems.forEach(item => {
+                if (item.contextValue === FileType.File) {
+                    const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
+                    item.collapsibleState =
+                        dependencies.length > 0
+                            ? vscode.TreeItemCollapsibleState.Collapsed
+                            : vscode.TreeItemCollapsibleState.None;
+                }
+                this.fileItemCache.set(item.resourceUri.fsPath, item);
+            });
+
             return treeItems;
         }
     }
@@ -58,13 +89,13 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
     private async getFilesInFolder(folderPath: string): Promise<FileItem[]> {
         const entries = await fs.promises.readdir(folderPath, { withFileTypes: true });
-        return entries.map((entry) => {
+
+        const fileItems = entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
             const isFolder = entry.isDirectory();
 
             let fileItem = this.fileItemCache.get(fullPath);
             if (!fileItem) {
-                const isFolder = entry.isDirectory();
                 fileItem = new FileItem(
                     entry.name,
                     isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
@@ -75,6 +106,24 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             }
             return fileItem;
         });
+
+        const filePaths = fileItems
+            .filter((item) => item.contextValue === FileType.File)
+            .map((item) => item.resourceUri.fsPath);
+
+        this.analyzeDependencies(filePaths);
+
+        fileItems.forEach((item) => {
+            if (item.contextValue === FileType.File) {
+                const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
+                item.collapsibleState =
+                    dependencies.length > 0
+                        ? vscode.TreeItemCollapsibleState.Collapsed
+                        : vscode.TreeItemCollapsibleState.None;
+            }
+        });
+
+        return fileItems;
     }
 
     private createTreeItemsFromPaths(filePaths: string[], rootPath: string): FileItem[] {
@@ -116,11 +165,40 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             return fileItem;
         });
     }
+
+    private analyzeDependencies(filePaths: string[]): void {
+        this.dependencyMap.clear();
+
+        filePaths.forEach((filePath) => {
+            try {
+                const fileContent = fs.readFileSync(filePath, 'utf-8');
+                const parsedDocuments = yaml.loadAll(fileContent) as any[];
+
+                const dependencies = new Set<string>();
+
+                parsedDocuments.forEach((doc) => {
+                    if (Array.isArray(doc)) {
+                        doc.forEach((flow) => {
+                            if (flow.runFlow && flow.runFlow.file) {
+                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
+                                dependencies.add(dependencyPath);
+                            }
+                        });
+                    }
+                });
+
+                this.dependencyMap.set(filePath, Array.from(dependencies));
+            } catch (error) {
+                console.error(`Failed to parse YAML file ${filePath}:`, error);
+            }
+        });
+    }
 }
 
 enum FileType {
     File = 'file',
     Folder = 'folder',
+    Dependency = 'dependency',
 }
 
 class FileItem extends vscode.TreeItem {
@@ -128,13 +206,17 @@ class FileItem extends vscode.TreeItem {
 
     constructor(
         public readonly label: string,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+        public collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly resourceUri: vscode.Uri,
-        public readonly contextValue: FileType
+        public readonly contextValue: FileType,
+        public readonly tooltip?: string,
+        private readonly icon?: string
     ) {
         super(label, collapsibleState);
         this.resourceUri = resourceUri;
         this.contextValue = contextValue;
+
+        this.setIcon();
 
         this.updateIcon();
 
@@ -144,8 +226,6 @@ class FileItem extends vscode.TreeItem {
                 command: 'vscode.open',
                 arguments: [resourceUri],
             };
-        } else{
-            this.iconPath = vscode.ThemeIcon.Folder;
         }
     }
 
@@ -156,6 +236,16 @@ class FileItem extends vscode.TreeItem {
     set testResult(result: 'pass' | 'fail' | 'running' | undefined) {
         this._testResult = result;
         this.updateIcon();
+    }
+
+    private setIcon() {
+        if (this.icon) {
+            this.iconPath = new vscode.ThemeIcon(this.icon);
+        } else if (this.contextValue === FileType.File) {
+            this.iconPath = vscode.ThemeIcon.File;
+        } else if (this.contextValue === FileType.Folder) {
+            this.iconPath = vscode.ThemeIcon.Folder;
+        }
     }
 
     private updateIcon() {

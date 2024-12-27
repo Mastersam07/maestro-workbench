@@ -11,14 +11,14 @@
 - [ ] **Test Execution**
   - [ ] Set up CLI integration with Maestro.
   - [x] Create a "Run Test" button for YAML files.
-  - [ ] Capture and display CLI test results in the terminal within VS Code.
+  - [x] Capture and display CLI test results in the terminal within VS Code.
   - [ ] Ensure support for Maestro-specific CLI arguments
 
 - [ ] **File Management**
-  - [ ] Create a dedicated Maestro tree view in the VS Code sidebar.
-  - [ ] Automatically detect flow files and display them in the tree.
+  - [x] Create a dedicated Maestro tree view in the VS Code sidebar.
+  - [x] Automatically detect flow files and display them in the tree.
   - [ ] Highlight flow dependencies (e.g., runFlow references).
-  - [ ] Add context menu options for YAML files in the tree view:
+  - [x] Add context menu options for YAML files in the tree view:
         - Run flow
         - Open referenced flow (for `runFlow`)
 
