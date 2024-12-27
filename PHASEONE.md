@@ -2,7 +2,7 @@
 
 ### Phase 1: Core Features
 #### 🎯 Goal: Establish the foundation of the extension with essential features.
-- [ ] **YAML Schema Validation and IntelliSense**
+- [x] **YAML Schema Validation and IntelliSense**
   - [x] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
   - [x] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
   - [x] Inline documentation and examples for commands via tooltips.

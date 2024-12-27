@@ -18,8 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
 			'**/.maestro/**/*.{yaml,yml}'
 		]);
 
-		console.log(`filePatterns: ${filePatterns}`);
-
 		if (fileWatcher) {
 			fileWatcher.dispose(); // Dispose the existing watcher
 		}
@@ -30,23 +28,19 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		fileWatcher.onDidCreate(() => {
-			console.log('File created. Refreshing tree view...');
 			if (treeDataProvider) treeDataProvider.refresh();
 		});
 
 		fileWatcher.onDidChange(() => {
-			console.log('File changed. Refreshing tree view...');
 			if (treeDataProvider) treeDataProvider.refresh();
 		});
 
 		fileWatcher.onDidDelete(() => {
-			console.log('File deleted. Refreshing tree view...');
 			if (treeDataProvider) treeDataProvider.refresh();
 		});
 
 		context.subscriptions.push(fileWatcher);
 
-		// Recreate tree data provider with updated file patterns
 		treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
 		vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
 	}
@@ -105,18 +99,10 @@ export function activate(context: vscode.ExtensionContext) {
 			],
 		},
 		vscode.ConfigurationTarget.Workspace
-	).then(
-		() => {
-			console.log('YAML schema configuration updated successfully.');
-		},
-		(error) => {
-			console.error('Failed to update YAML schema configuration:', error);
-		}
 	);
 }
 
 export function deactivate() {
-	console.log('Deactivating Maestro-workbench...');
 	if (fileWatcher) {
 		fileWatcher.dispose();
 	}
