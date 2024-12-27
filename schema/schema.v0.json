@@ -108,6 +108,37 @@
                     }
                 ]
             },
+            "assertTrue": {
+                "title": "assertTrue",
+                "description": "A JavaScript expression to assert its truthiness.",
+                "type": [
+                    "string",
+                    "object"
+                ],
+                "properties": {
+                    "condition": {
+                        "title": "assertTrue.condition",
+                        "type": "string"
+                    },
+                    "label": {
+                        "title": "assertTrue.label",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "condition"
+                ],
+                "examples": [
+                    {
+                        "description": "Simple assertion with a JavaScript condition as a string",
+                        "example": "- assertTrue: \"2 + 2 === 4\""
+                    },
+                    {
+                        "description": "Detailed assertion with condition and label",
+                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                    }
+                ]
+            },
             "eraseText": {
                 "title": "eraseText",
                 "description": "Remove up to n characters from the currently selected text field (if any)",
