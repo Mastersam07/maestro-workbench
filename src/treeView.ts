@@ -53,7 +53,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                 entry.name,
                 isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
                 vscode.Uri.file(fullPath),
-                isFolder ? FileItemContextValue.Folder : FileItemContextValue.File
+                isFolder ? FileType.Folder : FileType.File
             );
         });
     }
@@ -86,13 +86,13 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                 key,
                 isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
                 vscode.Uri.file(fullPath),
-                isFolder ? FileItemContextValue.Folder : FileItemContextValue.File
+                isFolder ? FileType.Folder : FileType.File
             );
         });
     }
 }
 
-enum FileItemContextValue {
+enum FileType {
     File = 'file',
     Folder = 'folder',
 }
@@ -102,20 +102,20 @@ class FileItem extends vscode.TreeItem {
         public readonly label: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly resourceUri: vscode.Uri,
-        public readonly contextValue: FileItemContextValue
+        public readonly contextValue: FileType
     ) {
         super(label, collapsibleState);
         this.resourceUri = resourceUri;
         this.contextValue = contextValue;
 
-        if (contextValue === FileItemContextValue.File) {
+        if (contextValue === FileType.File) {
             this.command = {
                 title: 'Open File',
                 command: 'vscode.open',
                 arguments: [resourceUri],
             };
             this.iconPath = vscode.ThemeIcon.File;
-        } else if (contextValue === FileItemContextValue.Folder) {
+        } else if (contextValue === FileType.Folder) {
             this.iconPath = vscode.ThemeIcon.Folder;
         }
     }

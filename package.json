@@ -62,6 +62,16 @@
         "command": "maestroWorkbench.refreshTree",
         "title": "Refresh Maestro Tree",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "maestroWorkbench.runTestFile",
+        "title": "Run Test for Flow",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "maestroWorkbench.runTestFolder",
+        "title": "Run All Flows in Folder",
+        "icon": "$(debug-start)"
       }
     ],
     "menus": {
@@ -75,6 +85,18 @@
           "command": "maestroWorkbench.refreshTree",
           "when": "view == maestroBenchTreeView",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "maestroWorkbench.runTestFile",
+          "when": "viewItem == file",
+          "group": "inline"
+        },
+        {
+          "command": "maestroWorkbench.runTestFolder",
+          "when": "viewItem == folder",
+          "group": "inline"
         }
       ]
     },

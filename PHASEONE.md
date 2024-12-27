@@ -10,7 +10,7 @@
 
 - [ ] **Test Execution**
   - [ ] Set up CLI integration with Maestro.
-  - [ ] Create a "Run Test" button for YAML files.
+  - [x] Create a "Run Test" button for YAML files.
   - [ ] Capture and display CLI test results in the terminal within VS Code.
   - [ ] Ensure support for Maestro-specific CLI arguments
 

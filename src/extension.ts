@@ -19,10 +19,9 @@ export function activate(context: vscode.ExtensionContext) {
 		]);
 
 		if (fileWatcher) {
-			fileWatcher.dispose(); // Dispose the existing watcher
+			fileWatcher.dispose();
 		}
 
-		// Create a new file watcher
 		fileWatcher = vscode.workspace.createFileSystemWatcher(
 			`{${filePatterns.join(',')}}`
 		);
@@ -54,14 +53,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Refresh tree view command
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
 			if (treeDataProvider) treeDataProvider.refresh();
 		}),
 	);
 
-	// Launch maestro studio
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', () => {
 			if (!maestroTerminal) {
@@ -83,6 +80,26 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 		})
 	);
+
+	context.subscriptions.push(
+        vscode.commands.registerCommand('maestroWorkbench.runTest', async (resourceUri: vscode.Uri) => {
+            const filePath = resourceUri.fsPath;
+            vscode.window.showInformationMessage(`Running test for file: ${filePath}`);
+            const terminal = vscode.window.createTerminal('Maestro Test');
+            terminal.show();
+            terminal.sendText(`maestro test ${filePath}`);
+        })
+    );
+
+    context.subscriptions.push(
+        vscode.commands.registerCommand('maestroWorkbench.runFolderTests', async (resourceUri: vscode.Uri) => {
+            const folderPath = resourceUri.fsPath;
+            vscode.window.showInformationMessage(`Running all tests in folder: ${folderPath}`);
+            const terminal = vscode.window.createTerminal('Maestro Test');
+            terminal.show();
+            terminal.sendText(`maestro test ${folderPath}`);
+        })
+    );
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 	const currentSchemas = vscode.workspace.getConfiguration('yaml').get('schemas', {});
