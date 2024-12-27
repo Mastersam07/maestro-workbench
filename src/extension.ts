@@ -7,6 +7,22 @@ let maestroTerminal: vscode.Terminal | undefined;
 let treeDataProvider: MaestroWorkBenchTreeViewProvider | undefined;
 let fileWatcher: vscode.FileSystemWatcher | undefined;
 
+function getOrCreateTerminal(): vscode.Terminal {
+	if (!maestroTerminal) {
+		maestroTerminal = vscode.window.createTerminal({
+			name: "Maestro Test",
+		});
+
+		maestroTerminal.show();
+		vscode.window.onDidCloseTerminal((closedTerminal) => {
+			if (closedTerminal.name === "Maestro Test") {
+				maestroTerminal = undefined;
+			}
+		});
+	}
+	return maestroTerminal;
+}
+
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Maestro-workbench is now active!');
@@ -61,45 +77,87 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', () => {
-			if (!maestroTerminal) {
-				maestroTerminal = vscode.window.createTerminal({
-					name: "Maestro Studio",
-				});
-
-				maestroTerminal.sendText("maestro studio");
-			}
-
-			maestroTerminal.show();
-
-			maestroTerminal.processId.then((_) => {
-				vscode.window.onDidCloseTerminal((closedTerminal) => {
-					if (closedTerminal.name === "Maestro Studio") {
-						maestroTerminal = undefined;
-					}
-				});
-			});
+			const terminal = getOrCreateTerminal();
+			terminal.sendText("maestro studio");
 		})
 	);
 
 	context.subscriptions.push(
-        vscode.commands.registerCommand('maestroWorkbench.runTest', async (resourceUri: vscode.Uri) => {
-            const filePath = resourceUri.fsPath;
-            vscode.window.showInformationMessage(`Running test for file: ${filePath}`);
-            const terminal = vscode.window.createTerminal('Maestro Test');
-            terminal.show();
-            terminal.sendText(`maestro test ${filePath}`);
-        })
-    );
+		vscode.commands.registerCommand('maestroWorkbench.runTest', async (item: vscode.TreeItem) => {
+			const filePath = item.resourceUri!.fsPath;
+			vscode.window.showInformationMessage(`Running test for file: ${filePath}`);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand('maestroWorkbench.runFolderTests', async (resourceUri: vscode.Uri) => {
-            const folderPath = resourceUri.fsPath;
-            vscode.window.showInformationMessage(`Running all tests in folder: ${folderPath}`);
-            const terminal = vscode.window.createTerminal('Maestro Test');
-            terminal.show();
-            terminal.sendText(`maestro test ${folderPath}`);
-        })
-    );
+			treeDataProvider?.updateTestResult(filePath, 'running');
+
+			const terminal = getOrCreateTerminal();
+			terminal.show();
+			// terminal.sendText(`maestro test ${filePath}`);
+
+			// Simulate test execution (replace with actual logic)
+			setTimeout(() => {
+				const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Simulated result
+				treeDataProvider?.updateTestResult(filePath, result);
+				vscode.window.showInformationMessage(`Test for "${filePath}" ${result === 'pass' ? 'passed' : 'failed'}.`);
+			}, 2000);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('maestroWorkbench.runFolderTests', async (item: vscode.TreeItem) => {
+			const folderPath = item.resourceUri!.fsPath;
+
+			// Find all test files in the folder
+			const testFiles = await vscode.workspace.findFiles(
+				new vscode.RelativePattern(folderPath, '**/*.{yaml,yml}')
+			);
+
+			if (!testFiles.length) {
+				vscode.window.showInformationMessage(`No test files found in folder: ${folderPath}`);
+				return;
+			}
+
+			// Set the folder status to 'running'
+			treeDataProvider?.updateTestResult(folderPath, 'running');
+
+			const terminal = getOrCreateTerminal();
+			terminal.show();
+			// terminal.sendText(`maestro test ${folderPath}`);
+
+			let atLeastOneFailed = false;
+
+			for (const testFile of testFiles) {
+				const filePath = testFile.fsPath;
+
+				// Set individual test file status to 'running'
+				treeDataProvider?.updateTestResult(filePath, 'running');
+
+				// Simulate test execution
+				await new Promise((resolve) => {
+					setTimeout(() => {
+						const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Randomized result
+
+						// Update the file's status
+						treeDataProvider?.updateTestResult(filePath, result);
+
+						// Track if at least one test failed
+						if (result === 'fail') {
+							atLeastOneFailed = true;
+						}
+
+						resolve(result);
+					}, 1000); // Simulate 1 second per test
+				});
+			}
+
+			// Update the folder's status based on test results
+			const folderResult = atLeastOneFailed ? 'fail' : 'pass';
+			treeDataProvider?.updateTestResult(folderPath, folderResult);
+
+			vscode.window.showInformationMessage(
+				`Tests completed in folder: ${folderPath}. Result: ${folderResult.toUpperCase()}`
+			);
+		})
+	);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 	const currentSchemas = vscode.workspace.getConfiguration('yaml').get('schemas', {});

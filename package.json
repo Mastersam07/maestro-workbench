@@ -64,12 +64,12 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "maestroWorkbench.runTestFile",
+        "command": "maestroWorkbench.runTest",
         "title": "Run Test for Flow",
         "icon": "$(debug-start)"
       },
       {
-        "command": "maestroWorkbench.runTestFolder",
+        "command": "maestroWorkbench.runFolderTests",
         "title": "Run All Flows in Folder",
         "icon": "$(debug-start)"
       }
@@ -89,12 +89,12 @@
       ],
       "view/item/context": [
         {
-          "command": "maestroWorkbench.runTestFile",
+          "command": "maestroWorkbench.runTest",
           "when": "viewItem == file",
           "group": "inline"
         },
         {
-          "command": "maestroWorkbench.runTestFolder",
+          "command": "maestroWorkbench.runFolderTests",
           "when": "viewItem == folder",
           "group": "inline"
         }

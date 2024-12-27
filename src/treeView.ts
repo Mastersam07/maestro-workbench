@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
+    private fileItemCache: Map<string, FileItem> = new Map();
+
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> =
         new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
     readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> =
@@ -30,12 +32,22 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             return this.getFilesInFolder(element.resourceUri.fsPath);
         } else {
             const allFiles = await this.findFiles();
-            return this.createTreeItemsFromPaths(allFiles, workspaceFolder);
+            const treeItems = this.createTreeItemsFromPaths(allFiles, workspaceFolder);
+            treeItems.forEach(item => this.fileItemCache.set(item.resourceUri.fsPath, item));
+            return treeItems;
         }
     }
 
     public refresh(): void {
         this._onDidChangeTreeData.fire();
+    }
+
+    public updateTestResult(filePath: string, result: 'pass' | 'fail' | 'running' | undefined): void {
+        const fileItem = this.fileItemCache.get(filePath);
+        if (fileItem) {
+            fileItem.testResult = result;
+            this._onDidChangeTreeData.fire(fileItem);
+        }
     }
 
     private async findFiles(): Promise<string[]> {
@@ -49,12 +61,19 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         return entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
             const isFolder = entry.isDirectory();
-            return new FileItem(
-                entry.name,
-                isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
-                vscode.Uri.file(fullPath),
-                isFolder ? FileType.Folder : FileType.File
-            );
+
+            let fileItem = this.fileItemCache.get(fullPath);
+            if (!fileItem) {
+                const isFolder = entry.isDirectory();
+                fileItem = new FileItem(
+                    entry.name,
+                    isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+                    vscode.Uri.file(fullPath),
+                    isFolder ? FileType.Folder : FileType.File
+                );
+                this.fileItemCache.set(fullPath, fileItem);
+            }
+            return fileItem;
         });
     }
 
@@ -82,12 +101,19 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         return Object.entries(tree).map(([key, value]) => {
             const fullPath = path.join(parentPath, key);
             const isFolder = typeof value === 'object';
-            return new FileItem(
-                key,
-                isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
-                vscode.Uri.file(fullPath),
-                isFolder ? FileType.Folder : FileType.File
-            );
+
+            let fileItem = this.fileItemCache.get(fullPath);
+            if (!fileItem) {
+                const isFolder = typeof value === 'object';
+                fileItem = new FileItem(
+                    key,
+                    isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+                    vscode.Uri.file(fullPath),
+                    isFolder ? FileType.Folder : FileType.File
+                );
+                this.fileItemCache.set(fullPath, fileItem);
+            }
+            return fileItem;
         });
     }
 }
@@ -98,6 +124,8 @@ enum FileType {
 }
 
 class FileItem extends vscode.TreeItem {
+    private _testResult: 'pass' | 'fail' | 'running' | undefined;
+
     constructor(
         public readonly label: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -108,15 +136,42 @@ class FileItem extends vscode.TreeItem {
         this.resourceUri = resourceUri;
         this.contextValue = contextValue;
 
+        this.updateIcon();
+
         if (contextValue === FileType.File) {
             this.command = {
                 title: 'Open File',
                 command: 'vscode.open',
                 arguments: [resourceUri],
             };
-            this.iconPath = vscode.ThemeIcon.File;
-        } else if (contextValue === FileType.Folder) {
+        } else{
             this.iconPath = vscode.ThemeIcon.Folder;
+        }
+    }
+
+    get testResult(): 'pass' | 'fail' | 'running' | undefined {
+        return this._testResult;
+    }
+
+    set testResult(result: 'pass' | 'fail' | 'running' | undefined) {
+        this._testResult = result;
+        this.updateIcon();
+    }
+
+    private updateIcon() {
+        switch (this._testResult) {
+            case 'pass':
+                this.iconPath = new vscode.ThemeIcon('check', new vscode.ThemeColor('testing.iconPassed'));
+                break;
+            case 'fail':
+                this.iconPath = new vscode.ThemeIcon('error', new vscode.ThemeColor('testing.iconFailed'));
+                break;
+            case 'running':
+                this.iconPath = new vscode.ThemeIcon('loading~spin');
+                break;
+            default:
+                this.iconPath = vscode.ThemeIcon.File;
+                break;
         }
     }
 }
