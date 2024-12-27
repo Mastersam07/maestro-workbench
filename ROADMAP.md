@@ -9,19 +9,19 @@ Maestro Workbench aims to simplify mobile UI testing by integrating Maestro dire
 
 ### Phase 1: Core Features
 #### 🎯 Goal: Establish the foundation of the extension with essential features.
-- [ ] **YAML Schema Validation and IntelliSense**
-  - [ ] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
-  - [ ] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
-  - [ ] Inline documentation and examples for commands via tooltips.
-  - [ ] Insert templates/snippets for common Maestro commands.
+- [x] **YAML Schema Validation and IntelliSense**
+  - [x] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
+  - [x] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
+  - [x] Inline documentation and examples for commands via tooltips.
+  - [x] Insert templates/snippets for common Maestro commands.
 
-- [ ] **Test Execution**
-  - [ ] Run Maestro flows directly from VS Code via CLI integration.
+- [x] **Test Execution**
+  - [x] Run Maestro flows directly from VS Code via CLI integration.
   - [ ] Display basic test results in a terminal output.
 
 - [ ] **File Management**
-  - [ ] Dedicated tree view for managing Maestro YAML files.
-  - [ ] Highlight dependencies between flows (e.g., `runFlow` referencing another file).
+  - [x] Dedicated tree view for managing Maestro YAML files.
+  - [x] Highlight dependencies between flows (e.g., `runFlow` referencing another file).
 
 - [ ] **Documentation Access**
   - [ ] Integrated links to Maestro's official documentation.
