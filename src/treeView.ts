@@ -1,16 +1,22 @@
 import * as vscode from 'vscode';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
+    private filePatterns: string[];
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> =
         new vscode.EventEmitter<vscode.TreeItem | undefined | void>();
     readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined | void> =
         this._onDidChangeTreeData.event;
 
+    constructor(filePatterns: string[]) {
+        this.filePatterns = filePatterns;
+    }
+
+
     getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
         return element;
     }
 
-    getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
+    async getChildren(element?: vscode.TreeItem): Promise<vscode.TreeItem[]> {
         if (!element) {
             return Promise.resolve([
                 new MaestroTreeItem("Maestro Files", vscode.TreeItemCollapsibleState.Collapsed, "filesSection"),
@@ -20,15 +26,14 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
         // Add children to the collapsible "Maestro Files" section
         if (element.contextValue === "filesSection") {
-            const yamlFiles = vscode.workspace.findFiles("{maestro,**/.maestro}/**/*.{yaml,yml}");
-            return yamlFiles.then((files) =>
-                files.map(
-                    (file) =>
-                        new MaestroTreeItem(
-                            vscode.workspace.asRelativePath(file),
-                            vscode.TreeItemCollapsibleState.None
-                        )
-                )
+            const yamlFiles = await vscode.workspace.findFiles(`{${this.filePatterns.join(',')}}`);
+            console.log(`yamlFiles: ${yamlFiles}`);
+            return yamlFiles.map(
+                (file) =>
+                    new MaestroTreeItem(
+                        vscode.workspace.asRelativePath(file),
+                        vscode.TreeItemCollapsibleState.None
+                    )
             );
         }
 

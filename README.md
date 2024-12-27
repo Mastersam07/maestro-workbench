@@ -26,6 +26,19 @@ This extension contributes the following settings:
 * `myExtension.enable`: Enable/disable this extension.
 * `myExtension.thing`: Set to `blah` to do something.
 
+## Maestro Workbench Settings
+
+You can customize where the extension looks for Maestro files by configuring the `maestroWorkbench.filePatterns` setting in your workspace or user settings.
+
+#### Default File Patterns:
+```json
+"maestroWorkbench.filePatterns": [
+    "maestro/**/*.yaml",
+    "maestro/**/*.yml"
+]
+```
+
+
 ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.

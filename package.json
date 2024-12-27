@@ -83,7 +83,24 @@
         "language": "yaml",
         "path": "./snippets/snippets.v0.json"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Maestro Workbench Settings",
+      "properties": {
+        "maestroWorkbench.filePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "maestro/**/*.{yaml,yml}",
+            "**/.maestro/**/*.{yaml,yml}"
+          ],
+          "description": "Glob patterns to locate Maestro files. You can customize these to include or exclude specific directories."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
