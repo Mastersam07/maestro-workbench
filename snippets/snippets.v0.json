@@ -1,0 +1,106 @@
+{
+    "Launch App": {
+      "prefix": "launchApp",
+      "body": [
+        "- launchApp:",
+        "    appId: \"${1:com.example.app}\"",
+        "    clearState: ${2:true}",
+        "    stopApp: ${3:true}",
+        "    permissions:",
+        "      ${4:notifications}: ${5:allow}",
+        "      ${6:android.permission.ACCESS_FINE_LOCATION}: ${7:deny}"
+      ],
+      "description": "Template for launching an app with optional permissions."
+    },
+    "Assert Visible": {
+      "prefix": "assertVisible",
+      "body": [
+        "- assertVisible:",
+        "    text: \"${1:Sample Text}\"",
+        "    id: \"${2:sample-id}\"",
+        "    enabled: ${3:true}"
+      ],
+      "description": "Template for asserting visibility of an element."
+    },
+    "Assert Not Visible": {
+      "prefix": "assertNotVisible",
+      "body": [
+        "- assertNotVisible:",
+        "    text: \"${1:Sample Text}\"",
+        "    id: \"${2:sample-id}\"",
+        "    enabled: ${3:false}"
+      ],
+      "description": "Template for asserting an element is not visible."
+    },
+    "Input Text": {
+      "prefix": "inputText",
+      "body": [
+        "- inputText: \"${1:sample@example.com}\""
+      ],
+      "description": "Template for inputting text into a field."
+    },
+    "Repeat": {
+      "prefix": "repeat",
+      "body": [
+        "- repeat:",
+        "    times: ${1:3}",
+        "    commands:",
+        "      - ${2:command}"
+      ],
+      "description": "Template for repeating a set of commands."
+    },
+    "Run Flow": {
+      "prefix": "runFlow",
+      "body": [
+        "- runFlow:",
+        "    file: \"${1:anotherFlow.yaml}\"",
+        "    env:",
+        "      ${2:ENV_VAR}: ${3:value}"
+      ],
+      "description": "Template for running a flow from a file."
+    },
+    "Scroll Until Visible": {
+      "prefix": "scrollUntilVisible",
+      "body": [
+        "- scrollUntilVisible:",
+        "    element:",
+        "      text: \"${1:Sample Text}\"",
+        "    direction: \"${2:DOWN}\"",
+        "    timeout: ${3:20000}"
+      ],
+      "description": "Template for scrolling until an element is visible."
+    },
+    "Tap On": {
+      "prefix": "tapOn",
+      "body": [
+        "- tapOn:",
+        "    text: \"${1:Sample Text}\"",
+        "    id: \"${2:sample-id}\"",
+        "    below:",
+        "      text: \"${3:Another Element}\""
+      ],
+      "description": "Template for tapping on an element."
+    },
+    "Long Press On": {
+      "prefix": "longPressOn",
+      "body": [
+        "- longPressOn:",
+        "    text: \"${1:Sample Text}\"",
+        "    id: \"${2:sample-id}\"",
+        "    above:",
+        "      text: \"${3:Another Element}\""
+      ],
+      "description": "Template for long-pressing an element."
+    },
+    "Swipe": {
+      "prefix": "swipe",
+      "body": [
+        "- swipe:",
+        "    start: \"${1:50%,50%}\"",
+        "    end: \"${2:10%,10%}\"",
+        "    duration: ${3:500}"
+      ],
+      "description": "Template for performing a swipe gesture."
+    }
+  }
+  

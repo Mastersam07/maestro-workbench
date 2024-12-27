@@ -77,7 +77,13 @@
           "group": "navigation"
         }
       ]
-    }
+    },
+    "snippets": [
+      {
+        "language": "yaml",
+        "path": "./snippets/snippets.v0.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

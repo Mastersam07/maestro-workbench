@@ -5,8 +5,8 @@
 - [ ] **YAML Schema Validation and IntelliSense**
   - [x] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
   - [x] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
-  - [ ] Inline documentation and examples for commands via tooltips.
-  - [ ] Insert templates/snippets for common Maestro commands.
+  - [x] Inline documentation and examples for commands via tooltips.
+  - [x] Insert templates/snippets for common Maestro commands.
 
 - [ ] **Test Execution**
   - [ ] Set up CLI integration with Maestro.
