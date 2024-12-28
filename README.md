@@ -12,7 +12,7 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
 - **Snippets**: Utilize predefined code snippets to quickly scaffold Maestro commands and flows, enhancing productivity.
 
-  https://github.com/user-attachments/assets/bb8b59f9-fc79-46be-97f7-de00a116dbfb)
+  https://github.com/user-attachments/assets/bb8b59f9-fc79-46be-97f7-de00a116dbfb
 
 - **Customizable File Patterns**: Configure the extension to detect Maestro YAML files based on your project's structure by setting custom file patterns.
 
