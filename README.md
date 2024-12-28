@@ -16,6 +16,8 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
 - **Customizable File Patterns**: Configure the extension to detect Maestro YAML files based on your project's structure by setting custom file patterns.
 
+  https://github.com/user-attachments/assets/f78a368e-250f-4213-85d5-a3dab8e28662
+
 - **Integrated Tree View**: Visualize and manage your Maestro test files within a dedicated tree view, providing quick access and organization.
 
 - **Real-Time Test Status Updates**: Receive immediate feedback on test statuses—running, passed, or failed—directly within the tree view, streamlining your testing workflow.
