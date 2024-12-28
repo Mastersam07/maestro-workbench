@@ -44,4 +44,4 @@ All notable changes to this project will be documented in this file.
   - File Management with a dedicated tree view.
   - Documentation Access with links to official resources.
 
-[0.1.0]: https://github.com/your-repo/releases/tag/v0.1.0
+[0.1.0]: https://github.com/Mastersam07/maestro-workbench/releases/tag/v0.1.0
