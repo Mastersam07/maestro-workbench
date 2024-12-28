@@ -251,7 +251,7 @@ class FileItem extends vscode.TreeItem {
     private updateIcon() {
         switch (this._testResult) {
             case 'pass':
-                this.iconPath = new vscode.ThemeIcon('check', new vscode.ThemeColor('testing.iconPassed'));
+                this.iconPath = new vscode.ThemeIcon('pass', new vscode.ThemeColor('testing.iconPassed'));
                 break;
             case 'fail':
                 this.iconPath = new vscode.ThemeIcon('error', new vscode.ThemeColor('testing.iconFailed'));

@@ -9,19 +9,19 @@ Maestro Workbench aims to simplify mobile UI testing by integrating Maestro dire
 
 ### Phase 1: Core Features
 #### 🎯 Goal: Establish the foundation of the extension with essential features.
-- [ ] **YAML Schema Validation and IntelliSense**
-  - [ ] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
-  - [ ] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
-  - [ ] Inline documentation and examples for commands via tooltips.
-  - [ ] Insert templates/snippets for common Maestro commands.
+- [x] **YAML Schema Validation and IntelliSense**
+  - [x] Auto-complete for Maestro commands (`tapOn`, `assertVisible`, `runFlow`, etc.).
+  - [x] Validation for command parameters (e.g., `visible`, `id`, `text`, etc.).
+  - [x] Inline documentation and examples for commands via tooltips.
+  - [x] Insert templates/snippets for common Maestro commands.
 
-- [ ] **Test Execution**
-  - [ ] Run Maestro flows directly from VS Code via CLI integration.
+- [x] **Test Execution**
+  - [x] Run Maestro flows directly from VS Code via CLI integration.
   - [ ] Display basic test results in a terminal output.
 
-- [ ] **File Management**
-  - [ ] Dedicated tree view for managing Maestro YAML files.
-  - [ ] Highlight dependencies between flows (e.g., `runFlow` referencing another file).
+- [x] **File Management**
+  - [x] Dedicated tree view for managing Maestro YAML files.
+  - [ ] Highlight dependencies between flows (e.g., `runFlow` referencing another file). [See here](https://github.com/Mastersam07/maestro-workbench/tree/feat-flow-dependencies)
 
 - [ ] **Documentation Access**
   - [ ] Integrated links to Maestro's official documentation.
@@ -32,7 +32,7 @@ Maestro Workbench aims to simplify mobile UI testing by integrating Maestro dire
 ### Phase 2: Enhanced Testing Features
 #### 🎯 Goal: Improve test execution and debugging capabilities.
 - [ ] **Enhanced Test Results Panel**
-  - [ ] Visual display of test results with success/failure summaries.
+  - [x] Visual display of test results with success/failure summaries.
   - [ ] Show detailed logs for each command (e.g., errors, assertions).
 
 - [ ] **Live Debugging**
@@ -96,17 +96,6 @@ Maestro Workbench aims to simplify mobile UI testing by integrating Maestro dire
 
 ## Contribution
 We welcome contributions to Maestro Workbench! Please check the `CONTRIBUTING.md` file in this repository for guidelines on how to contribute.
-
----
-
-## Milestones Overview
-| Phase                  | Features                                                             | Target Completion |
-|------------------------|----------------------------------------------------------------------|-------------------|
-| **Phase 1: Core Features** | YAML validation, IntelliSense, basic test execution, file management | Q1 2025          |
-| **Phase 2: Enhanced Testing** | Test results panel, debugging, live device integration, env management  | Q2 2025          |
-| **Phase 3: Productivity Tools** | Command helpers, dependency mapping, reusable templates              | Q3 2025          |
-| **Phase 4: Collaboration** | Flow sharing, Git integration, performance metrics                   | Q4 2025          |
-| **Phase 5: Cross-Platform** | Platform-specific IntelliSense, device manager                       | Q1 2026          |
 
 ---
 
