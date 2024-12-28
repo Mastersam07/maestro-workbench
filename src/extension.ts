@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import * as fs from "fs";
 import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './treeView';
+import { MaestroPseudoTerminal } from './terminal';
+import { IncrementalOutputProcessor } from './terminal_output_processor';
 
 let maestroTerminal: vscode.Terminal | undefined;
 let treeDataProvider: MaestroWorkBenchTreeViewProvider | undefined;
@@ -89,16 +90,30 @@ export function activate(context: vscode.ExtensionContext) {
 
 			treeDataProvider?.updateTestResult(filePath, 'running');
 
-			const terminal = getOrCreateTerminal();
-			terminal.show();
-			// terminal.sendText(`maestro test ${filePath}`);
+			const outputProcessor = new IncrementalOutputProcessor((status, errorReason) => {
+				if (status === 'fail') {
+					treeDataProvider?.updateTestResult(filePath, status);
+					vscode.window.showErrorMessage(`Test for "${filePath}" FAILED.\n\nReason:\n${errorReason}`);
+				} else {
+					treeDataProvider?.updateTestResult(filePath, status);
+					vscode.window.showInformationMessage(`Test for "${filePath}" PASSED.`);
+				}
+			});
 
-			// Simulate test execution (replace with actual logic)
-			setTimeout(() => {
-				const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Simulated result
-				treeDataProvider?.updateTestResult(filePath, result);
-				vscode.window.showInformationMessage(`Test for "${filePath}" ${result === 'pass' ? 'passed' : 'failed'}.`);
-			}, 2000);
+			const pseudoTerminal = new MaestroPseudoTerminal(
+				`maestro test ${filePath}`,
+				(chunk: string) => {
+					outputProcessor.processChunk(chunk);
+				},
+				() => {
+					outputProcessor.finalizeProcessing();
+				}
+			);
+
+			vscode.window.createTerminal({
+				name: `Maestro Test: ${path.basename(filePath)}`,
+				pty: pseudoTerminal
+			});
 		})
 	);
 
