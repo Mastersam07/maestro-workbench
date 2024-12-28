@@ -116,8 +116,10 @@
             "type": "string"
           },
           "default": [
-            "maestro/**/*.{yaml,yml}",
-            "**/.maestro/**/*.{yaml,yml}"
+            "maestro/**/*.yaml",
+            "maestro/**/*.yml",
+            "**/.maestro/**/*.yaml",
+            "**/.maestro/**/*.yml"
           ],
           "description": "Glob patterns to locate Maestro files. You can customize these to include or exclude specific directories."
         }
