@@ -90,30 +90,34 @@ export function activate(context: vscode.ExtensionContext) {
 
 			treeDataProvider?.updateTestResult(filePath, 'running');
 
-			const outputProcessor = new IncrementalOutputProcessor((status, errorReason) => {
-				if (status === 'fail') {
-					treeDataProvider?.updateTestResult(filePath, status);
-					vscode.window.showErrorMessage(`Test for "${filePath}" FAILED.\n\nReason:\n${errorReason}`);
-				} else {
-					treeDataProvider?.updateTestResult(filePath, status);
-					vscode.window.showInformationMessage(`Test for "${filePath}" PASSED.`);
+			const outputProcessor = new IncrementalOutputProcessor(
+				(_, __) => { },
+				(fileName, status, errorReason) => {
+					treeDataProvider?.updateTestResult(fileName, status);
+					if (status === 'fail') {
+						vscode.window.showErrorMessage(`Test for "${fileName}" FAILED.\n\nReason:\n${errorReason}`);
+					} else {
+						vscode.window.showInformationMessage(`Test for "${fileName}" PASSED.`);
+					}
 				}
-			});
+			);
+
+			outputProcessor.setCurrentFile(filePath);
 
 			const process = exec(`maestro test ${filePath}`);
 
 			process.stdout?.on('data', (chunk) => {
 				outputProcessor.processChunk(chunk.toString());
 			});
-	
+
 			process.stderr?.on('data', (chunk) => {
 				outputProcessor.processChunk(chunk.toString());
 			});
-	
+
 			process.on('close', () => {
 				outputProcessor.finalizeProcessing();
 			});
-	
+
 			process.on('error', (err) => {
 				vscode.window.showErrorMessage(`Error running test for "${filePath}": ${err.message}`);
 				treeDataProvider?.updateTestResult(filePath, 'fail');
@@ -125,7 +129,6 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('maestroWorkbench.runFolderTests', async (item: vscode.TreeItem) => {
 			const folderPath = item.resourceUri!.fsPath;
 
-			// Find all test files in the folder
 			const testFiles = await vscode.workspace.findFiles(
 				new vscode.RelativePattern(folderPath, '**/*.{yaml,yml}')
 			);
@@ -135,46 +138,51 @@ export function activate(context: vscode.ExtensionContext) {
 				return;
 			}
 
-			// Set the folder status to 'running'
+			testFiles.forEach((file) => {
+				treeDataProvider?.updateTestResult(file.fsPath, 'running');
+			});
+
+
 			treeDataProvider?.updateTestResult(folderPath, 'running');
 
-			const terminal = getOrCreateTerminal();
-			terminal.show();
-			// terminal.sendText(`maestro test ${folderPath}`);
-
-			let atLeastOneFailed = false;
-
-			for (const testFile of testFiles) {
-				const filePath = testFile.fsPath;
-
-				// Set individual test file status to 'running'
-				treeDataProvider?.updateTestResult(filePath, 'running');
-
-				// Simulate test execution
-				await new Promise((resolve) => {
-					setTimeout(() => {
-						const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Randomized result
-
-						// Update the file's status
-						treeDataProvider?.updateTestResult(filePath, result);
-
-						// Track if at least one test failed
-						if (result === 'fail') {
-							atLeastOneFailed = true;
-						}
-
-						resolve(result);
-					}, 1000); // Simulate 1 second per test
-				});
-			}
-
-			// Update the folder's status based on test results
-			const folderResult = atLeastOneFailed ? 'fail' : 'pass';
-			treeDataProvider?.updateTestResult(folderPath, folderResult);
-
-			vscode.window.showInformationMessage(
-				`Tests completed in folder: ${folderPath}. Result: ${folderResult.toUpperCase()}`
+			const outputProcessor = new IncrementalOutputProcessor(
+				(folderStatus, folderErrorReason) => {
+					treeDataProvider?.updateTestResult(folderPath, folderStatus);
+					if (folderStatus === 'fail') {
+						vscode.window.showErrorMessage(`Tests in folder "${folderPath}" FAILED.\n\nReason:\n${folderErrorReason}`);
+					} else {
+						vscode.window.showInformationMessage(`Tests in folder "${folderPath}" PASSED.`);
+					}
+				},
+				(fileName, fileStatus, fileErrorReason) => {
+					const filePath = path.join(folderPath, fileName);
+					treeDataProvider?.updateTestResult(`${filePath}.yaml`, fileStatus);
+					if (fileStatus === 'fail') {
+						vscode.window.showErrorMessage(`Test for "${filePath}" FAILED.\n\nReason:\n${fileErrorReason}`);
+					} else {
+						vscode.window.showInformationMessage(`Test for "${filePath}" PASSED.`);
+					}
+				}
 			);
+
+			const process = exec(`maestro test ${folderPath}`);
+
+			process.stdout?.on('data', (chunk) => {
+				outputProcessor.processChunk(chunk.toString());
+			});
+
+			process.stderr?.on('data', (chunk) => {
+				outputProcessor.processChunk(chunk.toString());
+			});
+
+			process.on('close', () => {
+				outputProcessor.finalizeProcessing();
+			});
+
+			process.on('error', (err) => {
+				vscode.window.showErrorMessage(`Error running tests in folder "${folderPath}": ${err.message}`);
+				treeDataProvider?.updateTestResult(folderPath, 'fail');
+			});
 		})
 	);
 
