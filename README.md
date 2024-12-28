@@ -3,6 +3,14 @@ A Visual Studio Code extension for enhancing the development and testing of Maes
 
 ## Features
 
+
+
+https://github.com/user-attachments/assets/508c40c1-ffa9-4697-be01-d20b0508f88e
+
+
+https://github.com/user-attachments/assets/bb8b59f9-fc79-46be-97f7-de00a116dbfb
+
+
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
 For example if there is an image subfolder under your extension project workspace:
