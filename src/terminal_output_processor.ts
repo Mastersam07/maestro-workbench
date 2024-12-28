@@ -17,8 +17,6 @@ export class IncrementalOutputProcessor {
     processChunk(chunk: string) {
         const lines = chunk.split('\n').map((line) => line.trim());
 
-        console.log(lines);
-
         lines.forEach((line) => {
             // Match lines for folder tests
             const passedMatch = line.match(/^\[Passed\] (.+?) \(\d+s\)$/);

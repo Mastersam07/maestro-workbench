@@ -26,14 +26,15 @@ function getOrCreateTerminal(): vscode.Terminal {
 
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('Maestro-workbench is now active!');
-
 	function updateFileWatcherAndTreeView() {
 		const config = vscode.workspace.getConfiguration('maestroWorkbench');
 		const filePatterns = config.get<string[]>('filePatterns', [
 			'maestro/**/*.{yaml,yml}',
 			'**/.maestro/**/*.{yaml,yml}'
 		]);
+
+		treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
+		vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
 
 		if (fileWatcher) {
 			fileWatcher.dispose();
@@ -56,9 +57,6 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		context.subscriptions.push(fileWatcher);
-
-		treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
-		vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
 	}
 
 	updateFileWatcherAndTreeView();
