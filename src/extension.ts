@@ -3,6 +3,7 @@ import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './treeView';
 import { IncrementalOutputProcessor } from './terminal_output_processor';
 import { exec } from 'child_process';
+import { promptForRating } from './rating';
 
 let maestroTerminal: vscode.Terminal | undefined;
 let treeDataProvider: MaestroWorkBenchTreeViewProvider | undefined;
@@ -25,6 +26,15 @@ function getOrCreateTerminal(): vscode.Terminal {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+
+	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
+
+	const firstUse = context.globalState.get<number>('firstUse', Date.now());
+	const now = Date.now();
+
+	if (now - firstUse >= TIME_THRESHOLD) {
+		promptForRating(context);
+	}
 
 	function updateFileWatcherAndTreeView() {
 		const config = vscode.workspace.getConfiguration('maestroWorkbench');
