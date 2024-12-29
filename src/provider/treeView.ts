@@ -42,14 +42,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         this._onDidChangeTreeData.fire();
     }
 
-    public updateTestResult(filePath: string, result: 'pass' | 'fail' | 'running' | undefined): void {
-        const fileItem = this.fileItemCache.get(filePath);
-        if (fileItem) {
-            fileItem.testResult = result;
-            this._onDidChangeTreeData.fire(fileItem);
-        }
-    }
-
     private async findFiles(): Promise<string[]> {
         const patterns = `{${this.filePatterns.join(',')}}`;
         const files = await vscode.workspace.findFiles(patterns);
@@ -60,7 +52,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         const entries = await fs.promises.readdir(folderPath, { withFileTypes: true });
         return entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
-            const isFolder = entry.isDirectory();
 
             let fileItem = this.fileItemCache.get(fullPath);
             if (!fileItem) {
@@ -124,7 +115,6 @@ enum FileType {
 }
 
 class FileItem extends vscode.TreeItem {
-    private _testResult: 'pass' | 'fail' | 'running' | undefined;
 
     constructor(
         public readonly label: string,
@@ -136,8 +126,6 @@ class FileItem extends vscode.TreeItem {
         this.resourceUri = resourceUri;
         this.contextValue = contextValue;
 
-        this.updateIcon();
-
         if (contextValue === FileType.File) {
             this.command = {
                 title: 'Open File',
@@ -146,32 +134,6 @@ class FileItem extends vscode.TreeItem {
             };
         } else{
             this.iconPath = vscode.ThemeIcon.Folder;
-        }
-    }
-
-    get testResult(): 'pass' | 'fail' | 'running' | undefined {
-        return this._testResult;
-    }
-
-    set testResult(result: 'pass' | 'fail' | 'running' | undefined) {
-        this._testResult = result;
-        this.updateIcon();
-    }
-
-    private updateIcon() {
-        switch (this._testResult) {
-            case 'pass':
-                this.iconPath = new vscode.ThemeIcon('pass', new vscode.ThemeColor('testing.iconPassed'));
-                break;
-            case 'fail':
-                this.iconPath = new vscode.ThemeIcon('error', new vscode.ThemeColor('testing.iconFailed'));
-                break;
-            case 'running':
-                this.iconPath = new vscode.ThemeIcon('loading~spin');
-                break;
-            default:
-                this.iconPath = vscode.ThemeIcon.File;
-                break;
         }
     }
 }
