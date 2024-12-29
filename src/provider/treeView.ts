@@ -132,7 +132,7 @@ class FileItem extends vscode.TreeItem {
                 command: 'vscode.open',
                 arguments: [resourceUri],
             };
-        } else{
+        } else {
             this.iconPath = vscode.ThemeIcon.Folder;
         }
     }

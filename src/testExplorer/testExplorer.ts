@@ -46,9 +46,9 @@ async function runHandler(
 	}
 
 	token.onCancellationRequested(() => {
-        queue.forEach(test => run.skipped(test));
-        run.end();
-    });
+		queue.forEach(test => run.skipped(test));
+		run.end();
+	});
 
 	while (queue.length > 0) {
 		const test = queue.pop()!;

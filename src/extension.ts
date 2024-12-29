@@ -27,7 +27,7 @@ function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdat
 
 export function activate(context: vscode.ExtensionContext) {
 
-	 const controller = vscode.tests.createTestController(
+	const controller = vscode.tests.createTestController(
 		'maestroWorkbenchTestProvider',
 		'Maestro Tests'
 	);
@@ -47,12 +47,12 @@ export function activate(context: vscode.ExtensionContext) {
 		promptForRating(context);
 	}
 
-	updateFileWatcherAndTreeView(controller, (fileWatcher)=> context.subscriptions.push(fileWatcher));
+	updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
 		if (e.affectsConfiguration('maestroWorkbench.filePatterns')) {
 			vscode.window.showInformationMessage('File patterns updated. Refreshing file watcher and tree view...');
-			updateFileWatcherAndTreeView(controller, (fileWatcher)=> context.subscriptions.push(fileWatcher));
+			updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
 		}
 	});
 
