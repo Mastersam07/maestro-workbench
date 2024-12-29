@@ -1,7 +1,16 @@
 import * as vscode from 'vscode';
-import { exec } from 'child_process';
+import { exec, ChildProcess } from 'child_process';
 
 import { getFilePatterns, getOrCreateTerminal } from '../utils/utils'
+
+export function registerTestProfiles(controller: vscode.TestController) {
+	controller.createRunProfile(
+		'Run Tests',
+		vscode.TestRunProfileKind.Run,
+		(request, token) => runHandler(controller, request, token),
+		true
+	);
+}
 
 export async function discoverTests(controller: vscode.TestController) {
 	const filePatterns = getFilePatterns();
@@ -22,7 +31,7 @@ export async function discoverTests(controller: vscode.TestController) {
 	}
 }
 
-export async function runHandler(
+async function runHandler(
 	controller: vscode.TestController,
 	request: vscode.TestRunRequest,
 	token: vscode.CancellationToken
@@ -36,6 +45,11 @@ export async function runHandler(
 		});
 	}
 
+	token.onCancellationRequested(() => {
+        queue.forEach(test => run.skipped(test));
+        run.end();
+    });
+
 	while (queue.length > 0) {
 		const test = queue.pop()!;
 		if (request.exclude?.includes(test)) {
@@ -44,35 +58,39 @@ export async function runHandler(
 
 		run.started(test);
 
+
 		try {
-			await executeTest(test);
+			await executeTest(test, token);
 			run.passed(test);
 		} catch (error) {
-			if (error instanceof Error) {
-				run.failed(test, new vscode.TestMessage(error.message));
-			} else {
-				run.failed(test, new vscode.TestMessage('An unknown error occurred.'));
-			}
+			const message = error instanceof Error ? error.message : 'An unknown error occurred.';
+			run.failed(test, new vscode.TestMessage(message));
 		}
 	}
 
 	run.end();
 }
 
-function executeTest(test: vscode.TestItem): Promise<void> {
+function executeTest(test: vscode.TestItem, token: vscode.CancellationToken): Promise<ChildProcess> {
 	return new Promise((resolve, reject) => {
-		exec(`maestro test ${test.uri?.fsPath}`, (error, stdout, stderr) => {
-			console.log('stdout:', stdout)
-			console.log('error:', error)
-			console.log('stderr:', stderr)
-			
-			if (error) {
-                const errorMessage = stdout.trim() === '' ? stderr : stdout;
-                reject(new Error(errorMessage));
-            } else {
-                resolve();
-            }
+		const process = exec(`maestro test ${test.uri?.fsPath}`, (error, stdout, stderr) => {
 
+			if (token.isCancellationRequested) {
+				return reject(new Error('Test execution cancelled.'));
+			}
+
+			if (error) {
+				const errorMessage = stdout.trim() === '' ? stderr : stdout;
+				reject(new Error(errorMessage));
+			} else {
+				resolve(process);
+			}
+
+		});
+
+		token.onCancellationRequested(() => {
+			process.kill();
+			reject(new Error('Test execution cancelled.'));
 		});
 	});
 }

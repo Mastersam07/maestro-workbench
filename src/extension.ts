@@ -4,7 +4,7 @@ import { MaestroWorkBenchTreeViewProvider } from './provider/treeView';
 import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
 import { getFilePatterns, getOrCreateTerminal } from './utils/utils'
-import { watchTestFiles, discoverTests, runHandler } from './testExplorer/testExplorer'
+import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer'
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdateCallback: (watcher: vscode.FileSystemWatcher) => void) {
 	const filePatterns = getFilePatterns();
@@ -36,12 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	discoverTests(controller);
 
-	controller.createRunProfile(
-		'Run Tests',
-		vscode.TestRunProfileKind.Run,
-		(request, token) => runHandler(controller, request, token),
-		true
-	);
+	registerTestProfiles(controller);
 
 	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
 
