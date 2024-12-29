@@ -55,15 +55,15 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 
 		fileWatcher.onDidCreate(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
+			if (treeDataProvider) { treeDataProvider.refresh(); }
 		});
 
 		fileWatcher.onDidChange(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
+			if (treeDataProvider) { treeDataProvider.refresh(); }
 		});
 
 		fileWatcher.onDidDelete(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
+			if (treeDataProvider) { treeDataProvider.refresh(); }
 		});
 
 		context.subscriptions.push(fileWatcher);
@@ -80,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
-			if (treeDataProvider) treeDataProvider.refresh();
+			if (treeDataProvider) { treeDataProvider.refresh(); }
 		}),
 	);
 
