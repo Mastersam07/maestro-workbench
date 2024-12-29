@@ -9,6 +9,16 @@ let maestroTerminal: vscode.Terminal | undefined;
 let treeDataProvider: MaestroWorkBenchTreeViewProvider | undefined;
 let fileWatcher: vscode.FileSystemWatcher | undefined;
 
+function getFilePatterns(): string[] {
+	const config = vscode.workspace.getConfiguration('maestroWorkbench');
+	return config.get<string[]>('filePatterns', [
+		"maestro/**/*.yaml",
+		"maestro/**/*.yml",
+		"**/.maestro/**/*.yaml",
+		"**/.maestro/**/*.yml"
+	]);
+}
+
 function getOrCreateTerminal(): vscode.Terminal {
 	if (!maestroTerminal) {
 		maestroTerminal = vscode.window.createTerminal({
@@ -27,6 +37,34 @@ function getOrCreateTerminal(): vscode.Terminal {
 
 export function activate(context: vscode.ExtensionContext) {
 
+	const controller = vscode.tests.createTestController(
+		'maestroWorkbenchTestProvider',
+		'Maestro Workbench Tests'
+	);
+
+	context.subscriptions.push(controller);
+
+	// Discover and add test items to the controller
+	discoverTests(controller);
+
+	// Create run profiles for running tests
+	controller.createRunProfile(
+		'Run Tests',
+		vscode.TestRunProfileKind.Run,
+		(request, token) => runHandler(controller, request, token),
+		true
+	);
+
+	// Register commands
+	context.subscriptions.push(
+		vscode.commands.registerCommand('maestroWorkbench.runTest', (item: vscode.TestItem) => {
+			runSingleTest(controller, item);
+		}),
+		vscode.commands.registerCommand('maestroWorkbench.runFolderTests', (folderUri: vscode.Uri) => {
+			runFolderTests(controller, folderUri);
+		})
+	);
+
 	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
 
 	const firstUse = context.globalState.get<number>('firstUse', Date.now());
@@ -37,11 +75,7 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 
 	function updateFileWatcherAndTreeView() {
-		const config = vscode.workspace.getConfiguration('maestroWorkbench');
-		const filePatterns = config.get<string[]>('filePatterns', [
-			'maestro/**/*.{yaml,yml}',
-			'**/.maestro/**/*.{yaml,yml}'
-		]);
+		const filePatterns = getFilePatterns();
 
 		treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
 		vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
@@ -216,4 +250,91 @@ export function deactivate() {
 	if (fileWatcher) {
 		fileWatcher.dispose();
 	}
+}
+
+async function discoverTests(controller: vscode.TestController) {
+	const filePatterns = getFilePatterns();
+	const includePattern = `{${filePatterns.join(',')}}`;
+
+	try {
+		const files = await vscode.workspace.findFiles(includePattern);
+		files.forEach(file => {
+			console.log('Discovered test file:', file.fsPath);
+			const testItem = controller.createTestItem(file.path, file.path, file);
+			controller.items.add(testItem);
+		});
+	} catch (error) {
+		console.error('Error discovering test files:', error);
+	}
+}
+
+async function runHandler(
+	controller: vscode.TestController,
+	request: vscode.TestRunRequest,
+	token: vscode.CancellationToken
+) {
+	const run = controller.createTestRun(request);
+
+	const queue: vscode.TestItem[] = request.include ? [...request.include] : [];
+	if (!request.include) {
+		controller.items.forEach((testItem) => {
+			queue.push(testItem);
+		});
+	}
+
+	while (queue.length > 0) {
+		const test = queue.pop()!;
+		if (request.exclude?.includes(test)) {
+			continue;
+		}
+
+		run.started(test);
+
+		try {
+			await executeTest(test);
+			run.passed(test);
+		} catch (error) {
+			if (error instanceof Error) {
+				run.failed(test, new vscode.TestMessage(error.message));
+			} else {
+				run.failed(test, new vscode.TestMessage('An unknown error occurred.'));
+			}
+		}
+	}
+
+	run.end();
+}
+
+function executeTest(test: vscode.TestItem): Promise<void> {
+	return new Promise((resolve, reject) => {
+		exec(`maestro test ${test.uri?.fsPath}`, (error, stdout, stderr) => {
+			if (error) {
+				reject(new Error(stderr));
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
+function runSingleTest(controller: vscode.TestController, item: vscode.TestItem) {
+	const request = new vscode.TestRunRequest([item]);
+	runHandler(controller, request, new vscode.CancellationTokenSource().token);
+}
+
+async function runFolderTests(controller: vscode.TestController, folderUri: vscode.Uri) {
+	const pattern = new vscode.RelativePattern(folderUri.fsPath, '**/*.maestro.yaml');
+	const files = await vscode.workspace.findFiles(pattern);
+
+	const testItems = files.map((file) => {
+		let testItem = controller.items.get(file.path);
+		if (!testItem) {
+			testItem = controller.createTestItem(file.path, file.path, file);
+			controller.items.add(testItem);
+		}
+		return testItem;
+	});
+
+	const request = new vscode.TestRunRequest(testItems);
+	runHandler(controller, request, new vscode.CancellationTokenSource().token);
 }
