@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.0] - 2024-12-28
+
+### Added
+
+- Initial release of Maestro Workbench with core features:
+  - YAML Schema Validation and IntelliSense.
+  - Test Execution via CLI integration.
+  - File Management with a dedicated tree view.
+  - Documentation Access with links to official resources.
+
 ## [Unreleased]
 
 ### Added
@@ -33,15 +43,5 @@ All notable changes to this project will be documented in this file.
 
 - Resolved issue where IntelliSense suggestions were not appearing for certain Maestro commands.
 - Fixed bug causing the extension to crash when opening non-YAML files.
-
-## [0.1.0] - 2024-12-28
-
-### Added
-
-- Initial release of Maestro Workbench with core features:
-  - YAML Schema Validation and IntelliSense.
-  - Test Execution via CLI integration.
-  - File Management with a dedicated tree view.
-  - Documentation Access with links to official resources.
 
 [0.1.0]: https://github.com/Mastersam07/maestro-workbench/releases/tag/v0.1.0
