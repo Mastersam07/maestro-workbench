@@ -212,7 +212,7 @@ class FileItem extends vscode.TreeItem {
 
         this.setIcon();
 
-        if (contextValue === FileType.File || contextValue === FileType.Dependency ) {
+        if (contextValue === FileType.File || contextValue === FileType.Dependency) {
             this.command = {
                 title: 'Open File',
                 command: 'vscode.open',
@@ -222,8 +222,12 @@ class FileItem extends vscode.TreeItem {
     }
 
     private setIcon() {
-        if (this.icon) {
-            this.iconPath = new vscode.ThemeIcon(this.icon);
+        if (this.contextValue === FileType.Dependency) {
+            if (this.icon === 'error') {
+                this.iconPath = new vscode.ThemeIcon('error', new vscode.ThemeColor('testing.iconErrored'));
+            } else if (this.icon === 'link') {
+                this.iconPath = new vscode.ThemeIcon('link', new vscode.ThemeColor('testing.iconPassed'));
+            }
         } else if (this.contextValue === FileType.File) {
             this.iconPath = vscode.ThemeIcon.File;
         } else if (this.contextValue === FileType.Folder) {
