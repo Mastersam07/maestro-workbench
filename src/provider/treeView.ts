@@ -209,7 +209,7 @@ class FileItem extends vscode.TreeItem {
 
         this.setIcon();
 
-        if (contextValue === FileType.File) {
+        if (contextValue === FileType.File || contextValue === FileType.Dependency ) {
             this.command = {
                 title: 'Open File',
                 command: 'vscode.open',
