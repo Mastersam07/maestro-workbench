@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { exec, ChildProcess } from 'child_process';
 
 import { getFilePatterns } from '../utils/utils';
+import { globalState } from '../state/state';
 
 export function registerTestProfiles(controller: vscode.TestController) {
 	controller.createRunProfile(
@@ -96,36 +97,45 @@ function executeTest(test: vscode.TestItem, token: vscode.CancellationToken): Pr
 }
 
 export function watchTestFiles(controller: vscode.TestController) {
-	const filePatterns = getFilePatterns();
-	const watcher = vscode.workspace.createFileSystemWatcher(`{${filePatterns.join(',')}}`);
 
-	watcher.onDidCreate(uri => {
+	if (globalState.fileWatcher) {
+		globalState.fileWatcher?.dispose();
+	}
+
+	globalState.fileWatcher = vscode.workspace.createFileSystemWatcher("**/*.{yaml,yml}");
+
+	globalState.fileWatcher.onDidCreate(uri => {
 		addTestFile(controller, uri);
+		globalState.treeDataProvider?.refresh();
 	});
 
-	watcher.onDidChange(uri => {
+	globalState.fileWatcher.onDidChange(uri => {
 		updateTestFile(controller, uri);
+		globalState.treeDataProvider?.refresh();
 	});
 
-	watcher.onDidDelete(uri => {
+	globalState.fileWatcher.onDidDelete(uri => {
 		removeTestFile(controller, uri);
+		globalState.treeDataProvider?.refresh();
 	});
 
-	return watcher;
+	return globalState.fileWatcher;
 }
 
 function addTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	const testItem = controller.createTestItem(uri.toString(), uri.path);
+	const relativePath = vscode.workspace.asRelativePath(uri);
+	const testName = relativePath.replace(/\.(yaml|yml)$/, '');
+	const testItem = controller.createTestItem(uri.path, testName, uri);
 	controller.items.add(testItem);
 }
 
 function updateTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	const testItem = controller.items.get(uri.toString());
-	if (testItem) { }
+	removeTestFile(controller, uri);
+	addTestFile(controller, uri);
 }
 
 function removeTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	controller.items.delete(uri.toString());
+	controller.items.delete(uri.path);
 }
 
 
