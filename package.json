@@ -2,16 +2,45 @@
   "name": "maestro-workbench",
   "displayName": "Maestro Workbench",
   "description": "A VS Code extension for Maestro YAML validation, IntelliSense, and testing.",
-  "version": "0.0.1",
+  "publisher": "Mastersam",
+  "license": "MIT",
+  "version": "0.1.1",
+  "icon": "assets/icon.png",
+  "author": {
+    "email": "abadasamuelosp@gmail.com",
+    "name": "Samuel Abada",
+    "url": "https://github.com/mastersam07"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mastersam07/maestro-workbench"
+  },
+  "bugs": {
+    "url": "https://github.com/Mastersam07/maestro-workbench/issues",
+    "email": "abadasamuelosp@gmail.com"
+  },
   "engines": {
-    "vscode": "^1.96.0"
+    "vscode": "^1.61.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Snippets",
+    "Extension Packs",
+    "Debuggers",
+    "Linters",
+    "Testing"
   ],
+  "keywords": [
+    "maestro",
+    "tests",
+    "ui testing",
+    "ui test",
+    "maestro studio",
+    "yaml"
+  ],
+  "homepage": "https://github.com/Mastersam07/maestro-workbench",
   "activationEvents": [
-    "workspaceContains:maestro",
-    "workspaceContains:.maestro"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -86,18 +115,6 @@
           "when": "view == maestroBenchTreeView",
           "group": "navigation"
         }
-      ],
-      "view/item/context": [
-        {
-          "command": "maestroWorkbench.runTest",
-          "when": "viewItem == file",
-          "group": "inline"
-        },
-        {
-          "command": "maestroWorkbench.runFolderTests",
-          "when": "viewItem == folder",
-          "group": "inline"
-        }
       ]
     },
     "snippets": [
@@ -116,8 +133,10 @@
             "type": "string"
           },
           "default": [
-            "maestro/**/*.{yaml,yml}",
-            "**/.maestro/**/*.{yaml,yml}"
+            "maestro/**/*.yaml",
+            "maestro/**/*.yml",
+            "**/.maestro/**/*.yaml",
+            "**/.maestro/**/*.yml"
           ],
           "description": "Glob patterns to locate Maestro files. You can customize these to include or exclude specific directories."
         }
@@ -140,9 +159,9 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
+    "@types/vscode": "^1.61.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
-    "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "@vscode/test-cli": "^0.0.10",

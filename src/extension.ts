@@ -1,77 +1,64 @@
 import * as vscode from 'vscode';
-import * as fs from "fs";
 import * as path from "path";
-import { MaestroWorkBenchTreeViewProvider } from './treeView';
+import { MaestroWorkBenchTreeViewProvider } from './provider/treeView';
+import { promptForRating } from './utils/rating';
+import { globalState } from './state/state';
+import { getFilePatterns, getOrCreateTerminal } from './utils/utils'
+import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer'
 
-let maestroTerminal: vscode.Terminal | undefined;
-let treeDataProvider: MaestroWorkBenchTreeViewProvider | undefined;
-let fileWatcher: vscode.FileSystemWatcher | undefined;
+function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdateCallback: (watcher: vscode.FileSystemWatcher) => void) {
+	const filePatterns = getFilePatterns();
 
-function getOrCreateTerminal(): vscode.Terminal {
-	if (!maestroTerminal) {
-		maestroTerminal = vscode.window.createTerminal({
-			name: "Maestro Test",
-		});
+	globalState.treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
+	vscode.window.registerTreeDataProvider('maestroBenchTreeView', globalState.treeDataProvider);
 
-		maestroTerminal.show();
-		vscode.window.onDidCloseTerminal((closedTerminal) => {
-			if (closedTerminal.name === "Maestro Test") {
-				maestroTerminal = undefined;
-			}
-		});
+	if (globalState.fileWatcher) {
+		globalState.fileWatcher.dispose();
 	}
-	return maestroTerminal;
+
+	globalState.fileWatcher = vscode.workspace.createFileSystemWatcher(
+		`{${filePatterns.join(',')}}`
+	);
+
+	watchTestFiles(controller);
+
+	onUpdateCallback;
 }
 
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('Maestro-workbench is now active!');
+	const controller = vscode.tests.createTestController(
+		'maestroWorkbenchTestProvider',
+		'Maestro Tests'
+	);
 
-	function updateFileWatcherAndTreeView() {
-		const config = vscode.workspace.getConfiguration('maestroWorkbench');
-		const filePatterns = config.get<string[]>('filePatterns', [
-			'maestro/**/*.{yaml,yml}',
-			'**/.maestro/**/*.{yaml,yml}'
-		]);
+	context.subscriptions.push(controller);
 
-		if (fileWatcher) {
-			fileWatcher.dispose();
-		}
+	discoverTests(controller);
 
-		fileWatcher = vscode.workspace.createFileSystemWatcher(
-			`{${filePatterns.join(',')}}`
-		);
+	registerTestProfiles(controller);
 
-		fileWatcher.onDidCreate(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
-		});
+	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
 
-		fileWatcher.onDidChange(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
-		});
+	const firstUse = context.globalState.get<number>('firstUse', Date.now());
+	const now = Date.now();
 
-		fileWatcher.onDidDelete(() => {
-			if (treeDataProvider) treeDataProvider.refresh();
-		});
-
-		context.subscriptions.push(fileWatcher);
-
-		treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
-		vscode.window.registerTreeDataProvider('maestroBenchTreeView', treeDataProvider);
+	if (now - firstUse >= TIME_THRESHOLD) {
+		promptForRating(context);
 	}
 
-	updateFileWatcherAndTreeView();
+	updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
 		if (e.affectsConfiguration('maestroWorkbench.filePatterns')) {
 			vscode.window.showInformationMessage('File patterns updated. Refreshing file watcher and tree view...');
-			updateFileWatcherAndTreeView();
+			updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
 		}
 	});
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
-			if (treeDataProvider) treeDataProvider.refresh();
+			if (globalState.treeDataProvider) { globalState.treeDataProvider.refresh(); }
 		}),
 	);
 
@@ -79,83 +66,6 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('maestroWorkbench.openMaestroStudio', () => {
 			const terminal = getOrCreateTerminal();
 			terminal.sendText("maestro studio");
-		})
-	);
-
-	context.subscriptions.push(
-		vscode.commands.registerCommand('maestroWorkbench.runTest', async (item: vscode.TreeItem) => {
-			const filePath = item.resourceUri!.fsPath;
-			vscode.window.showInformationMessage(`Running test for file: ${filePath}`);
-
-			treeDataProvider?.updateTestResult(filePath, 'running');
-
-			const terminal = getOrCreateTerminal();
-			terminal.show();
-			// terminal.sendText(`maestro test ${filePath}`);
-
-			// Simulate test execution (replace with actual logic)
-			setTimeout(() => {
-				const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Simulated result
-				treeDataProvider?.updateTestResult(filePath, result);
-				vscode.window.showInformationMessage(`Test for "${filePath}" ${result === 'pass' ? 'passed' : 'failed'}.`);
-			}, 2000);
-		})
-	);
-
-	context.subscriptions.push(
-		vscode.commands.registerCommand('maestroWorkbench.runFolderTests', async (item: vscode.TreeItem) => {
-			const folderPath = item.resourceUri!.fsPath;
-
-			// Find all test files in the folder
-			const testFiles = await vscode.workspace.findFiles(
-				new vscode.RelativePattern(folderPath, '**/*.{yaml,yml}')
-			);
-
-			if (!testFiles.length) {
-				vscode.window.showInformationMessage(`No test files found in folder: ${folderPath}`);
-				return;
-			}
-
-			// Set the folder status to 'running'
-			treeDataProvider?.updateTestResult(folderPath, 'running');
-
-			const terminal = getOrCreateTerminal();
-			terminal.show();
-			// terminal.sendText(`maestro test ${folderPath}`);
-
-			let atLeastOneFailed = false;
-
-			for (const testFile of testFiles) {
-				const filePath = testFile.fsPath;
-
-				// Set individual test file status to 'running'
-				treeDataProvider?.updateTestResult(filePath, 'running');
-
-				// Simulate test execution
-				await new Promise((resolve) => {
-					setTimeout(() => {
-						const result = Math.random() > 0.5 ? 'pass' : 'fail'; // Randomized result
-
-						// Update the file's status
-						treeDataProvider?.updateTestResult(filePath, result);
-
-						// Track if at least one test failed
-						if (result === 'fail') {
-							atLeastOneFailed = true;
-						}
-
-						resolve(result);
-					}, 1000); // Simulate 1 second per test
-				});
-			}
-
-			// Update the folder's status based on test results
-			const folderResult = atLeastOneFailed ? 'fail' : 'pass';
-			treeDataProvider?.updateTestResult(folderPath, folderResult);
-
-			vscode.window.showInformationMessage(
-				`Tests completed in folder: ${folderPath}. Result: ${folderResult.toUpperCase()}`
-			);
 		})
 	);
 
@@ -178,7 +88,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-	if (fileWatcher) {
-		fileWatcher.dispose();
-	}
+	globalState.fileWatcher?.dispose();
+	globalState.maestroTerminal?.dispose();
 }
