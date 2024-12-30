@@ -115,18 +115,6 @@
           "when": "view == maestroBenchTreeView",
           "group": "navigation"
         }
-      ],
-      "view/item/context": [
-        {
-          "command": "maestroWorkbench.runTest",
-          "when": "viewItem == file",
-          "group": "inline"
-        },
-        {
-          "command": "maestroWorkbench.runFolderTests",
-          "when": "viewItem == folder",
-          "group": "inline"
-        }
       ]
     },
     "snippets": [
