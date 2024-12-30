@@ -6,23 +6,15 @@ import { globalState } from './state/state';
 import { getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
 
-function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdateCallback: (watcher: vscode.FileSystemWatcher) => void) {
+function updateFileWatcherAndTreeView(controller: vscode.TestController, context: vscode.ExtensionContext) {
 	const filePatterns = getFilePatterns();
 
 	globalState.treeDataProvider = new MaestroWorkBenchTreeViewProvider(filePatterns);
 	vscode.window.registerTreeDataProvider('maestroBenchTreeView', globalState.treeDataProvider);
 
-	if (globalState.fileWatcher) {
-		globalState.fileWatcher.dispose();
-	}
+	const watcher = watchTestFiles(controller);
 
-	globalState.fileWatcher = vscode.workspace.createFileSystemWatcher(
-		`{${filePatterns.join(',')}}`
-	);
-
-	watchTestFiles(controller);
-
-	onUpdateCallback;
+	context.subscriptions.push(globalState.fileWatcher ?? watcher);
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -47,12 +39,12 @@ export function activate(context: vscode.ExtensionContext) {
 		promptForRating(context);
 	}
 
-	updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
+	updateFileWatcherAndTreeView(controller, context);
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
 		if (e.affectsConfiguration('maestroWorkbench.filePatterns')) {
-			vscode.window.showInformationMessage('File patterns updated. Refreshing file watcher and tree view...');
-			updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
+			vscode.window.showInformationMessage('Maestro File patterns updated. Refreshing workbench...');
+			updateFileWatcherAndTreeView(controller, context);
 			updateYamlSchemaAssociations(schemaPath);
 		}
 	});

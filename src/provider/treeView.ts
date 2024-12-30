@@ -31,7 +31,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
 
         if (element) {
-            console.log(`element.contextValue: ${element.contextValue}`)
             if (element.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(element.resourceUri.fsPath) || [];
                 const uniqueDependencies = new Set(dependencies);
@@ -173,6 +172,10 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                         doc.forEach((flow) => {
                             if (flow.runFlow && flow.runFlow.file) {
                                 const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
+                                dependencies.add(dependencyPath);
+                            }
+                            if (flow.runScript && flow.runScript.file) {
+                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
                                 dependencies.add(dependencyPath);
                             }
                         });
