@@ -5,7 +5,6 @@ import * as yaml from 'js-yaml';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
-    private fileItemCache: Map<string, FileItem> = new Map();
     private dependencyMap: Map<string, string[]> = new Map();
 
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined | void> =
@@ -61,7 +60,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                             ? vscode.TreeItemCollapsibleState.Collapsed
                             : vscode.TreeItemCollapsibleState.None;
                 }
-                this.fileItemCache.set(item.resourceUri.fsPath, item);
             });
 
             return treeItems;
@@ -84,18 +82,13 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         const fileItems = entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
 
-            let fileItem = this.fileItemCache.get(fullPath);
-            if (!fileItem) {
-                const isFolder = entry.isDirectory();
-                fileItem = new FileItem(
-                    entry.name,
-                    isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
-                    vscode.Uri.file(fullPath),
-                    isFolder ? FileType.Folder : FileType.File
-                );
-                this.fileItemCache.set(fullPath, fileItem);
-            }
-            return fileItem;
+            const isFolder = entry.isDirectory();
+            return new FileItem(
+                entry.name,
+                isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+                vscode.Uri.file(fullPath),
+                isFolder ? FileType.Folder : FileType.File
+            );
         });
 
         const filePaths = fileItems
@@ -120,7 +113,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
     private createTreeItemsFromPaths(filePaths: string[], rootPath: string): FileItem[] {
         const tree: { [key: string]: any } = {};
 
-        // Build a hierarchical structure
         filePaths.forEach((filePath) => {
             const relativePath = path.relative(rootPath, filePath);
             const parts = relativePath.split(path.sep);
@@ -142,18 +134,12 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             const fullPath = path.join(parentPath, key);
             const isFolder = typeof value === 'object';
 
-            let fileItem = this.fileItemCache.get(fullPath);
-            if (!fileItem) {
-                const isFolder = typeof value === 'object';
-                fileItem = new FileItem(
-                    key,
-                    isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
-                    vscode.Uri.file(fullPath),
-                    isFolder ? FileType.Folder : FileType.File
-                );
-                this.fileItemCache.set(fullPath, fileItem);
-            }
-            return fileItem;
+            return new FileItem(
+                key,
+                isFolder ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None,
+                vscode.Uri.file(fullPath),
+                isFolder ? FileType.Folder : FileType.File
+            );
         });
     }
 
