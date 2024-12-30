@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { exec, ChildProcess } from 'child_process';
 
-import { getFilePatterns } from '../utils/utils'
+import { getFilePatterns } from '../utils/utils';
 
 export function registerTestProfiles(controller: vscode.TestController) {
 	controller.createRunProfile(

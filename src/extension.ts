@@ -3,8 +3,8 @@ import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './provider/treeView';
 import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
-import { getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils'
-import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer'
+import { getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
+import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdateCallback: (watcher: vscode.FileSystemWatcher) => void) {
 	const filePatterns = getFilePatterns();
