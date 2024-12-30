@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2024-12-30
+
+### Changed
+
+- Apply schema configuration for maestro file patterns only
+
+## [0.2.1] - 2024-12-30
+
+### Fixed
+
+update global schema configuration for maestro file patterns only
+
+- Resolved issue with jsonSchema
+
+## [0.2.0] - 2024-12-29
+
+### Added
+
+- Test explorer:
+  - View all tests in test explorer.
+  - Run tests in test explorer.
+  - Stop running/queued up tests.
+  - View test logs.
+
 ## [0.1.0] - 2024-12-28
 
 ### Added

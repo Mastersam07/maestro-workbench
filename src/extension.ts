@@ -3,8 +3,8 @@ import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './provider/treeView';
 import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
-import { getFilePatterns, getOrCreateTerminal } from './utils/utils'
-import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer'
+import { getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
+import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, onUpdateCallback: (watcher: vscode.FileSystemWatcher) => void) {
 	const filePatterns = getFilePatterns();
@@ -53,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (e.affectsConfiguration('maestroWorkbench.filePatterns')) {
 			vscode.window.showInformationMessage('File patterns updated. Refreshing file watcher and tree view...');
 			updateFileWatcherAndTreeView(controller, (fileWatcher) => context.subscriptions.push(fileWatcher));
+			updateYamlSchemaAssociations(schemaPath);
 		}
 	});
 
@@ -70,21 +71,8 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
-	const currentSchemas = vscode.workspace.getConfiguration('yaml').get('schemas', {});
 
-	vscode.workspace.getConfiguration('yaml').update(
-		'schemas',
-		{
-			...currentSchemas,
-			[schemaPath]: [
-				'maestro.yaml',
-				'**/*.maestro.yaml',
-				'**/maestro/**',
-				'**/.maestro/**',
-			],
-		},
-		vscode.ConfigurationTarget.Workspace
-	);
+	updateYamlSchemaAssociations(schemaPath);
 }
 
 export function deactivate() {
