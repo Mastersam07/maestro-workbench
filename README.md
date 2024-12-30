@@ -19,25 +19,29 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
 - **IntelliSense and Syntax Highlighting**: Provides code completions and highlights syntax for Maestro YAML files, reducing errors and improving readability. For a table of supported commands, see [here](https://github.com/Mastersam07/maestro-workbench/blob/dev/COMMAND.md).
 
-- **Test Execution with Feedback**: Run your Maestro tests directly from the integrated tree view and receive real-time feedback on their status—running, passed, or failed.
+- **Schema Validation**: Ensure the correctness of your Maestro YAML files with integrated schema validation, highlighting errors and enforcing best practices.
 
-  https://github.com/user-attachments/assets/508c40c1-ffa9-4697-be01-d20b0508f88e
+  https://github.com/user-attachments/assets/35543dba-094e-43eb-bba4-443ba16205ad
+
+- **Test Execution with Feedback**: Run your Maestro tests directly from the test explorer, receive real-time feedback on their status—running, passed, or failed and view outputs.
+
+  https://github.com/user-attachments/assets/27043757-1dd6-4227-a206-7e961fa8a3e7
+
+  https://github.com/user-attachments/assets/0bd7246e-3e42-41af-83af-d14211f56803
 
 - **Snippets**: Utilize predefined code snippets to quickly scaffold Maestro commands and flows, enhancing productivity.
 
-  https://github.com/user-attachments/assets/bb8b59f9-fc79-46be-97f7-de00a116dbfb
+  https://github.com/user-attachments/assets/bacb850d-e74a-4008-9fed-30434d4254dd
 
 - **Customizable File Patterns**: Configure the extension to detect Maestro YAML files based on your project's structure by setting custom file patterns.
 
-  https://github.com/user-attachments/assets/f78a368e-250f-4213-85d5-a3dab8e28662
+  https://github.com/user-attachments/assets/4c72c7e0-2eeb-4ab3-9bf7-8fec572b2b6f
 
-- **Integrated Tree View**: Visualize and manage your Maestro test files within a dedicated tree view, providing quick access and organization.
+- **Integrated Tree View**: Visualize and manage your Maestro test files within a dedicated tree view, providing quick access and organization as well as viewing flow dependencies.
 
-- **Real-Time Test Status Updates**: Receive immediate feedback on test statuses—running, passed, or failed—directly within the tree view, streamlining your testing workflow.
+  https://github.com/user-attachments/assets/b2b8d083-b1fa-4ae3-a5c3-e9a2f7f388d4
 
-- **Maestro Studio Integration**: Launch Maestro Studio directly from the extension to design and debug your test flows in a user-friendly interface.
-
-- **Schema Validation**: Ensure the correctness of your Maestro YAML files with integrated schema validation, highlighting errors and enforcing best practices.
+- **Maestro Studio Integration**: Launch Maestro Studio directly from the extension.
 
 ## Requirements
 
@@ -59,12 +63,6 @@ Maestro Workbench allows customization of file patterns to detect Maestro YAML f
 ```
 
 To modify these patterns, navigate to your VS Code settings and update the maestroWorkbench.filePatterns configuration.
-
-## Known Issues
-
-- Currently, the extension does not support automatic detection of changes in the Maestro configuration. After updating your Maestro setup, please reload the window to apply the changes.
-
-- Some users may experience delays in test execution feedback. This is being addressed in upcoming releases.
 
 ## Contributing
 
