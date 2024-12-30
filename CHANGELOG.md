@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2024-12-30
+
+### Fixed
+
+- Resolved issue with jsonSchema
+
 ## [0.2.0] - 2024-12-29
 
 ### Added
