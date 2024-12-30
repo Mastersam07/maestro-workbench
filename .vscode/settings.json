@@ -10,12 +10,4 @@
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "yaml.schemas": {
-        "file:///Users/codefarmer/.vscode/extensions/mastersam.maestro-workbench-0.2.0/schema/schema.v0.json": [
-            "maestro.yaml",
-            "**/*.maestro.yaml",
-            "**/maestro/**",
-            "**/.maestro/**"
-        ]
-    }
 }

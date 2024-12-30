@@ -26,3 +26,18 @@ export function getOrCreateTerminal(): vscode.Terminal {
     }
     return globalState.maestroTerminal;
 }
+
+export async function updateYamlSchemaAssociations(schemaPath: string) {
+    const yamlConfig = vscode.workspace.getConfiguration('yaml');
+
+    const currentSchemas = yamlConfig.get<{ [key: string]: string[] }>('schemas') || {};
+
+    const filePatterns = getFilePatterns();
+
+    const updatedSchemas = {
+        ...currentSchemas,
+        [schemaPath]: filePatterns,
+    };
+
+    await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Global);
+}
