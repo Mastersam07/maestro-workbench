@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2024-12-30
+
+### Added
+
+- Workbench:
+  - View flow dependencies (e.g., runFlow references, runScript references).
+
+### Fixed
+
+- Update test explorer on adding and removing test flow
+- Update workbench with on adding and removing test flow
+
 ## [0.2.2] - 2024-12-30
 
 ### Changed
