@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2025-01-02
+
+### Added
+
+- Flow configurations:
+  - Added support for env.
+  - Added support for onFlowStart.
+  - Added support for onFlowComplete.
+
 ## [0.3.0] - 2024-12-30
 
 ### Added
