@@ -41,3 +41,23 @@ export async function updateYamlSchemaAssociations(schemaPath: string) {
 
     await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Global);
 }
+
+export function checkYamlExtension() {
+    const yamlExtension = vscode.extensions.getExtension('redhat.vscode-yaml');
+
+    if (!yamlExtension) {
+        vscode.window
+            .showWarningMessage('The YAML extension is not installed. Some features of Maestro Workbench may not work correctly. Would you like to install it?', 'Install', 'Cancel')
+            .then(selection => {
+                if (selection === 'Install') {
+                    vscode.commands.executeCommand('workbench.extensions.search', 'redhat.vscode-yaml');
+                }
+            });
+    } else if (!yamlExtension.isActive) {
+        Promise.resolve(yamlExtension.activate()).then(() => {
+            vscode.window.showInformationMessage('YAML extension activated successfully for Maestro Workbench.');
+        }).catch(() => {
+            vscode.window.showErrorMessage('Failed to activate the YAML extension. Some features may not work correctly.');
+        });
+    }
+}

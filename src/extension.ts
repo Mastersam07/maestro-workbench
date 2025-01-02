@@ -3,8 +3,9 @@ import * as path from "path";
 import { MaestroWorkBenchTreeViewProvider } from './provider/treeView';
 import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
-import { getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
+import { checkYamlExtension, getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
+
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, context: vscode.ExtensionContext) {
 	const filePatterns = getFilePatterns();
@@ -18,6 +19,7 @@ function updateFileWatcherAndTreeView(controller: vscode.TestController, context
 }
 
 export function activate(context: vscode.ExtensionContext) {
+	checkYamlExtension();
 
 	const controller = vscode.tests.createTestController(
 		'maestroWorkbenchTestProvider',

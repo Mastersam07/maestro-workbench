@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-01-02
+
+### Fixed
+
+- Failed initialization on certan ends
+
+### Added
+
+- Enforce `redhat.vscode-yaml` as dependency of maestro workbench
+
 ## [0.3.2] - 2025-01-02
 
 ### Fixed
