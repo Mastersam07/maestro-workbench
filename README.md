@@ -66,7 +66,7 @@ To modify these patterns, navigate to your VS Code settings and update the maest
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit pull requests for any enhancements or bug fixes.
+Contributions are welcome! Please fork the repository and submit pull requests for any enhancements or bug fixes. For detailed guidelines, refer to our [CONTRIBUTING.md](https://github.com/Mastersam07/maestro-workbench/blob/dev/CONTRIBUTING.md).
 
 ## Star Our Repository
 
