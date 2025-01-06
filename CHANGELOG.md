@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2025-01-06
+
+### Fixed
+
+- Resolved an issue where multiple schema associations from different extension versions were not properly updated, ensuring only the latest schema is associated with Maestro YAML files.
+
+
 ## [0.4.0] - 2025-01-02
 
 ### Fixed

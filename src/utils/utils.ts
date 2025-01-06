@@ -34,10 +34,13 @@ export async function updateYamlSchemaAssociations(schemaPath: string) {
 
     const filePatterns = getFilePatterns();
 
-    const updatedSchemas = {
-        ...currentSchemas,
-        [schemaPath]: filePatterns,
-    };
+    const updatedSchemas = Object.fromEntries(
+        Object.entries(currentSchemas).filter(
+            ([, patterns]) => !patterns.some(pattern => filePatterns.includes(pattern))
+        )
+    );
+
+    updatedSchemas[schemaPath] = filePatterns;
 
     await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Global);
 }
