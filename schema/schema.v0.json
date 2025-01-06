@@ -27,6 +27,7 @@
             },
             "assertNotVisible": {
                 "title": "assertNotVisible",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "description": "Assert whether an element is not visible.",
                 "type": [
                     "string",
@@ -70,6 +71,7 @@
             },
             "assertVisible": {
                 "title": "assertVisible",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "description": "Assert whether an element is visible.",
                 "type": [
                     "string",
@@ -110,6 +112,7 @@
             },
             "assertTrue": {
                 "title": "assertTrue",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "description": "A JavaScript expression to assert its truthiness.",
                 "type": [
                     "string",
@@ -118,10 +121,6 @@
                 "properties": {
                     "condition": {
                         "title": "assertTrue.condition",
-                        "type": "string"
-                    },
-                    "label": {
-                        "title": "assertTrue.label",
                         "type": "string"
                     }
                 },
@@ -153,6 +152,7 @@
             },
             "extendedWaitUntil": {
                 "title": "extendedWaitUntil",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "description": "Command to wait until an element becomes visible or disappears within a specified timeout.",
                 "type": "object",
                 "additionalProperties": false,
@@ -239,6 +239,7 @@
             },
             "launchApp": {
                 "title": "Launch the app.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "description": "Launches the app under test without additional configurations.",
                 "type": [
                     "null",
@@ -334,6 +335,7 @@
             "repeat": {
                 "title": "repeat",
                 "description": "Command to repeat a set of commands either a specific number of times or until a condition is met.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
@@ -403,6 +405,7 @@
             "runFlow": {
                 "title": "runFlow",
                 "description": "Command to run a flow from a specified file or execute inline commands.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "object",
                     "string"
@@ -483,6 +486,8 @@
             "runScript": {
                 "title": "runScript",
                 "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
+                "type": "object",
                 "properties": {
                     "file": {
                         "title": "runScript.file",
@@ -541,6 +546,7 @@
             "scrollUntilVisible": {
                 "title": "scrollUntilVisible",
                 "description": "Command to scroll towards a direction until the specified element becomes visible.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
@@ -616,6 +622,7 @@
             "swipe": {
                 "title": "swipe",
                 "description": "Command to perform swipe gestures with control over start and end points, direction, speed, and optional element targeting.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
@@ -695,6 +702,7 @@
             "tapOn": {
                 "title": "tapOn",
                 "description": "Command to tap on a view, specified using text, ID, point, or detailed selectors.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "object",
                     "string"
@@ -742,9 +750,6 @@
                     "selected": {
                         "type": "boolean",
                         "description": "Matches element with the specified selected state."
-                    },
-                    "optional": {
-                        "type": "boolean"
                     },
                     "retryTapIfNoChange": {
                         "type": "boolean",
@@ -818,6 +823,7 @@
             "doubleTapOn": {
                 "title": "doubleTapOn",
                 "description": "Command to double tap on a view, specified using text, ID, point, or detailed selectors.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "object",
                     "string"
@@ -865,9 +871,6 @@
                     "selected": {
                         "type": "boolean",
                         "description": "Matches element with the specified selected state."
-                    },
-                    "optional": {
-                        "type": "boolean"
                     },
                     "retryTapIfNoChange": {
                         "type": "boolean",
@@ -937,6 +940,7 @@
             "longPressOn": {
                 "title": "longPressOn",
                 "description": "Long press a view on the screen.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "object",
                     "string"
@@ -984,9 +988,6 @@
                     "selected": {
                         "type": "boolean",
                         "description": "Matches element with the specified selected state."
-                    },
-                    "optional": {
-                        "type": "boolean"
                     },
                     "retryTapIfNoChange": {
                         "type": "boolean",
@@ -1044,6 +1045,7 @@
             "waitForAnimationToEnd": {
                 "title": "waitForAnimationToEnd",
                 "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "null",
                     "object"
@@ -1093,6 +1095,7 @@
             "travel": {
                 "title": "travel",
                 "type": "object",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "properties": {
                     "points": {
                         "title": "travel.points",
@@ -1165,6 +1168,7 @@
             },
             "openLink": {
                 "title": "openLink",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
                 "type": [
                     "string",
@@ -1256,6 +1260,7 @@
             },
             "takeScreenshot": {
                 "title": "takeScreenshot",
+                "allOf": [{ "$ref": "#/$defs/Command" }],
                 "type": [
                     "string",
                     "object"
@@ -1408,6 +1413,19 @@
                 "optional": {
                     "type": "boolean",
                     "title": "If set to true, test won't fail if view can't be found",
+                    "default": false
+                }
+            }
+        },
+        "Command": {
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "description": "A human-readable label for the command"
+                },
+                "optional": {
+                    "type": "boolean",
+                    "description": "If set to true, test won't fail if the command fails",
                     "default": false
                 }
             }
