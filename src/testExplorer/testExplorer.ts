@@ -22,7 +22,7 @@ export async function discoverTests(controller: vscode.TestController) {
 		files.forEach(file => {
 
 			const relativePath = vscode.workspace.asRelativePath(file);
-			const testName = relativePath.replace(/\.(yaml|yml)$/, '');
+			const testName = relativePath;
 
 			const testItem = controller.createTestItem(file.path, testName, file);
 			controller.items.add(testItem);
