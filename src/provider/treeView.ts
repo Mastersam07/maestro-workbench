@@ -160,9 +160,24 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                                 const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
                                 dependencies.add(dependencyPath);
                             }
+
                             if (flow.runScript && flow.runScript.file) {
                                 const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
                                 dependencies.add(dependencyPath);
+                            }
+
+                            if (flow.addMedia) {
+                                if (Array.isArray(flow.addMedia)) {
+                                    flow.addMedia.forEach((mediaFile: string) => {
+                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                        dependencies.add(dependencyPath);
+                                    });
+                                } else if (flow.addMedia.files && Array.isArray(flow.addMedia.files)) {
+                                    flow.addMedia.files.forEach((mediaFile: string) => {
+                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                        dependencies.add(dependencyPath);
+                                    });
+                                }
                             }
                         });
                     }
