@@ -74,7 +74,20 @@ async function runHandler(
 
 function executeTest(test: vscode.TestItem, token: vscode.CancellationToken): Promise<ChildProcess> {
 	return new Promise((resolve, reject) => {
-		const process = exec(`maestro test ${test.uri?.fsPath}`, (error, stdout, stderr) => {
+
+		const { uri } = test;
+		if (!uri) {
+			return reject(new Error('Test item URI is undefined.'));
+		}
+
+		const { fsPath } = uri;
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri)?.uri.fsPath;
+
+		if (!workspaceFolder) {
+			return reject(new Error('Workspace folder is undefined.'));
+		}
+
+		const process = exec(`maestro test ${fsPath}`, { cwd: workspaceFolder }, (error, stdout, stderr) => {
 
 			if (token.isCancellationRequested) {
 				return reject(new Error('Test execution cancelled.'));
