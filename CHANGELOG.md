@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.2] - 2025-01-09
+
+### Fixed
+
+- Set current working directory on running test process
+- [Unable to run tests that take screenshots](https://github.com/Mastersam07/maestro-workbench/issues/17)
+
 ## [0.4.1] - 2025-01-06
 
 ### Fixed
