@@ -10,19 +10,64 @@
         "additionalProperties": false,
         "properties": {
             "addMedia": {
-                "title": "addMedia",
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "pattern": "^\\.\/assets\/.*\\.(png|jpeg|jpg|gif|mp4)$"
-                },
-                "minItems": 1,
-                "description": "List of media file paths to add to the device's gallery",
-                "examples": [
-                    [
-                        "./assets/image1.png",
-                        "./assets/video1.mp4"
-                    ]
+                "oneOf": [
+                    {
+                        "title": "addMedia",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "pattern": "^.*\\.(png|jpeg|jpg|gif|mp4)$"
+                        },
+                        "minItems": 1,
+                        "description": "List of media file paths to add to the device's gallery.",
+                        "examples": [
+                            [
+                                "./assets/image1.png",
+                                "./assets/video1.mp4"
+                            ]
+                        ]
+                    },
+                    {
+                        "title": "addMedia",
+                        "type": "object",
+                        "properties": {
+                            "label": {
+                                "title": "addMedia.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "addMedia.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            },
+                            "files": {
+                                "title": "addMedia.files",
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "pattern": "^.*\\.(png|jpeg|jpg|gif|mp4)$"
+                                },
+                                "minItems": 1,
+                                "description": "List of media file paths to add to the device's gallery."
+                            }
+                        },
+                        "required": [
+                            "files"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Object specifying the addMedia with additional properties.",
+                        "examples": [
+                            {
+                                "label": "Try to add the test pictures to the device",
+                                "optional": true,
+                                "files": [
+                                    "./assets/test1.png",
+                                    "./assets/test2.png"
+                                ]
+                            }
+                        ]
+                    }
                 ]
             },
             "assertNotVisible": {
