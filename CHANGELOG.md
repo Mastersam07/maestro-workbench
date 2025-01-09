@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.3] - 2025-01-09
+
+### Fixed
+
+- Corrected addMedia command
+- [addMedia command only supports the array form](https://github.com/Mastersam07/maestro-workbench/pull/20)
+
 ## [0.4.2] - 2025-01-09
 
 ### Fixed
