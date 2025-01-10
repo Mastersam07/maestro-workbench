@@ -158,6 +158,16 @@
                             },
                             "index": {
                                 "type": "integer"
+                            },
+                            "label": {
+                                "title": "assertNotVisible.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "assertNotVisible.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -201,6 +211,16 @@
                             },
                             "selected": {
                                 "type": "boolean"
+                            },
+                            "label": {
+                                "title": "assertVisible.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "assertVisible.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -226,7 +246,13 @@
                             },
                             "label": {
                                 "title": "assertTrue.label",
-                                "type": "string"
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "assertTrue.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
@@ -286,6 +312,16 @@
                                         "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
                                     }
                                 ]
+                            },
+                            "label": {
+                                "title": "extendedWaitUntil.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "extendedWaitUntil.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "oneOf": [
@@ -390,6 +426,16 @@
                                         "description": "Sets the permission state for all permissions."
                                     }
                                 }
+                            },
+                            "label": {
+                                "title": "launchApp.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "launchApp.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -457,6 +503,16 @@
                                 "items": {
                                     "$ref": "#/$defs/FlowContent"
                                 }
+                            },
+                            "label": {
+                                "title": "repeat.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "repeat.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
@@ -551,6 +607,16 @@
                                 "items": {
                                     "$ref": "#/$defs/FlowContent"
                                 }
+                            },
+                            "label": {
+                                "title": "runFlow.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "runFlow.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -695,6 +761,16 @@
                                 "type": "boolean",
                                 "default": false,
                                 "description": "Indicates whether to center the element when it becomes visible. Defaults to false."
+                            },
+                            "label": {
+                                "title": "scrollUntilVisible.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "scrollUntilVisible.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
@@ -763,6 +839,16 @@
                                 "minimum": 0,
                                 "default": 400,
                                 "description": "Duration of the swipe in milliseconds. Longer durations result in slower swipes. Defaults to 400 ms."
+                            },
+                            "label": {
+                                "title": "swipe.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "swipe.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "oneOf": [
@@ -847,9 +933,6 @@
                                 "type": "boolean",
                                 "description": "Matches element with the specified selected state."
                             },
-                            "optional": {
-                                "type": "boolean"
-                            },
                             "retryTapIfNoChange": {
                                 "type": "boolean",
                                 "default": true,
@@ -901,6 +984,16 @@
                                 "type": "integer",
                                 "minimum": 0,
                                 "description": "Time in milliseconds to wait for the screen to settle after the tap."
+                            },
+                            "label": {
+                                "title": "tapOn.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "tapOn.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -970,9 +1063,6 @@
                                 "type": "boolean",
                                 "description": "Matches element with the specified selected state."
                             },
-                            "optional": {
-                                "type": "boolean"
-                            },
                             "retryTapIfNoChange": {
                                 "type": "boolean",
                                 "default": true,
@@ -1020,6 +1110,16 @@
                                 "minimum": 0,
                                 "default": 100,
                                 "description": "Delay in milliseconds between repeated taps. Default is 100ms."
+                            },
+                            "label": {
+                                "title": "doubleTapOn.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "doubleTapOn.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -1089,9 +1189,6 @@
                                 "type": "boolean",
                                 "description": "Matches element with the specified selected state."
                             },
-                            "optional": {
-                                "type": "boolean"
-                            },
                             "retryTapIfNoChange": {
                                 "type": "boolean",
                                 "default": true,
@@ -1128,6 +1225,16 @@
                                 "items": {
                                     "$ref": "#/$defs/Element"
                                 }
+                            },
+                            "label": {
+                                "title": "longPressOn.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "longPressOn.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -1168,6 +1275,16 @@
                                         "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
                                     }
                                 ]
+                            },
+                            "label": {
+                                "title": "waitForAnimationToEnd.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "waitForAnimationToEnd.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "examples": [
@@ -1214,6 +1331,16 @@
                                 "type": "number",
                                 "minimum": 0,
                                 "description": "Speed in meters per second. For example, 7900 represents 7.9 km/s (orbital velocity)."
+                            },
+                            "label": {
+                                "title": "travel.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "travel.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
@@ -1292,6 +1419,16 @@
                                 "type": "boolean",
                                 "default": false,
                                 "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                            },
+                            "label": {
+                                "title": "openLink.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "openLink.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
@@ -1368,6 +1505,16 @@
                                 "title": "takeScreenshot.path",
                                 "type": "string",
                                 "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
+                            },
+                            "label": {
+                                "title": "takeScreenshot.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "takeScreenshot.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
                             }
                         },
                         "required": [
