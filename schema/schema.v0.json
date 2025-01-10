@@ -274,11 +274,34 @@
                         "description": "Remove up to n characters from the currently selected text field (if any)",
                         "type": [
                             "null",
-                            "integer"
+                            "integer",
+                            "object"
                         ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "charactersToErase": {
+                                "description": "Number of characters to erase. Defaults to 50.",
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 50
+                            },
+                            "label": {
+                                "title": "eraseText.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "eraseText.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
                             10,
-                            null
+                            null,
+                            {
+                                "charactersToErase": 5
+                            }
                         ]
                     },
                     "extendedWaitUntil": {
@@ -370,11 +393,34 @@
                     "inputText": {
                         "title": "inputText",
                         "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
-                        "type": "string",
+                        "type": [
+                            "string",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "text": {
+                                "type": "string",
+                                "description": "The text to input."
+                            },
+                            "label": {
+                                "title": "inputText.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "inputText.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
                             "Hello, World!",
                             "user@example.com",
-                            "${DYNAMIC_VARIABLE}"
+                            "${DYNAMIC_VARIABLE}",
+                            {
+                                "text": "Hello, World!"
+                            }
                         ]
                     },
                     "launchApp": {
@@ -427,6 +473,11 @@
                                     }
                                 }
                             },
+                            "arguments": {
+                                "description": "Arguments to pass to the app.",
+                                "type": "object",
+                                "additionalProperties": true
+                            },
                             "label": {
                                 "title": "launchApp.label",
                                 "type": "string",
@@ -453,32 +504,79 @@
                     "pressKey": {
                         "title": "pressKey",
                         "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls.",
-                        "type": "string",
-                        "enum": [
-                            "home",
-                            "lock",
-                            "enter",
-                            "backspace",
-                            "volume up",
-                            "volume down",
-                            "back",
-                            "Remote Dpad Up",
-                            "Remote Dpad Down",
-                            "Remote Dpad Left",
-                            "Remote Dpad Right",
-                            "Remote Dpad Center",
-                            "Remote Media Play Pause",
-                            "Remote Media Stop",
-                            "Remote Media Next",
-                            "Remote Media Previous",
-                            "Remote Media Rewind",
-                            "Remote Media Fast Forward"
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "home",
+                                    "lock",
+                                    "enter",
+                                    "backspace",
+                                    "volume up",
+                                    "volume down",
+                                    "back",
+                                    "Remote Dpad Up",
+                                    "Remote Dpad Down",
+                                    "Remote Dpad Left",
+                                    "Remote Dpad Right",
+                                    "Remote Dpad Center",
+                                    "Remote Media Play Pause",
+                                    "Remote Media Stop",
+                                    "Remote Media Next",
+                                    "Remote Media Previous",
+                                    "Remote Media Rewind",
+                                    "Remote Media Fast Forward"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "key": {
+                                        "type": "string",
+                                        "enum": [
+                                            "home",
+                                            "lock",
+                                            "enter",
+                                            "backspace",
+                                            "volume up",
+                                            "volume down",
+                                            "back",
+                                            "Remote Dpad Up",
+                                            "Remote Dpad Down",
+                                            "Remote Dpad Left",
+                                            "Remote Dpad Right",
+                                            "Remote Dpad Center",
+                                            "Remote Media Play Pause",
+                                            "Remote Media Stop",
+                                            "Remote Media Next",
+                                            "Remote Media Previous",
+                                            "Remote Media Rewind",
+                                            "Remote Media Fast Forward"
+                                        ]
+                                    },
+                                    "label": {
+                                        "title": "pressKey.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "pressKey.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                }
+                            }
                         ],
                         "examples": [
                             "home",
                             "enter",
                             "volume up",
-                            "Remote Dpad Center"
+                            "Remote Dpad Center",
+                            {
+                                "key": "back",
+                                "label": "Press the back key"
+                            }
                         ]
                     },
                     "repeat": {
@@ -653,41 +751,61 @@
                     "runScript": {
                         "title": "runScript",
                         "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally.",
-                        "properties": {
-                            "file": {
-                                "title": "runScript.file",
+                        "oneOf": [
+                            {
                                 "type": "string",
                                 "description": "The file path of the JavaScript file to execute."
                             },
-                            "env": {
-                                "title": "runScript.env",
+                            {
                                 "type": "object",
-                                "description": "Environment variables to pass to the JavaScript script."
-                            },
-                            "when": {
-                                "type": "object",
-                                "description": "Conditions to determine whether the flow should run.",
-                                "title": "runScript.when",
-                                "additionalProperties": true,
+                                "additionalProperties": false,
                                 "properties": {
-                                    "visible": {
-                                        "title": "runScript.when.visible",
-                                        "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
-                                        "$ref": "#/$defs/Element"
+                                    "file": {
+                                        "title": "runScript.file",
+                                        "type": "string",
+                                        "description": "The file path of the JavaScript file to execute."
                                     },
-                                    "notVisible": {
-                                        "title": "runScript.when.notVisible",
-                                        "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object).",
-                                        "$ref": "#/$defs/Element"
+                                    "env": {
+                                        "title": "runScript.env",
+                                        "type": "object",
+                                        "description": "Environment variables to pass to the JavaScript script."
                                     },
-                                    "platform": {
-                                        "title": "runScript.when.platform",
-                                        "description": "Runs the script if the current platform matches the specified platform.",
-                                        "$ref": "#/$defs/Platform"
+                                    "when": {
+                                        "type": "object",
+                                        "description": "Conditions to determine whether the flow should run.",
+                                        "title": "runScript.when",
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "visible": {
+                                                "title": "runScript.when.visible",
+                                                "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "notVisible": {
+                                                "title": "runScript.when.notVisible",
+                                                "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "platform": {
+                                                "title": "runScript.when.platform",
+                                                "description": "Runs the script if the current platform matches the specified platform.",
+                                                "$ref": "#/$defs/Platform"
+                                            }
+                                        }
+                                    },
+                                    "label": {
+                                        "title": "runScript.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "runScript.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
                                     }
                                 }
                             }
-                        },
+                        ],
                         "examples": [
                             {
                                 "file": "scripts/myScript.js",
@@ -1296,8 +1414,29 @@
                     },
                     "startRecording": {
                         "title": "startRecording",
-                        "type": "string",
+                        "type": [
+                            "string",
+                            "object"
+                        ],
                         "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                        "additionalProperties": false,
+                        "properties": {
+                            "path": {
+                                "title": "startRecording.name",
+                                "type": "string",
+                                "description": "The name of the screen recording file. The file is saved in the same directory as the test flow."
+                            },
+                            "label": {
+                                "title": "startRecording.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "startRecording.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
                             "recording1.mp4",
                             "session_test.mp4"
@@ -1305,10 +1444,29 @@
                     },
                     "stopRecording": {
                         "title": "stopRecording",
-                        "type": "null",
                         "description": "Command to stop a running screen recording.",
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "label": {
+                                "title": "stopRecording.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "stopRecording.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
-                            null
+                            null,
+                            {
+                                "label": "Stop recording now - we're not interested in the rest"
+                            }
                         ]
                     },
                     "travel": {
@@ -1376,19 +1534,65 @@
                     },
                     "killApp": {
                         "title": "killApp",
-                        "type": "null",
                         "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp.",
+                        "type": [
+                            "null",
+                            "string",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "appId": {
+                                "title": "killApp.appId",
+                                "type": "string",
+                                "description": "The app ID to kill. If not provided, the app under test is killed."
+                            },
+                            "label": {
+                                "title": "killApp.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "killApp.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
-                            null
+                            null,
+                            "com.example.someapp",
+                            {
+                                "appId": "com.example.someapp",
+                                "label": "Kill SomeApp"
+                            }
                         ]
                     },
                     "stopApp": {
                         "title": "stopApp",
+                        "description": "Command to stop current application if it is running or an arbitrary app specified by its ID.",
                         "type": [
                             "null",
-                            "string"
+                            "string",
+                            "object"
                         ],
-                        "description": "Command to stop current application if it is running or an arbitrary app specified by its ID.",
+                        "additionalProperties": false,
+                        "properties": {
+                            "appId": {
+                                "title": "stopApp.appId",
+                                "type": "string",
+                                "description": "The app ID to stop. If not provided, the app under test is stopped."
+                            },
+                            "label": {
+                                "title": "stopApp.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "stopApp.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
                             null,
                             "com.example.someapp"
@@ -1452,26 +1656,83 @@
                     },
                     "pasteText": {
                         "title": "pasteText",
-                        "type": "null",
                         "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "label": {
+                                "title": "pasteText.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "pasteText.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
-                            null
+                            null,
+                            {
+                                "label": "Paste the previously copied text"
+                            }
                         ]
                     },
                     "back": {
                         "title": "back",
                         "description": "Command to navigate user to the previous screen (Android-only at the moment)",
-                        "type": "null",
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "label": {
+                                "title": "back.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "back.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
-                            null
+                            null,
+                            {
+                                "label": "Go back to the previous screen"
+                            }
                         ]
                     },
                     "clearKeychain": {
                         "title": "clearKeychain",
                         "description": "Command to clear the entire iOS keychain (not applicable on Android)",
-                        "type": "null",
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "label": {
+                                "title": "clearKeychain.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "clearKeychain.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
-                            null
+                            null,
+                            {
+                                "label": "Clear the keychain"
+                            }
                         ]
                     },
                     "clearState": {
@@ -1479,8 +1740,27 @@
                         "description": "Command to clear the application state",
                         "type": [
                             "null",
-                            "string"
+                            "string",
+                            "object"
                         ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "appId": {
+                                "title": "clearState.appId",
+                                "type": "string",
+                                "description": "The app ID to clear the state for. If not provided, the app under test is cleared."
+                            },
+                            "label": {
+                                "title": "clearState.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "clearState.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
                         "examples": [
                             null,
                             "com.example.someapp"
@@ -1488,10 +1768,29 @@
                     },
                     "hideKeyboard": {
                         "title": "hideKeyboard",
-                        "type": "null",
                         "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                        "type": [
+                            "null",
+                            "object"
+                        ],
+                        "properties": {
+                            "label": {
+                                "title": "hideKeyboard.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "hideKeyboard.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "additionalProperties": false,
                         "examples": [
-                            null
+                            null,
+                            {
+                                "label": "Hide the keyboard so that we can see the whole screen"
+                            }
                         ]
                     },
                     "takeScreenshot": {
