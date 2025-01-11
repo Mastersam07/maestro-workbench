@@ -614,8 +614,7 @@
                             }
                         },
                         "required": [
-                            "commands",
-                            "times"
+                            "commands"
                         ],
                         "examples": [
                             {
