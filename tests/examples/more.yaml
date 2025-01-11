@@ -1,0 +1,23 @@
+appId: com.example.example
+name: 'A more complex test'
+---
+- launchApp:
+    arguments:
+      "think": "different"
+- waitForAnimationToEnd
+- takeScreenshot:
+    path: cropped
+    label: potato
+#    cropOn:
+#      text: "Swipe Test"
+- assertTrue:
+    condition: "textExists"
+    label: Check if text exists
+- addMedia:
+    files:
+      - one.png
+    label: Potato
+- assertNotVisible:
+    label: This
+- runFlow:
+    file: ./subflows/subflow.yaml

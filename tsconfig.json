@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "Node16",
+		"module": "commonjs",
 		"target": "ES2022",
 		"lib": [
 			"ES2022"
@@ -12,5 +12,13 @@
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
-	}
+		"resolveJsonModule": true,
+	},
+	"include": [
+		"./schema/schema.v0.json",
+	],
+	"exclude": [
+		"node_modules",
+		"tests/"
+	]
 }
