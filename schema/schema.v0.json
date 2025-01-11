@@ -47,14 +47,14 @@
                     "type": "array",
                     "description": "This is a hook that takes a list of Maestro commands as an argument. These commands will be executed before the initiation of each flow. Typically, this hook is used to run various setup scripts.",
                     "items": {
-                        "$ref": "#/$defs/FlowContent"
+                        "$ref": "#/$defs/FlowContent/items"
                     }
                 },
                 "onFlowComplete": {
                     "type": "array",
                     "description": "This hook accepts a list of Maestro commands that are executed upon the completion of each flow. It's important to note that these commands will run regardless of whether a particular flow has ended successfully or has encountered a failure. Typically, this hook is used to run various teardown / cleanup scripts.",
                     "items": {
-                        "$ref": "#/$defs/FlowContent"
+                        "$ref": "#/$defs/FlowContent/items"
                     }
                 }
             },
@@ -599,7 +599,7 @@
                                 "type": "array",
                                 "description": "The set of commands to execute in each iteration.",
                                 "items": {
-                                    "$ref": "#/$defs/FlowContent"
+                                    "$ref": "#/$defs/FlowContent/items"
                                 }
                             },
                             "label": {
@@ -703,7 +703,7 @@
                                 "title": "runFlow.commands",
                                 "description": "Inline commands to execute if not using a file.",
                                 "items": {
-                                    "$ref": "#/$defs/FlowContent"
+                                    "$ref": "#/$defs/FlowContent/items"
                                 }
                             },
                             "label": {
