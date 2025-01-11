@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
-import * as yaml from 'js-yaml';
+import YAML from 'yaml';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
@@ -144,12 +144,13 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
     }
 
     private analyzeDependencies(filePaths: string[]): void {
+        console.log('Analyzing dependencies');
         this.dependencyMap.clear();
 
         filePaths.forEach((filePath) => {
             try {
                 const fileContent = fs.readFileSync(filePath, 'utf-8');
-                const parsedDocuments = yaml.loadAll(fileContent) as any[];
+                const parsedDocuments = YAML.parseAllDocuments(fileContent) as any[];
 
                 const dependencies = new Set<string>();
 
