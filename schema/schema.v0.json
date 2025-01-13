@@ -80,6 +80,9 @@
                         "$ref": "#/$defs/Commands/AssertTrue"
                     },
                     {
+                        "$ref": "#/$defs/Commands/Back"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ClipboardPasteText"
                     },
                     {
@@ -2241,6 +2244,49 @@
                     {
                         "description": "Detailed assertion with condition and label",
                         "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                    }
+                ]
+            },
+            "Back": {
+                "oneOf": [
+                    {
+                        "title": "back",
+                        "description": "Command to navigate user to the previous screen (Android-only at the moment)",
+                        "type": "string",
+                        "const": "back"
+                    },
+                    {
+                        "title": "back",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "back"
+                        ],
+                        "properties": {
+                            "back": {
+                                "type": "object",
+                                "description": "Command to navigate user to the previous screen (Android-only at the moment)",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "back.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "back.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Go back to the previous screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
                     }
                 ]
             },
