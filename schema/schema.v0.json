@@ -86,6 +86,9 @@
                         "$ref": "#/$defs/Commands/ExtendedWaitUntil"
                     },
                     {
+                        "$ref": "#/$defs/Commands/InputText"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/LaunchApp"
                     }
                 ],
@@ -2342,6 +2345,58 @@
                         ]
                     }
                 }
+            },
+            "InputText": {
+                "title": "inputText",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "inputText"
+                ],
+                "properties": {
+                    "inputText": {
+                        "oneOf": [
+                            {
+                                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "title": "inputText.text",
+                                        "type": "string",
+                                        "description": "The text to input."
+                                    },
+                                    "label": {
+                                        "title": "inputText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "text"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "examples": [
+                    "Hello, World!",
+                    "user@example.com",
+                    "${DYNAMIC_VARIABLE}",
+                    {
+                        "text": "Hello, World!"
+                    }
+                ]
             },
             "LaunchApp": {
                 "oneOf": [
