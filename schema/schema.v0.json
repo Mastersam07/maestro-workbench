@@ -110,6 +110,9 @@
                         "$ref": "#/$defs/Commands/StartRecording"
                     },
                     {
+                        "$ref": "#/$defs/Commands/StopRecording"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/Swipe"
                     },
                     {
@@ -3032,6 +3035,49 @@
                         ]
                     }
                 }
+            },
+            "StopRecording": {
+                "oneOf": [
+                    {
+                        "title": "stopRecording",
+                        "description": "Command to stop the screen recording initiated by the startRecording command.",
+                        "type": "string",
+                        "const": "stopRecording"
+                    },
+                    {
+                        "title": "stopRecording",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "stopRecording"
+                        ],
+                        "properties": {
+                            "stopRecording": {
+                                "type": "object",
+                                "description": "Command to stop the screen recording initiated by the startRecording command.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "stopRecording.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "stopRecording.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Stop recording now - we're not interested in the rest",
+                                        "optional": false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "Swipe": {
                 "title": "swipe",

@@ -242,6 +242,9 @@ onFlowComplete:
     appId: com.android.chrome
 
 - stopRecording
+- stopRecording:
+    label: 'Stop recording'
+    optional: false
 
 - swipe:  
     start: 90%, 50%
