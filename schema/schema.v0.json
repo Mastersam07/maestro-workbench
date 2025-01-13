@@ -92,6 +92,9 @@
                         "$ref": "#/$defs/Commands/LaunchApp"
                     },
                     {
+                        "$ref": "#/$defs/Commands/OpenLink"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/PressKey"
                     },
                     {
@@ -2531,6 +2534,77 @@
                                 ]
                             }
                         }
+                    }
+                ]
+            },
+            "OpenLink": {
+                "title": "openLink",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "openLink"
+                ],
+                "properties": {
+                    "openLink": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "link": {
+                                        "title": "openLink.link",
+                                        "type": "string",
+                                        "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
+                                        "description": "The URL or deep link to open on the device."
+                                    },
+                                    "autoVerify": {
+                                        "title": "openLink.autoVerify",
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
+                                    },
+                                    "browser": {
+                                        "title": "openLink.browser",
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                                    },
+                                    "label": {
+                                        "title": "openLink.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "openLink.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "link"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "examples": [
+                    {
+                        "description": "Open a simple link as a string",
+                        "example": "- openLink: \"https://example.com\""
+                    },
+                    {
+                        "description": "Open a link with autoVerify enabled",
+                        "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
+                    },
+                    {
+                        "description": "Open a link in the browser",
+                        "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
                     }
                 ]
             },

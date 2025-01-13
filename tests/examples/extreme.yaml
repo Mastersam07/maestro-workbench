@@ -131,6 +131,21 @@ onFlowComplete:
 
 - launchApp
 
+- openLink: https://example.com
+- openLink: 'example://login'
+# https://github.com/Mastersam07/maestro-workbench/issues/37
+#- openLink:
+#    link: 'example://login'
+- openLink: 
+    link: https://example.com
+    autoVerify: true
+    label: 'Open link in app'
+- openLink: 
+    link: https://example.com
+    browser: true
+    label: 'Open link in browser'
+    optional: false
+
 - pasteText
 
 # https://github.com/Mastersam07/maestro-workbench/issues/24
