@@ -80,6 +80,9 @@
                         "$ref": "#/$defs/Commands/AssertTrue"
                     },
                     {
+                        "$ref": "#/$defs/Commands/EraseText"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/LaunchApp"
                     }
                 ],
@@ -2181,6 +2184,65 @@
                     {
                         "description": "Detailed assertion with condition and label",
                         "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                    }
+                ]
+            },
+            "EraseText": {
+                "oneOf": [
+                    {
+                        "title": "eraseText",
+                        "description": "Remove up to 50 characters from the currently selected text field (if any)",
+                        "type": "string",
+                        "const": "eraseText"
+                    },
+                    {
+                        "title": "eraseText",
+                        "description": "Erases the specified number of characters from the currently selected text field (if any)",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "eraseText"
+                        ],
+                        "properties": {
+                            "eraseText": {
+                                "oneOf": [
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "default": 50
+                                    },
+                                    {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "charactersToErase": {
+                                                "description": "Number of characters to erase. Defaults to 50.",
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "default": 50
+                                            },
+                                            "label": {
+                                                "title": "eraseText.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "eraseText.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "examples": [
+                    10,
+                    null,
+                    {
+                        "charactersToErase": 5
                     }
                 ]
             },
