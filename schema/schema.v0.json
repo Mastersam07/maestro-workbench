@@ -1910,6 +1910,99 @@
                     "default": false
                 }
             }
+        },
+        "Commands": {
+            "LaunchApp": {
+                "oneOf": [
+                    {
+                        "title": "launchApp",
+                        "description": "Launches the app under test without additional configuration",
+                        "type": "string",
+                        "const": "launchApp"
+                    },
+                    {
+                        "title": "launchApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "launchApp"
+                        ],
+                        "properties": {
+                            "launchApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Launches the specified app without additional configuration",
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    {
+                                        "description": "Launches the app with additional configuration",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "type": "string",
+                                                "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
+                                            },
+                                            "clearState": {
+                                                "type": "boolean",
+                                                "description": "Indicates whether to clear the app's state before launching. Defaults to false."
+                                            },
+                                            "clearKeychain": {
+                                                "type": "boolean",
+                                                "description": "Clears the entire iOS keychain. Applicable only for iOS."
+                                            },
+                                            "stopApp": {
+                                                "type": "boolean",
+                                                "description": "Stops the app before launching. Defaults to true."
+                                            },
+                                            "permissions": {
+                                                "type": "object",
+                                                "description": "Overrides permissions for the app.",
+                                                "additionalProperties": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "allow",
+                                                        "deny",
+                                                        "unset"
+                                                    ],
+                                                    "description": "Sets the permission state (allow, deny, unset) for a specific permission."
+                                                },
+                                                "properties": {
+                                                    "all": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "allow",
+                                                            "deny",
+                                                            "unset"
+                                                        ],
+                                                        "description": "Sets the permission state for all permissions."
+                                                    }
+                                                }
+                                            },
+                                            "arguments": {
+                                                "description": "Arguments to pass to the app.",
+                                                "type": "object",
+                                                "additionalProperties": true
+                                            },
+                                            "label": {
+                                                "title": "launchApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "launchApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
         }
     }
 }

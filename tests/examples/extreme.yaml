@@ -106,6 +106,8 @@ onFlowComplete:
 
 - killApp
 
+- launchApp: com.example
+
 - launchApp:
     appId: com.example.example
     clearState: true
