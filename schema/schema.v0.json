@@ -1912,6 +1912,75 @@
             }
         },
         "Commands": {
+            "AddMedia": {
+                "title": "addMedia",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "addMedia"
+                ],
+                "properties": {
+                    "addMedia": {
+                        "description": "Adds media files to the device",
+                        "oneOf": [
+                            {
+                                "type": "array",
+                                "items": {
+                                    "description": "List of media file paths to add to the device's gallery.",
+                                    "type": "string",
+                                    "pattern": "^.*\\.(png|jpeg|jpg|gif|mp4)$"
+                                },
+                                "minItems": 1,
+                                "examples": [
+                                    [
+                                        "./assets/image1.png",
+                                        "./assets/video1.mp4"
+                                    ]
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "label": {
+                                        "title": "addMedia.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "addMedia.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    },
+                                    "files": {
+                                        "title": "addMedia.files",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "pattern": "^.*\\.(png|jpeg|jpg|gif|mp4)$"
+                                        },
+                                        "minItems": 1,
+                                        "description": "List of media file paths to add to the device's gallery."
+                                    }
+                                },
+                                "required": [
+                                    "files"
+                                ],
+                                "additionalProperties": false,
+                                "examples": [
+                                    {
+                                        "label": "Try to add the test pictures to the device",
+                                        "optional": true,
+                                        "files": [
+                                            "./assets/test1.png",
+                                            "./assets/test2.png"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
             "LaunchApp": {
                 "oneOf": [
                     {
