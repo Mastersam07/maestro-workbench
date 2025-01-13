@@ -2049,6 +2049,71 @@
                     }
                 }
             },
+            "AssertVisible": {
+                "title": "assertVisible",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertVisible"
+                ],
+                "properties": {
+                    "assertVisible": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Assert that an element is visible through text",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "Assert that an element is visible through an element selector",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "checked": {
+                                        "type": "boolean"
+                                    },
+                                    "focused": {
+                                        "type": "boolean"
+                                    },
+                                    "selected": {
+                                        "type": "boolean"
+                                    },
+                                    "index": {
+                                        "type": "integer"
+                                    },
+                                    "label": {
+                                        "title": "assertVisible.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertVisible.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    "Login Button",
+                                    {
+                                        "text": "Sign In",
+                                        "id": "sign_in_button",
+                                        "focused": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
             "LaunchApp": {
                 "oneOf": [
                     {
