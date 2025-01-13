@@ -86,6 +86,9 @@
                         "$ref": "#/$defs/Commands/ClearKeychain"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ClearState"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ClipboardPasteText"
                     },
                     {
@@ -2329,6 +2332,65 @@
                                     {
                                         "label": "Clear the keychain",
                                         "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "ClearState": {
+                "oneOf": [
+                    {
+                        "title": "clearState",
+                        "description": "Command to clear the application data of the application under test",
+                        "type": "string",
+                        "const": "clearState"
+                    },
+                    {
+                        "title": "clearState",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "clearState"
+                        ],
+                        "properties": {
+                            "clearState": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to clear the application state of the specified application",
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    {
+                                        "description": "Command to clear the application state of the specified application or application under test",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "clearState.appId",
+                                                "type": "string",
+                                                "description": "The app ID to clear the state for. If not provided, the application under test is cleared."
+                                            },
+                                            "label": {
+                                                "title": "clearState.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "clearState.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            "com.example.someapp",
+                                            {
+                                                "appId": "com.example.someapp",
+                                                "label": "Clear the state of SomeApp",
+                                                "optional": true
+                                            }
+                                        ]
                                     }
                                 ]
                             }

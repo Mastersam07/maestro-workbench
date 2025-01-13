@@ -63,8 +63,11 @@ onFlowComplete:
     optional: false
 
 - clearState
+- clearState: com.example.someapp
 - clearState:
+    appId: com.example.someapp
     label: 'Wipe the data'
+    optional: true
 
 - eraseText
 - eraseText: 3
