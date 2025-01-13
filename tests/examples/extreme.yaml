@@ -194,6 +194,7 @@ onFlowComplete:
           commands:
             - tapOn: 'Thing2'
 
+- runScript: setup.js
 - runScript:
     env:
       THIS_THING: "six"

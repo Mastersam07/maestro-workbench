@@ -99,6 +99,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/RunFlow"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RunScript"
                     }
                 ],
                 "$comment": {
@@ -2768,6 +2771,93 @@
                                                 "tapOn": "Retry"
                                             }
                                         ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "RunScript": {
+                "title": "runScript",
+                "description": "Run a subflow from a specified file or execute inline commands.",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "runScript"
+                ],
+                "properties": {
+                    "runScript": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "file": {
+                                        "title": "runScript.file",
+                                        "type": "string",
+                                        "description": "The file path of the JavaScript file to execute."
+                                    },
+                                    "env": {
+                                        "title": "runScript.env",
+                                        "type": "object",
+                                        "description": "Environment variables to pass to the JavaScript script."
+                                    },
+                                    "when": {
+                                        "type": "object",
+                                        "description": "Conditions to determine whether the flow should run.",
+                                        "title": "runScript.when",
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "visible": {
+                                                "title": "runScript.when.visible",
+                                                "description": "Runs the script if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "notVisible": {
+                                                "title": "runScript.when.notVisible",
+                                                "description": "Runs the script if the specified element is not visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "platform": {
+                                                "title": "runScript.when.platform",
+                                                "description": "Runs the script if the current platform matches the specified platform.",
+                                                "$ref": "#/$defs/Platform"
+                                            }
+                                        }
+                                    },
+                                    "label": {
+                                        "title": "runScript.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "runScript.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "file": "scripts/myScript.js",
+                                        "env": {
+                                            "API_KEY": "12345"
+                                        }
+                                    },
+                                    {
+                                        "file": "scripts/login.js",
+                                        "platform": "Android"
+                                    },
+                                    {
+                                        "file": "scripts/checkSystem.js",
+                                        "env": {
+                                            "SYSTEM_CHECK": "true"
+                                        },
+                                        "platform": "iOS"
                                     }
                                 ]
                             }
