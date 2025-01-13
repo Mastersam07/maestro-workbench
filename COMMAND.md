@@ -16,6 +16,10 @@
 | extractTextWithAI     | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | hideKeyboard          | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | inputText             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
+| inputRandomEmail      | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
+| inputRandomPersonName | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
+| inputRandomNumber     | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
+| inputRandomText       | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | killApp               | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | launchApp             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | openLink              | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
@@ -25,6 +29,8 @@
 | runFlow               | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | runScript             | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | scroll                | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| setAirplaneMode       | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
+| toggleAirplaneMode    | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | scrollUntilVisible    | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
 | setLocation           | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>         | <ul><li> - [ ] </li></ul>   | <ul><li> - [ ] </li></ul>     |
 | startRecording        | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>         | <ul><li> - [x] </li></ul>   | <ul><li> - [x] </li></ul>     |
