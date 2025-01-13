@@ -147,6 +147,9 @@ onFlowComplete:
     optional: false
 
 - pasteText
+- pasteText:
+    label: 'Paste the text'
+    optional: true
 
 # https://github.com/Mastersam07/maestro-workbench/issues/24
 #- pressKey: 'Home'

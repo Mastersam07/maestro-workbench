@@ -80,6 +80,9 @@
                         "$ref": "#/$defs/Commands/AssertTrue"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ClipboardPasteText"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/EraseText"
                     },
                     {
@@ -2238,6 +2241,49 @@
                     {
                         "description": "Detailed assertion with condition and label",
                         "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                    }
+                ]
+            },
+            "ClipboardPasteText": {
+                "oneOf": [
+                    {
+                        "title": "pasteText",
+                        "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                        "type": "string",
+                        "const": "pasteText"
+                    },
+                    {
+                        "title": "pasteText",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "pasteText"
+                        ],
+                        "properties": {
+                            "pasteText": {
+                                "type": "object",
+                                "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "pasteText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "pasteText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Paste the previously copied text",
+                                        "optional": false
+                                    }
+                                ]
+                            }
+                        }
                     }
                 ]
             },
