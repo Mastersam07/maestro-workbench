@@ -308,6 +308,8 @@ onFlowComplete:
       - 0.1,0.1
       - 0.0,0.1
     speed: 7900
+    label: 'Fake some movement'
+    optional: false
 
 - waitForAnimationToEnd
 - waitForAnimationToEnd:
