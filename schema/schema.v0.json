@@ -117,6 +117,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/TapOnLong"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/WaitForAnimationToEnd"
                     }
                 ],
                 "$comment": {
@@ -3505,6 +3508,64 @@
                         ]
                     }
                 }
+            },
+            "WaitForAnimationToEnd": {
+                "oneOf": [
+                    {
+                        "title": "waitForAnimationToEnd",
+                        "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
+                        "type": "string",
+                        "const": "waitForAnimationToEnd"
+                    },
+                    {
+                        "title": "waitForAnimationToEnd",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "waitForAnimationToEnd"
+                        ],
+                        "properties": {
+                            "waitForAnimationToEnd": {
+                                "type": "object",
+                                "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "timeout": {
+                                        "title": "waitForAnimationToEnd.timeout",
+                                        "description": "Optional timeout in milliseconds after which the command is marked as successful and the flow continues.",
+                                        "oneOf": [
+                                            {
+                                                "type": "number",
+                                                "minimum": 1
+                                            },
+                                            {
+                                                "type": "string",
+                                                "pattern": "^\\$\\{[^}]+\\}$",
+                                                "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
+                                            }
+                                        ]
+                                    },
+                                    "label": {
+                                        "title": "waitForAnimationToEnd.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "waitForAnimationToEnd.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "examples": [
+                    {
+                        "timeout": 5000,
+                        "label": "Wait for animation to end"
+                    }
+                ]
             }
         }
     }

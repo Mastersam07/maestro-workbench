@@ -307,3 +307,7 @@ onFlowComplete:
     speed: 7900
 
 - waitForAnimationToEnd
+- waitForAnimationToEnd:
+    timeout: 10000
+    label: 'Wait for the animation to end'
+    optional: false
