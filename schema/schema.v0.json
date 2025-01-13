@@ -93,6 +93,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/PressKey"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Repeat"
                     }
                 ],
                 "$comment": {
@@ -2579,6 +2582,91 @@
                         "label": "Press the back key"
                     }
                 ]
+            },
+            "Repeat": {
+                "title": "repeat",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "repeat"
+                ],
+                "properties": {
+                    "repeat": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "times": {
+                                "title": "Number of times to repeat the commands.",
+                                "minimum": 1,
+                                "type": "integer"
+                            },
+                            "while": {
+                                "title": "while",
+                                "description": "Condition to evaluate while repeating the commands.",
+                                "$ref": "#/$defs/Condition"
+                            },
+                            "commands": {
+                                "type": "array",
+                                "description": "The set of commands to execute in each iteration.",
+                                "items": {
+                                    "$ref": "#/$defs/FlowContent/items"
+                                }
+                            },
+                            "label": {
+                                "title": "repeat.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "repeat.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "required": [
+                            "commands"
+                        ],
+                        "examples": [
+                            {
+                                "times": 3,
+                                "commands": [
+                                    {
+                                        "inputText": "Retry"
+                                    },
+                                    {
+                                        "pressKey": "enter"
+                                    }
+                                ]
+                            },
+                            {
+                                "while": {
+                                    "visible": {
+                                        "text": "Retry Button"
+                                    }
+                                },
+                                "commands": [
+                                    {
+                                        "tapOn": "Retry"
+                                    }
+                                ]
+                            },
+                            {
+                                "times": 5,
+                                "commands": [
+                                    {
+                                        "swipe": {
+                                            "direction": "DOWN"
+                                        }
+                                    },
+                                    {
+                                        "tapOn": {
+                                            "text": "Load More"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
             }
         }
     }
