@@ -77,6 +77,9 @@
                         "$ref": "#/$defs/Commands/AssertVisible"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AssertTrue"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/LaunchApp"
                     }
                 ],
@@ -2126,6 +2129,60 @@
                         ]
                     }
                 }
+            },
+            "AssertTrue": {
+                "title": "assertTrue",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertTrue"
+                ],
+                "properties": {
+                    "assertTrue": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "condition": {
+                                        "title": "assertTrue.condition",
+                                        "type": "string",
+                                        "description": "A JavaScript expression that is evaluated for truthiness"
+                                    },
+                                    "label": {
+                                        "title": "assertTrue.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertTrue.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "condition"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "examples": [
+                    {
+                        "description": "Simple assertion with a JavaScript condition as a string",
+                        "example": "- assertTrue: \"2 + 2 === 4\""
+                    },
+                    {
+                        "description": "Detailed assertion with condition and label",
+                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                    }
+                ]
             },
             "LaunchApp": {
                 "oneOf": [
