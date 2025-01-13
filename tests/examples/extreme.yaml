@@ -48,7 +48,8 @@ onFlowComplete:
 #- assertWithAI:
 #    assertion: Login and password text fields are visible.
 
-- assertNoDefectsWithAI
+# https://github.com/Mastersam07/maestro-workbench/issues/29
+#- assertNoDefectsWithAI
 
 # https://github.com/Mastersam07/maestro-workbench/issues/21
 #- copyTextFrom:
@@ -237,8 +238,8 @@ onFlowComplete:
       true: ${output.test == 'bar'}
     file: myScript.js
 
-- scroll
 # https://github.com/Mastersam07/maestro-workbench/issues/34
+#- scroll
 #- scroll:
 #    label: 
 
