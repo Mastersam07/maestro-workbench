@@ -105,6 +105,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Swipe"
                     }
                 ],
                 "$comment": {
@@ -2956,6 +2959,104 @@
                                     "id": "scrollable-section"
                                 },
                                 "direction": "UP"
+                            }
+                        ]
+                    }
+                }
+            },
+            "Swipe": {
+                "title": "swipe",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "swipe"
+                ],
+                "properties": {
+                    "swipe": {
+                        "description": "Command to perform swipe gestures with control over start and end points, direction, speed, and optional element targeting.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "direction": {
+                                "title": "swipe.direction",
+                                "description": "Direction of the swipe gesture. Swiping starts from the center of the screen or the specified element.",
+                                "$ref": "#/$defs/Direction"
+                            },
+                            "from": {
+                                "type": "object",
+                                "title": "swipe.from",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "id": {
+                                        "title": "swipe.from.id",
+                                        "type": "string",
+                                        "description": "ID of the element to swipe from."
+                                    },
+                                    "text": {
+                                        "title": "swipe.text",
+                                        "type": "string",
+                                        "description": "Text of the element to swipe from."
+                                    }
+                                }
+                            },
+                            "start": {
+                                "title": "swipe.start",
+                                "type": "string",
+                                "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$",
+                                "description": "Start coordinates for the swipe gesture. Can be in percentages (e.g., '90%, 50%') or absolute pixels (e.g., '100, 200')."
+                            },
+                            "end": {
+                                "title": "swipe.end",
+                                "type": "string",
+                                "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$",
+                                "description": "End coordinates for the swipe gesture. Can be in percentages (e.g., '10%, 50%') or absolute pixels (e.g., '300, 400')."
+                            },
+                            "duration": {
+                                "title": "swipe.duration",
+                                "type": "integer",
+                                "minimum": 0,
+                                "default": 400,
+                                "description": "Duration of the swipe in milliseconds. Longer durations result in slower swipes. Defaults to 400 ms."
+                            },
+                            "label": {
+                                "title": "swipe.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "swipe.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "start",
+                                    "end"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "direction"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "from",
+                                    "direction"
+                                ]
+                            }
+                        ],
+                        "examples": [
+                            {
+                                "start": "50%,50%",
+                                "end": "10%,50%",
+                                "duration": 500
+                            },
+                            {
+                                "direction": "LEFT",
+                                "duration": 400
                             }
                         ]
                     }
