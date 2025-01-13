@@ -107,6 +107,9 @@
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
                     },
                     {
+                        "$ref": "#/$defs/Commands/StartRecording"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/Swipe"
                     },
                     {
@@ -2971,6 +2974,60 @@
                                     "id": "scrollable-section"
                                 },
                                 "direction": "UP"
+                            }
+                        ]
+                    }
+                }
+            },
+            "StartRecording": {
+                "title": "startRecording",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "startRecording"
+                ],
+                "properties": {
+                    "startRecording": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                                "minLength": 1,
+                                "examples": [
+                                    "recording1.mp4",
+                                    "session_test.mp4"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "path": {
+                                        "title": "startRecording.path",
+                                        "type": "string",
+                                        "description": "The name of the screen recording file. The file is saved in the same directory as the test flow."
+                                    },
+                                    "label": {
+                                        "title": "startRecording.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "startRecording.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "path"
+                                ],
+                                "examples": [
+                                    {
+                                        "path": "recording1.mp4",
+                                        "label": "Start recording the test flow"
+                                    }
+                                ]
                             }
                         ]
                     }
