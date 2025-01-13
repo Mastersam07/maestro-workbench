@@ -113,6 +113,9 @@
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
                     },
                     {
+                        "$ref": "#/$defs/Commands/StopApp"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/Swipe"
                     },
                     {
@@ -3081,6 +3084,67 @@
                         ]
                     }
                 }
+            },
+            "StopApp": {
+                "oneOf": [
+                    {
+                        "title": "stopApp",
+                        "description": "Command to stop the application under test",
+                        "type": "string",
+                        "const": "stopApp"
+                    },
+                    {
+                        "title": "stopApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "stopApp"
+                        ],
+                        "properties": {
+                            "stopApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to stop the application specified by its package ID.",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": [
+                                            "com.example.someApp"
+                                        ]
+                                    },
+                                    {
+                                        "description": "Command to stop the application specified by its package ID.",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "stopApp.appId",
+                                                "type": "string",
+                                                "description": "The app ID to stop. If not provided, the app under test is stopped."
+                                            },
+                                            "label": {
+                                                "title": "stopApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "stopApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            {
+                                                "appId": "com.example.someApp",
+                                                "label": "Stop Some App",
+                                                "optional": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "Swipe": {
                 "title": "swipe",

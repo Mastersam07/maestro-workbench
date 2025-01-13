@@ -240,6 +240,8 @@ onFlowComplete:
 - stopApp: com.android.chrome
 - stopApp:
     appId: com.android.chrome
+    label: 'Stop Chrome'
+    optional: true
 
 - stopRecording
 - stopRecording:
