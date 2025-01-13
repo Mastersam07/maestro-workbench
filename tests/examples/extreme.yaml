@@ -92,6 +92,9 @@ onFlowComplete:
 #- extractTextWithAI: 'CAPTCHA Value'
 
 - hideKeyboard
+- hideKeyboard:
+    label: 'Hide the keyboard'
+    optional: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/27
 #- inputRandomEmail

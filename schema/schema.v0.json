@@ -98,6 +98,9 @@
                         "$ref": "#/$defs/Commands/ExtendedWaitUntil"
                     },
                     {
+                        "$ref": "#/$defs/Commands/HideKeyboard"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/InputText"
                     },
                     {
@@ -2593,6 +2596,49 @@
                         ]
                     }
                 }
+            },
+            "HideKeyboard": {
+                "oneOf": [
+                    {
+                        "title": "hideKeyboard",
+                        "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                        "type": "string",
+                        "const": "hideKeyboard"
+                    },
+                    {
+                        "title": "hideKeyboard",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "hideKeyboard"
+                        ],
+                        "properties": {
+                            "hideKeyboard": {
+                                "type": "object",
+                                "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "hideKeyboard.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "hideKeyboard.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Hide the keyboard so that we can see the whole screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "InputText": {
                 "title": "inputText",
