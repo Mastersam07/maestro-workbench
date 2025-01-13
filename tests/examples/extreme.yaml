@@ -1,0 +1,298 @@
+appId: com.example
+name: My Test
+tags:
+  - tag-build
+  - pull-request
+env:
+    USERNAME: user@example.com
+    PASSWORD: 123
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: setup.yaml
+  - runScript: setup.js
+onFlowComplete:
+  - runFlow: teardown.yaml
+  - runScript: teardown.js
+---
+- addMedia:
+    - "./assets/foo.png"
+    - "./assets/foo.mp4"
+- addMedia:
+    files:
+      - "./assets/foo.png"
+      - "./assets/foo.mp4"
+    optional: true
+
+- assertNotVisible: 'kwyjibo'
+- assertNotVisible:
+    text: 'kwyjibo'
+- assertNotVisible:
+    text: 'Form Test'
+    enabled: false
+
+- assertTrue: ${"test" == "test"}
+- assertTrue:
+    condition: ${12 < 20}
+    label: 'Check if 12 is less than 20'
+
+- assertVisible: 'Form Test'
+- assertVisible:
+    text: 'Form Test'
+- assertVisible:
+    id: 'fabAddIcon'
+- assertVisible: 'Login'
+- assertVisible: 
+    text: 'Form Test'
+
+# https://github.com/Mastersam07/maestro-workbench/issues/28
+#- assertWithAI:
+#    assertion: Login and password text fields are visible.
+
+- assertNoDefectsWithAI
+
+# https://github.com/Mastersam07/maestro-workbench/issues/21
+#- copyTextFrom:
+#    text: '\d+'
+
+- back
+- back:
+    label: 'Go back'
+
+- clearKeychain
+- clearKeychain:
+    optional: false
+
+- clearState
+- clearState:
+    label: 'Wipe the data'
+
+- eraseText
+- eraseText: 3
+
+# https://github.com/Mastersam07/maestro-workbench/issues/22
+#- evalScript: ${output.test = 'foo'}
+
+- extendedWaitUntil:
+    timeout: 10000
+    visible:
+      text: 'Swipe Test'
+
+- extendedWaitUntil:
+    timeout: 100
+    notVisible:
+      text: 'Non Existent Text'
+
+# https://github.com/Mastersam07/maestro-workbench/issues/30
+#- extractTextWithAI: 'CAPTCHA Value'
+
+- hideKeyboard
+
+# https://github.com/Mastersam07/maestro-workbench/issues/27
+#- inputRandomEmail
+#- inputRandomEmail
+#- inputRandomNumber
+#- inputRandomNumber:
+#    length: 4
+#- inputRandomPersonName
+#- inputRandomText
+#- inputRandomText:
+#    length: 4
+
+- inputText: 'foo'
+- inputText: ${MYVAR}
+- inputText:
+    text: 'user123'
+    label: 'Enter username'
+
+- killApp
+
+- launchApp:
+    appId: com.example.example
+    clearState: true
+    clearKeychain: true
+    stopApp: false
+
+- launchApp:
+    label: 'Launch the app with custom permissions'
+    permissions:
+      all: deny
+      camera: allow
+      location: allow
+
+- launchApp
+
+- pasteText
+
+# https://github.com/Mastersam07/maestro-workbench/issues/24
+#- pressKey: 'Home'
+#- pressKey: 'Back'
+- pressKey: 'home'
+- pressKey: 'back'
+
+- repeat:
+    times: 3
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+
+- repeat:
+    while:
+      true: ${output.counter < 3}
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+
+# https://github.com/Mastersam07/maestro-workbench/issues/7
+# - retry:
+#     maxRetries: 3
+#     commands:
+#       - tapOn:
+#           id: 'fabAddIcon'
+#           retryTapIfNoChange: false
+#       - waitForAnimationToEnd
+#       - assertVisible: '2'
+
+- runFlow:
+    commands:
+      - assertTrue: ${output.test == 'bar'}
+      - tapOn:
+          id: 'fabAddIcon'
+- runFlow:
+    env:
+      THIS_THING: "six"
+    commands:
+      - assertTrue: ${THIS_THING == "six"}
+- runFlow:
+    when:
+      visible: 'Some Text'
+    file: folder/some-flow.yaml
+- runFlow:
+    when:
+      visible: 'Some Text'
+      notVisible:
+        id: 'fabAddIcon'
+      platform: iOS
+      true: ${output.test == 'bar'}
+    file: folder/some-flow.yaml
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn: 'Thing1'
+      - runFlow:
+          label: 'Nested flow'
+          commands:
+            - tapOn: 'Thing2'
+
+- runScript:
+    env:
+      THIS_THING: "six"
+    file: runScript.js
+- runScript:
+    when:
+      visible: 'Some Text'
+      notVisible:
+        id: 'fabAddIcon'
+      platform: iOS
+      true: ${output.test == 'bar'}
+    file: myScript.js
+
+- scroll
+# https://github.com/Mastersam07/maestro-workbench/issues/34
+#- scroll:
+#    label: 
+
+- scrollUntilVisible:
+    element:
+      id: "viewId" # or any other selector
+    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
+    timeout: 50000 # (optional, default: 20000) ms
+    speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
+    visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
+    centerElement: false # true|false (optional, default: false)
+
+# https://github.com/Mastersam07/maestro-workbench/issues/31
+#- setAirplaneMode: enabled
+#- setAirplaneMode: disabled
+
+# https://github.com/Mastersam07/maestro-workbench/issues/32
+#- setLocation:
+#    latitude: 52.3599976
+#    longitude: 4.8830301
+
+- startRecording: recording
+- startRecording: 
+    path: recording
+    label: 'Record test evidence'
+
+- stopApp
+- stopApp: com.android.chrome
+- stopApp:
+    appId: com.android.chrome
+
+- stopRecording
+
+- swipe:  
+    start: 90%, 50%
+    end: 10%, 50%
+- swipe:
+    start: 100, 200
+    end: 300, 400
+- swipe:
+    direction: LEFT
+    label: 'Swipe left'
+- swipe:
+   from: 
+     id: "feeditem_identifier"
+   direction: UP
+- swipe:
+    direction: LEFT
+    duration: 2000
+
+- takeScreenshot: MainScreen
+- takeScreenshot:
+    path: LoginScreen
+
+- tapOn: "My text"
+- tapOn: .*Some Regex.*
+- tapOn:
+    id: "viewId"
+- tapOn:
+    text: "Button"
+    repeat: 3
+    delay: 500
+- tapOn:
+    id: "someId"
+    retryTapIfNoChange: false
+- tapOn:
+    text: "Button"
+    waitToSettleTimeoutMs: 500
+- tapOn:
+    point: 50%,50%
+- tapOn:
+    text: "A text with a hyperlink"
+    point: "90%,50%"
+
+- longPressOn: Text
+- longPressOn:
+    id: view_id
+- longPressOn:
+    point: 50%,50%
+- longPressOn:
+    text: "A text with a hyperlink"
+    point: "90%,50%"
+
+- doubleTapOn: "Button"
+- doubleTapOn:
+    id: "someId"
+    delay: 100
+
+- travel:
+    points:
+      - 0.0,0.0
+      - 0.1,0.0
+      - 0.1,0.1
+      - 0.0,0.1
+    speed: 7900
+
+- waitForAnimationToEnd
