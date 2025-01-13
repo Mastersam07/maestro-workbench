@@ -215,12 +215,12 @@ onFlowComplete:
 
 - scrollUntilVisible:
     element:
-      id: "viewId" # or any other selector
-    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
-    timeout: 50000 # (optional, default: 20000) ms
-    speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
-    visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
-    centerElement: false # true|false (optional, default: false)
+      id: "viewId"
+    direction: DOWN
+    timeout: 50000
+    speed: 40
+    visibilityPercentage: 100
+    centerElement: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/31
 #- setAirplaneMode: enabled

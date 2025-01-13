@@ -102,6 +102,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/RunScript"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ScrollUntilVisible"
                     }
                 ],
                 "$comment": {
@@ -2860,6 +2863,99 @@
                                         "platform": "iOS"
                                     }
                                 ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "ScrollUntilVisible": {
+                "title": "scrollUntilVisible",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "scrollUntilVisible"
+                ],
+                "properties": {
+                    "scrollUntilVisible": {
+                        "description": "Command to scroll until an element is visible",
+                        "additionalProperties": false,
+                        "properties": {
+                            "element": {
+                                "title": "scrollUntilVisible.element",
+                                "description": "Selector for the element to scroll until visible.",
+                                "$ref": "#/$defs/Element"
+                            },
+                            "direction": {
+                                "title": "scrollUntilVisible.direction",
+                                "description": "Direction to scroll. Defaults to DOWN.",
+                                "$ref": "#/$defs/Direction"
+                            },
+                            "timeout": {
+                                "title": "scrollUntilVisible.timeout",
+                                "description": "Timeout in milliseconds to scroll and look for the element. Defaults to 20000.",
+                                "oneOf": [
+                                    {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "default": 20000
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\$\\{[^}]+\\}$",
+                                        "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
+                                    }
+                                ]
+                            },
+                            "speed": {
+                                "title": "scrollUntilVisible.speed",
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100,
+                                "default": 40,
+                                "description": "Scroll speed (0-100). Defaults to 40."
+                            },
+                            "visibilityPercentage": {
+                                "title": "scrollUntilVisible.visibilityPercentage",
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100,
+                                "default": 100,
+                                "description": "Percentage of the element visible in the viewport to consider as visible. Defaults to 100."
+                            },
+                            "centerElement": {
+                                "title": "scrollUntilVisible.centerElement",
+                                "type": "boolean",
+                                "default": false,
+                                "description": "Indicates whether to center the element when it becomes visible. Defaults to false."
+                            },
+                            "label": {
+                                "title": "scrollUntilVisible.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "scrollUntilVisible.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "required": [
+                            "element"
+                        ],
+                        "examples": [
+                            {
+                                "element": {
+                                    "text": "Load More"
+                                },
+                                "direction": "DOWN",
+                                "timeout": 3000,
+                                "speed": 50
+                            },
+                            {
+                                "element": {
+                                    "id": "scrollable-section"
+                                },
+                                "direction": "UP"
                             }
                         ]
                     }
