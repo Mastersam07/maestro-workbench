@@ -460,7 +460,13 @@
                             {
                                 "type": "string",
                                 "description": "A JavaScript expression to assert its truthiness",
-                                "minLength": 1
+                                "minLength": 1,
+                                "examples": [
+                                    {
+                                        "description": "Simple assertion with a JavaScript condition as a string",
+                                        "example": "- assertTrue: \"2 + 2 === 4\""
+                                    }
+                                ]
                             },
                             {
                                 "description": "A JavaScript expression to assert its truthiness",
@@ -485,21 +491,17 @@
                                 },
                                 "required": [
                                     "condition"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Detailed assertion with condition and label",
+                                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                                    }
                                 ]
                             }
                         ]
                     }
-                },
-                "examples": [
-                    {
-                        "description": "Simple assertion with a JavaScript condition as a string",
-                        "example": "- assertTrue: \"2 + 2 === 4\""
-                    },
-                    {
-                        "description": "Detailed assertion with condition and label",
-                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
-                    }
-                ]
+                }
             },
             "Back": {
                 "oneOf": [
@@ -1041,7 +1043,13 @@
                             {
                                 "type": "string",
                                 "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
-                                "minLength": 1
+                                "minLength": 1,
+                                "examples": [
+                                    {
+                                        "description": "Open a simple link as a string",
+                                        "example": "- openLink: \"https://example.com\""
+                                    }
+                                ]
                             },
                             {
                                 "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
@@ -1079,25 +1087,21 @@
                                 },
                                 "required": [
                                     "link"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Open a link with autoVerify enabled",
+                                        "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
+                                    },
+                                    {
+                                        "description": "Open a link in the browser",
+                                        "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
+                                    }
                                 ]
                             }
                         ]
                     }
-                },
-                "examples": [
-                    {
-                        "description": "Open a simple link as a string",
-                        "example": "- openLink: \"https://example.com\""
-                    },
-                    {
-                        "description": "Open a link with autoVerify enabled",
-                        "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
-                    },
-                    {
-                        "description": "Open a link in the browser",
-                        "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
-                    }
-                ]
+                }
             },
             "PressKey": {
                 "title": "pressKey",
