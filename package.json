@@ -162,7 +162,6 @@
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",
-    "@types/js-yaml": "^4.0.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
     "@types/vscode": "^1.61.0",

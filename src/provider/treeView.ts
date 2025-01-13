@@ -144,7 +144,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
     }
 
     private analyzeDependencies(filePaths: string[]): void {
-        console.log('Analyzing dependencies');
         this.dependencyMap.clear();
 
         filePaths.forEach((filePath) => {

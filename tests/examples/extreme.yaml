@@ -87,22 +87,14 @@ onFlowComplete:
 
 - hideKeyboard
 
-- inputRandomEmail
-
-- inputRandomEmail
-
-- inputRandomNumber
-
 # https://github.com/Mastersam07/maestro-workbench/issues/27
+#- inputRandomEmail
+#- inputRandomEmail
+#- inputRandomNumber
 #- inputRandomNumber:
 #    length: 4
-
-# https://github.com/Mastersam07/maestro-workbench/issues/26
-- inputRandomPersonName
-
-- inputRandomText
-
-# https://github.com/Mastersam07/maestro-workbench/issues/23
+#- inputRandomPersonName
+#- inputRandomText
 #- inputRandomText:
 #    length: 4
 
