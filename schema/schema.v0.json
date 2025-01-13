@@ -66,8 +66,21 @@
         "FlowContent": {
             "type": "array",
             "items": {
-                "additionalProperties": false,
-                "properties": {
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/Commands/AddMedia"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertNotVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/LaunchApp"
+                    }
+                ],
+                "$comment": {
                     "addMedia": {
                         "oneOf": [
                             {
