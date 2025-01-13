@@ -83,6 +83,9 @@
                         "$ref": "#/$defs/Commands/EraseText"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ExtendedWaitUntil"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/LaunchApp"
                     }
                 ],
@@ -2245,6 +2248,100 @@
                         "charactersToErase": 5
                     }
                 ]
+            },
+            "ExtendedWaitUntil": {
+                "title": "extendedWaitUntil",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "extendedWaitUntil"
+                ],
+                "properties": {
+                    "extendedWaitUntil": {
+                        "description": "Command to wait until a condition is met",
+                        "additionalProperties": false,
+                        "properties": {
+                            "visible": {
+                                "title": "extendedWaitUntil.visible",
+                                "$ref": "#/$defs/Element",
+                                "description": "Waits until the element becomes visible."
+                            },
+                            "notVisible": {
+                                "title": "extendedWaitUntil.notVisible",
+                                "$ref": "#/$defs/Element",
+                                "description": "Selector object to find the element."
+                            },
+                            "timeout": {
+                                "title": "extendedWaitUntil.timeout",
+                                "description": "Timeout in milliseconds for the wait operation.",
+                                "oneOf": [
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "default": 1
+                                    },
+                                    {
+                                        "type": "string",
+                                        "pattern": "^\\$\\{[^}]+\\}$",
+                                        "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
+                                    }
+                                ]
+                            },
+                            "label": {
+                                "title": "extendedWaitUntil.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "extendedWaitUntil.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "oneOf": [
+                            {
+                                "required": [
+                                    "visible",
+                                    "timeout"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "notVisible",
+                                    "timeout"
+                                ]
+                            }
+                        ],
+                        "examples": [
+                            {
+                                "visible": "Submit Button",
+                                "timeout": 5000
+                            },
+                            {
+                                "visible": {
+                                    "text": "Welcome",
+                                    "id": "welcome_message",
+                                    "focused": true
+                                },
+                                "timeout": 10000
+                            },
+                            {
+                                "notVisible": {
+                                    "text": "Loading Spinner",
+                                    "enabled": true
+                                },
+                                "timeout": 3000
+                            },
+                            {
+                                "visible": {
+                                    "id": "progress_bar",
+                                    "selected": false
+                                },
+                                "timeout": 7000
+                            }
+                        ]
+                    }
+                }
             },
             "LaunchApp": {
                 "oneOf": [
