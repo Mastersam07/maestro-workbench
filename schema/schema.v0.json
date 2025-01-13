@@ -83,6 +83,9 @@
                         "$ref": "#/$defs/Commands/Back"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ClearKeychain"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ClipboardPasteText"
                     },
                     {
@@ -2282,6 +2285,49 @@
                                 "examples": [
                                     {
                                         "label": "Go back to the previous screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "ClearKeychain": {
+                "oneOf": [
+                    {
+                        "title": "clearKeychain",
+                        "description": "Command to clear the entire iOS keychain (not applicable on Android)",
+                        "type": "string",
+                        "const": "clearKeychain"
+                    },
+                    {
+                        "title": "clearKeychain",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "clearKeychain"
+                        ],
+                        "properties": {
+                            "clearKeychain": {
+                                "type": "object",
+                                "description": "Command to clear the entire iOS keychain (not applicable on Android)",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "clearKeychain.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "clearKeychain.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Clear the keychain",
                                         "optional": true
                                     }
                                 ]
