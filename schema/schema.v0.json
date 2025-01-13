@@ -116,6 +116,9 @@
                         "$ref": "#/$defs/Commands/StopApp"
                     },
                     {
+                        "$ref": "#/$defs/Commands/StopAppKill"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/Swipe"
                     },
                     {
@@ -3136,6 +3139,67 @@
                                             {
                                                 "appId": "com.example.someApp",
                                                 "label": "Stop Some App",
+                                                "optional": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "StopAppKill": {
+                "oneOf": [
+                    {
+                        "title": "killApp",
+                        "description": "Command to kill the application under test",
+                        "type": "string",
+                        "const": "killApp"
+                    },
+                    {
+                        "title": "killApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "killApp"
+                        ],
+                        "properties": {
+                            "killApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to kill the application specified by its package ID.",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": [
+                                            "com.example.someApp"
+                                        ]
+                                    },
+                                    {
+                                        "description": "Command to kill the application specified by its package ID.",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "killApp.appId",
+                                                "type": "string",
+                                                "description": "The app ID to kill. If not provided, the app under test is killed."
+                                            },
+                                            "label": {
+                                                "title": "killApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "killApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            {
+                                                "appId": "com.example.someApp",
+                                                "label": "Kill Some App",
                                                 "optional": false
                                             }
                                         ]

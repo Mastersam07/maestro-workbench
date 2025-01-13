@@ -108,6 +108,11 @@ onFlowComplete:
     label: 'Enter username'
 
 - killApp
+- killApp: com.example
+- killApp:
+    appId: com.example
+    label: 'Kill the Example app'
+    optional: false
 
 - launchApp: com.example
 
