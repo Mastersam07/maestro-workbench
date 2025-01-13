@@ -297,6 +297,8 @@ onFlowComplete:
 - takeScreenshot: MainScreen
 - takeScreenshot:
     path: LoginScreen
+    label: 'Take a screenshot of the login screen'
+    optional: false
 
 - tapOn: "My text"
 - tapOn: .*Some Regex.*

@@ -140,6 +140,9 @@
                         "$ref": "#/$defs/Commands/Swipe"
                     },
                     {
+                        "$ref": "#/$defs/Commands/TakeScreenshot"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/TapOn"
                     },
                     {
@@ -3623,6 +3626,61 @@
                             {
                                 "direction": "LEFT",
                                 "duration": 400
+                            }
+                        ]
+                    }
+                }
+            },
+            "TakeScreenshot": {
+                "title": "takeScreenshot",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "takeScreenshot"
+                ],
+                "properties": {
+                    "takeScreenshot": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
+                                "minLength": 1,
+                                "examples": [
+                                    "screen1",
+                                    "login_screen"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "path": {
+                                        "title": "takeScreenshot.path",
+                                        "type": "string",
+                                        "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
+                                    },
+                                    "label": {
+                                        "title": "takeScreenshot.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "takeScreenshot.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "path"
+                                ],
+                                "examples": [
+                                    {
+                                        "path": "LoginScreen",
+                                        "label": "Capture the login screen",
+                                        "optional": true
+                                    }
+                                ]
                             }
                         ]
                     }
