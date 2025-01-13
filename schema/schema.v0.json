@@ -96,6 +96,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/Repeat"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RunFlow"
                     }
                 ],
                 "$comment": {
@@ -2661,6 +2664,110 @@
                                         "tapOn": {
                                             "text": "Load More"
                                         }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "RunFlow": {
+                "title": "runFlow",
+                "description": "Run a subflow from a specified file or execute inline commands.",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "runFlow"
+                ],
+                "properties": {
+                    "runFlow": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "title": "runFlow.file",
+                                        "description": "The file path of the flow to run."
+                                    },
+                                    "env": {
+                                        "type": "object",
+                                        "title": "runFlow.env",
+                                        "description": "Key-value pairs of environment variables to pass to the subflow.",
+                                        "additionalProperties": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "when": {
+                                        "type": "object",
+                                        "description": "Conditions to determine whether the flow should run.",
+                                        "title": "runFlow.when",
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "visible": {
+                                                "title": "runFlow.when.visible",
+                                                "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "notVisible": {
+                                                "title": "runFlow.when.notVisible",
+                                                "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            }
+                                        }
+                                    },
+                                    "commands": {
+                                        "type": "array",
+                                        "title": "runFlow.commands",
+                                        "description": "Inline commands to execute if not using a file.",
+                                        "items": {
+                                            "$ref": "#/$defs/FlowContent/items"
+                                        }
+                                    },
+                                    "label": {
+                                        "title": "runFlow.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "runFlow.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "file": "subFlow.yaml",
+                                        "env": {
+                                            "ENV_VARIABLE": "Value"
+                                        }
+                                    },
+                                    {
+                                        "commands": [
+                                            {
+                                                "tapOn": "Retry"
+                                            },
+                                            {
+                                                "assertVisible": "Success"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "when": {
+                                            "visible": {
+                                                "text": "Retry"
+                                            }
+                                        },
+                                        "commands": [
+                                            {
+                                                "tapOn": "Retry"
+                                            }
+                                        ]
                                     }
                                 ]
                             }

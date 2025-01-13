@@ -161,6 +161,7 @@ onFlowComplete:
 #       - waitForAnimationToEnd
 #       - assertVisible: '2'
 
+- runFlow: setup.yaml
 - runFlow:
     commands:
       - assertTrue: ${output.test == 'bar'}
