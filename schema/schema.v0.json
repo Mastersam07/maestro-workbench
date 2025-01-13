@@ -90,6 +90,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/LaunchApp"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/PressKey"
                     }
                 ],
                 "$comment": {
@@ -2486,6 +2489,94 @@
                                 ]
                             }
                         }
+                    }
+                ]
+            },
+            "PressKey": {
+                "title": "pressKey",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "pressKey"
+                ],
+                "properties": {
+                    "pressKey": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "enum": [
+                                    "home",
+                                    "lock",
+                                    "enter",
+                                    "backspace",
+                                    "volume up",
+                                    "volume down",
+                                    "back",
+                                    "Remote Dpad Up",
+                                    "Remote Dpad Down",
+                                    "Remote Dpad Left",
+                                    "Remote Dpad Right",
+                                    "Remote Dpad Center",
+                                    "Remote Media Play Pause",
+                                    "Remote Media Stop",
+                                    "Remote Media Next",
+                                    "Remote Media Previous",
+                                    "Remote Media Rewind",
+                                    "Remote Media Fast Forward"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "key": {
+                                        "title": "pressKey.key",
+                                        "description": "The key to press",
+                                        "type": "string",
+                                        "enum": [
+                                            "home",
+                                            "lock",
+                                            "enter",
+                                            "backspace",
+                                            "volume up",
+                                            "volume down",
+                                            "back",
+                                            "Remote Dpad Up",
+                                            "Remote Dpad Down",
+                                            "Remote Dpad Left",
+                                            "Remote Dpad Right",
+                                            "Remote Dpad Center",
+                                            "Remote Media Play Pause",
+                                            "Remote Media Stop",
+                                            "Remote Media Next",
+                                            "Remote Media Previous",
+                                            "Remote Media Rewind",
+                                            "Remote Media Fast Forward"
+                                        ]
+                                    },
+                                    "label": {
+                                        "title": "pressKey.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "pressKey.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "examples": [
+                    "home",
+                    "enter",
+                    "volume up",
+                    "Remote Dpad Center",
+                    {
+                        "key": "back",
+                        "label": "Press the back key"
                     }
                 ]
             }

@@ -133,6 +133,10 @@ onFlowComplete:
 #- pressKey: 'Back'
 - pressKey: 'home'
 - pressKey: 'back'
+- pressKey:
+    key: 'home'
+    label: 'Press the home key'
+    optional: false
 
 - repeat:
     times: 3
