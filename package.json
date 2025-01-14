@@ -158,23 +158,27 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "mocha --import=tsx tests/**/*.test.ts --exit && vscode-test"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9",
-    "@types/vscode": "^1.61.0",
+    "@types/chai": "^5.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.61.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "ajv": "^8.17.1",
+    "chai": "^5.1.2",
     "esbuild": "^0.24.0",
     "eslint": "^9.16.0",
+    "mocha": "^11.0.1",
     "npm-run-all": "^4.1.5",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "yaml": "^2.7.0"
   }
 }

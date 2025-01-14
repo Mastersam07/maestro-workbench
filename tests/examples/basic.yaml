@@ -1,0 +1,6 @@
+appId: com.example
+---
+- launchApp
+- stopApp
+- launchApp:
+    appId: com.example.example
