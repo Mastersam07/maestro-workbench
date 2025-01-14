@@ -122,6 +122,9 @@
                         "$ref": "#/$defs/Commands/Repeat"
                     },
                     {
+                        "$ref": "#/$defs/Commands/Retry"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/RunFlow"
                     },
                     {
@@ -1367,6 +1370,94 @@
                                         }
                                     }
                                 ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "Retry": {
+                "title": "retry",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "retry"
+                ],
+                "properties": {
+                    "retry": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "maxRetries": {
+                                "title": "retry.maxRetries",
+                                "description": "The number of times to attempt the flow. Minimum 0, maximum 3. Defaults to 1.",
+                                "minimum": 0,
+                                "type": "integer"
+                            },
+                            "file": {
+                                "type": "string",
+                                "title": "retry.file",
+                                "description": "The file path of the flow to run."
+                            },
+                            "env": {
+                                "type": "object",
+                                "title": "retry.env",
+                                "description": "Key-value pairs of environment variables to pass to the subflow.",
+                                "additionalProperties": {
+                                    "type": "string"
+                                }
+                            },
+                            "commands": {
+                                "type": "array",
+                                "title": "retry.commands",
+                                "description": "Inline commands to execute if not using a file.",
+                                "items": {
+                                    "$ref": "#/$defs/FlowContent/items"
+                                }
+                            },
+                            "label": {
+                                "title": "retry.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "retry.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "oneOf": [
+                            {
+                                "required": [
+                                    "file"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "commands"
+                                ]
+                            }
+                        ],
+                        "examples": [
+                            {
+                                "maxRetries": 3,
+                                "commands": [
+                                    {
+                                        "inputText": "Retry"
+                                    },
+                                    {
+                                        "pressKey": "enter"
+                                    }
+                                ]
+                            },
+                            {
+                                "commands": [
+                                    {
+                                        "tapOn": "Retry"
+                                    }
+                                ]
+                            },
+                            {
+                                "maxRetries": 1,
+                                "file": "subFlow.yaml"
                             }
                         ]
                     }
