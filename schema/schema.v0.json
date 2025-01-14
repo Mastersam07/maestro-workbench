@@ -1599,7 +1599,6 @@
                     },
                     "openLink": {
                         "title": "openLink",
-                        "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
                         "type": [
                             "string",
                             "object"
@@ -1608,7 +1607,6 @@
                             "link": {
                                 "title": "openLink.link",
                                 "type": "string",
-                                "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
                                 "description": "The URL or deep link to open on the device."
                             },
                             "autoVerify": {
