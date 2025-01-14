@@ -48,7 +48,8 @@ onFlowComplete:
 #- assertWithAI:
 #    assertion: Login and password text fields are visible.
 
-- assertNoDefectsWithAI
+# https://github.com/Mastersam07/maestro-workbench/issues/29
+#- assertNoDefectsWithAI
 
 # https://github.com/Mastersam07/maestro-workbench/issues/21
 #- copyTextFrom:
@@ -63,11 +64,17 @@ onFlowComplete:
     optional: false
 
 - clearState
+- clearState: com.example.someapp
 - clearState:
+    appId: com.example.someapp
     label: 'Wipe the data'
+    optional: true
 
 - eraseText
 - eraseText: 3
+- eraseText:
+    charactersToErase: 10
+    label: 'Delete ten chars'
 
 # https://github.com/Mastersam07/maestro-workbench/issues/22
 #- evalScript: ${output.test = 'foo'}
@@ -86,6 +93,9 @@ onFlowComplete:
 #- extractTextWithAI: 'CAPTCHA Value'
 
 - hideKeyboard
+- hideKeyboard:
+    label: 'Hide the keyboard'
+    optional: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/27
 #- inputRandomEmail
@@ -105,6 +115,13 @@ onFlowComplete:
     label: 'Enter username'
 
 - killApp
+- killApp: com.example
+- killApp:
+    appId: com.example
+    label: 'Kill the Example app'
+    optional: false
+
+- launchApp: com.example
 
 - launchApp:
     appId: com.example.example
@@ -121,13 +138,35 @@ onFlowComplete:
 
 - launchApp
 
+- openLink: https://example.com
+- openLink: 'example://login'
+# https://github.com/Mastersam07/maestro-workbench/issues/37
+#- openLink:
+#    link: 'example://login'
+- openLink: 
+    link: https://example.com
+    autoVerify: true
+    label: 'Open link in app'
+- openLink: 
+    link: https://example.com
+    browser: true
+    label: 'Open link in browser'
+    optional: false
+
 - pasteText
+- pasteText:
+    label: 'Paste the text'
+    optional: true
 
 # https://github.com/Mastersam07/maestro-workbench/issues/24
 #- pressKey: 'Home'
 #- pressKey: 'Back'
 - pressKey: 'home'
 - pressKey: 'back'
+- pressKey:
+    key: 'home'
+    label: 'Press the home key'
+    optional: false
 
 - repeat:
     times: 3
@@ -152,6 +191,7 @@ onFlowComplete:
 #       - waitForAnimationToEnd
 #       - assertVisible: '2'
 
+- runFlow: setup.yaml
 - runFlow:
     commands:
       - assertTrue: ${output.test == 'bar'}
@@ -184,6 +224,7 @@ onFlowComplete:
           commands:
             - tapOn: 'Thing2'
 
+- runScript: setup.js
 - runScript:
     env:
       THIS_THING: "six"
@@ -197,19 +238,19 @@ onFlowComplete:
       true: ${output.test == 'bar'}
     file: myScript.js
 
-- scroll
 # https://github.com/Mastersam07/maestro-workbench/issues/34
+#- scroll
 #- scroll:
 #    label: 
 
 - scrollUntilVisible:
     element:
-      id: "viewId" # or any other selector
-    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
-    timeout: 50000 # (optional, default: 20000) ms
-    speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
-    visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
-    centerElement: false # true|false (optional, default: false)
+      id: "viewId"
+    direction: DOWN
+    timeout: 50000
+    speed: 40
+    visibilityPercentage: 100
+    centerElement: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/31
 #- setAirplaneMode: enabled
@@ -229,8 +270,13 @@ onFlowComplete:
 - stopApp: com.android.chrome
 - stopApp:
     appId: com.android.chrome
+    label: 'Stop Chrome'
+    optional: true
 
 - stopRecording
+- stopRecording:
+    label: 'Stop recording'
+    optional: false
 
 - swipe:  
     start: 90%, 50%
@@ -252,6 +298,8 @@ onFlowComplete:
 - takeScreenshot: MainScreen
 - takeScreenshot:
     path: LoginScreen
+    label: 'Take a screenshot of the login screen'
+    optional: false
 
 - tapOn: "My text"
 - tapOn: .*Some Regex.*
@@ -294,5 +342,11 @@ onFlowComplete:
       - 0.1,0.1
       - 0.0,0.1
     speed: 7900
+    label: 'Fake some movement'
+    optional: false
 
 - waitForAnimationToEnd
+- waitForAnimationToEnd:
+    timeout: 10000
+    label: 'Wait for the animation to end'
+    optional: false

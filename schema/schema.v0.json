@@ -66,19 +66,204 @@
         "FlowContent": {
             "type": "array",
             "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/Commands/AddMedia"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertNotVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertTrue"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Back"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ClearKeychain"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ClearState"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ClipboardPasteText"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/EraseText"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ExtendedWaitUntil"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/HideKeyboard"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputText"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/LaunchApp"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/OpenLink"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/PressKey"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RecordingStart"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RecordingStop"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Repeat"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RunFlow"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/RunScript"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ScrollUntilVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/StopApp"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/StopAppKill"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Swipe"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/TakeScreenshot"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/TapOn"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/TapOnDouble"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/TapOnLong"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/Travel"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/WaitForAnimationToEnd"
+                    }
+                ]
+            }
+        },
+        "Condition": {
+            "type": "object",
+            "$comment": "`true` doesn't seem to work as a property, so we allow additional properties",
+            "additionalProperties": true,
+            "properties": {
+                "visible": {
+                    "$ref": "#/$defs/Element"
+                },
+                "notVisible": {
+                    "$ref": "#/$defs/Element"
+                }
+            }
+        },
+        "Direction": {
+            "type": "string",
+            "enum": [
+                "UP",
+                "DOWN",
+                "LEFT",
+                "RIGHT"
+            ]
+        },
+        "Platform": {
+            "type": "string",
+            "enum": [
+                "Android",
+                "iOS",
+                "Web"
+            ]
+        },
+        "Element": {
+            "type": [
+                "string",
+                "object"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "title": "Finds text that matches regexp"
+                },
+                "id": {
+                    "type": "string",
+                    "title": "Finds id that matches regexp"
+                },
+                "index": {
+                    "type": "number",
+                    "title": "0-based index of the view to select among those that match all other criteria"
+                },
+                "width": {
+                    "type": "number",
+                    "title": "Finds element of a given width"
+                },
+                "height": {
+                    "type": "number",
+                    "title": "Finds element of a given height"
+                },
+                "tolerance": {
+                    "type": "number",
+                    "title": "Tolerance to apply when comparing width and height"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"enabled\" state"
+                },
+                "checked": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"checked\" state"
+                },
+                "focused": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"focused\" state"
+                },
+                "selected": {
+                    "type": "boolean",
+                    "title": "Searches for view with a given \"selected\" state"
+                },
+                "optional": {
+                    "type": "boolean",
+                    "title": "If set to true, test won't fail if view can't be found",
+                    "default": false
+                }
+            }
+        },
+        "Commands": {
+            "AddMedia": {
+                "title": "addMedia",
+                "type": "object",
                 "additionalProperties": false,
+                "required": [
+                    "addMedia"
+                ],
                 "properties": {
                     "addMedia": {
+                        "description": "Adds media files to the device",
                         "oneOf": [
                             {
-                                "title": "addMedia",
                                 "type": "array",
                                 "items": {
+                                    "description": "List of media file paths to add to the device's gallery.",
                                     "type": "string",
                                     "pattern": "^.*\\.(png|jpeg|jpg|gif|mp4)$"
                                 },
                                 "minItems": 1,
-                                "description": "List of media file paths to add to the device's gallery.",
                                 "examples": [
                                     [
                                         "./assets/image1.png",
@@ -87,7 +272,6 @@
                                 ]
                             },
                             {
-                                "title": "addMedia",
                                 "type": "object",
                                 "properties": {
                                     "label": {
@@ -115,7 +299,6 @@
                                     "files"
                                 ],
                                 "additionalProperties": false,
-                                "description": "Object specifying the addMedia with additional properties.",
                                 "examples": [
                                     {
                                         "label": "Try to add the test pictures to the device",
@@ -128,186 +311,455 @@
                                 ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "AssertNotVisible": {
+                "title": "assertNotVisible",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertNotVisible"
+                ],
+                "properties": {
                     "assertNotVisible": {
-                        "title": "assertNotVisible",
-                        "description": "Assert whether an element is not visible.",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "text": {
-                                "type": "string"
-                            },
-                            "id": {
-                                "type": "string"
-                            },
-                            "enabled": {
-                                "type": "boolean"
-                            },
-                            "checked": {
-                                "type": "boolean"
-                            },
-                            "focused": {
-                                "type": "boolean"
-                            },
-                            "selected": {
-                                "type": "boolean"
-                            },
-                            "index": {
-                                "type": "integer"
-                            },
-                            "label": {
-                                "title": "assertNotVisible.label",
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "assertNotVisible.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            "Loading Spinner",
-                            {
-                                "text": "Error Message",
-                                "checked": false
+                                "description": "Assert that an element is not visible through text",
+                                "minLength": 1
                             },
                             {
-                                "id": "progress_bar",
-                                "enabled": false
+                                "description": "Assert that an element is not visible through an element selector",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "checked": {
+                                        "type": "boolean"
+                                    },
+                                    "focused": {
+                                        "type": "boolean"
+                                    },
+                                    "selected": {
+                                        "type": "boolean"
+                                    },
+                                    "index": {
+                                        "type": "integer"
+                                    },
+                                    "label": {
+                                        "title": "assertNotVisible.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertNotVisible.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    "Loading Spinner",
+                                    {
+                                        "text": "Error Message",
+                                        "checked": false
+                                    },
+                                    {
+                                        "id": "progress_bar",
+                                        "enabled": false
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "AssertVisible": {
+                "title": "assertVisible",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertVisible"
+                ],
+                "properties": {
                     "assertVisible": {
-                        "title": "assertVisible",
-                        "description": "Assert whether an element is visible.",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "text": {
-                                "type": "string"
-                            },
-                            "id": {
-                                "type": "string"
-                            },
-                            "index": {
-                                "type": "integer"
-                            },
-                            "enabled": {
-                                "type": "boolean"
-                            },
-                            "checked": {
-                                "type": "boolean"
-                            },
-                            "focused": {
-                                "type": "boolean"
-                            },
-                            "selected": {
-                                "type": "boolean"
-                            },
-                            "label": {
-                                "title": "assertVisible.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "assertVisible.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            "Login Button",
+                        "oneOf": [
                             {
-                                "text": "Sign In",
-                                "id": "sign_in_button",
-                                "focused": true
+                                "type": "string",
+                                "description": "Assert that an element is visible through text",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "Assert that an element is visible through an element selector",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "enabled": {
+                                        "type": "boolean"
+                                    },
+                                    "checked": {
+                                        "type": "boolean"
+                                    },
+                                    "focused": {
+                                        "type": "boolean"
+                                    },
+                                    "selected": {
+                                        "type": "boolean"
+                                    },
+                                    "index": {
+                                        "type": "integer"
+                                    },
+                                    "label": {
+                                        "title": "assertVisible.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertVisible.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    "Login Button",
+                                    {
+                                        "text": "Sign In",
+                                        "id": "sign_in_button",
+                                        "focused": true
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "AssertTrue": {
+                "title": "assertTrue",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertTrue"
+                ],
+                "properties": {
                     "assertTrue": {
-                        "title": "assertTrue",
-                        "description": "A JavaScript expression to assert its truthiness.",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "properties": {
-                            "condition": {
-                                "title": "assertTrue.condition",
-                                "type": "string"
-                            },
-                            "label": {
-                                "title": "assertTrue.label",
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "assertTrue.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "required": [
-                            "condition"
-                        ],
-                        "examples": [
-                            {
-                                "description": "Simple assertion with a JavaScript condition as a string",
-                                "example": "- assertTrue: \"2 + 2 === 4\""
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "minLength": 1,
+                                "examples": [
+                                    {
+                                        "description": "Simple assertion with a JavaScript condition as a string",
+                                        "example": "- assertTrue: \"2 + 2 === 4\""
+                                    }
+                                ]
                             },
                             {
-                                "description": "Detailed assertion with condition and label",
-                                "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "condition": {
+                                        "title": "assertTrue.condition",
+                                        "type": "string",
+                                        "description": "A JavaScript expression that is evaluated for truthiness"
+                                    },
+                                    "label": {
+                                        "title": "assertTrue.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertTrue.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "condition"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Detailed assertion with condition and label",
+                                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                                    }
+                                ]
                             }
                         ]
+                    }
+                }
+            },
+            "Back": {
+                "oneOf": [
+                    {
+                        "title": "back",
+                        "description": "Command to navigate user to the previous screen (Android-only at the moment)",
+                        "type": "string",
+                        "const": "back"
                     },
-                    "eraseText": {
-                        "title": "eraseText",
-                        "description": "Remove up to n characters from the currently selected text field (if any)",
-                        "type": [
-                            "null",
-                            "integer",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "charactersToErase": {
-                                "description": "Number of characters to erase. Defaults to 50.",
-                                "type": "integer",
-                                "minimum": 1,
-                                "default": 50
-                            },
-                            "label": {
-                                "title": "eraseText.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "eraseText.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            10,
-                            null,
-                            {
-                                "charactersToErase": 5
-                            }
-                        ]
-                    },
-                    "extendedWaitUntil": {
-                        "title": "extendedWaitUntil",
-                        "description": "Command to wait until an element becomes visible or disappears within a specified timeout.",
+                    {
+                        "title": "back",
                         "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "back"
+                        ],
+                        "properties": {
+                            "back": {
+                                "type": "object",
+                                "description": "Command to navigate user to the previous screen (Android-only at the moment)",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "back.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "back.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Go back to the previous screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "ClearKeychain": {
+                "oneOf": [
+                    {
+                        "title": "clearKeychain",
+                        "description": "Command to clear the entire iOS keychain (not applicable on Android)",
+                        "type": "string",
+                        "const": "clearKeychain"
+                    },
+                    {
+                        "title": "clearKeychain",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "clearKeychain"
+                        ],
+                        "properties": {
+                            "clearKeychain": {
+                                "type": "object",
+                                "description": "Command to clear the entire iOS keychain (not applicable on Android)",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "clearKeychain.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "clearKeychain.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Clear the keychain",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "ClearState": {
+                "oneOf": [
+                    {
+                        "title": "clearState",
+                        "description": "Command to clear the application data of the application under test",
+                        "type": "string",
+                        "const": "clearState"
+                    },
+                    {
+                        "title": "clearState",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "clearState"
+                        ],
+                        "properties": {
+                            "clearState": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to clear the application state of the specified application",
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    {
+                                        "description": "Command to clear the application state of the specified application or application under test",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "clearState.appId",
+                                                "type": "string",
+                                                "description": "The app ID to clear the state for. If not provided, the application under test is cleared."
+                                            },
+                                            "label": {
+                                                "title": "clearState.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "clearState.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            "com.example.someapp",
+                                            {
+                                                "appId": "com.example.someapp",
+                                                "label": "Clear the state of SomeApp",
+                                                "optional": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "ClipboardPasteText": {
+                "oneOf": [
+                    {
+                        "title": "pasteText",
+                        "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                        "type": "string",
+                        "const": "pasteText"
+                    },
+                    {
+                        "title": "pasteText",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "pasteText"
+                        ],
+                        "properties": {
+                            "pasteText": {
+                                "type": "object",
+                                "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "pasteText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "pasteText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Paste the previously copied text",
+                                        "optional": false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "EraseText": {
+                "oneOf": [
+                    {
+                        "title": "eraseText",
+                        "description": "Remove up to 50 characters from the currently selected text field (if any)",
+                        "type": "string",
+                        "const": "eraseText"
+                    },
+                    {
+                        "title": "eraseText",
+                        "description": "Erases the specified number of characters from the currently selected text field (if any)",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "eraseText"
+                        ],
+                        "properties": {
+                            "eraseText": {
+                                "oneOf": [
+                                    {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "default": 50
+                                    },
+                                    {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "charactersToErase": {
+                                                "description": "Number of characters to erase. Defaults to 50.",
+                                                "type": "integer",
+                                                "minimum": 1,
+                                                "default": 50
+                                            },
+                                            "label": {
+                                                "title": "eraseText.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "eraseText.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "examples": [
+                    10,
+                    null,
+                    {
+                        "charactersToErase": 5
+                    }
+                ]
+            },
+            "ExtendedWaitUntil": {
+                "title": "extendedWaitUntil",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "extendedWaitUntil"
+                ],
+                "properties": {
+                    "extendedWaitUntil": {
+                        "description": "Command to wait until a condition is met",
                         "additionalProperties": false,
                         "properties": {
                             "visible": {
@@ -389,121 +841,277 @@
                                 "timeout": 7000
                             }
                         ]
+                    }
+                }
+            },
+            "HideKeyboard": {
+                "oneOf": [
+                    {
+                        "title": "hideKeyboard",
+                        "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                        "type": "string",
+                        "const": "hideKeyboard"
                     },
-                    "inputText": {
-                        "title": "inputText",
-                        "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
+                    {
+                        "title": "hideKeyboard",
+                        "type": "object",
                         "additionalProperties": false,
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "The text to input."
-                            },
-                            "label": {
-                                "title": "inputText.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "inputText.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            "Hello, World!",
-                            "user@example.com",
-                            "${DYNAMIC_VARIABLE}",
-                            {
-                                "text": "Hello, World!"
-                            }
-                        ]
-                    },
-                    "launchApp": {
-                        "title": "Launch the app.",
-                        "description": "Launches the app under test without additional configurations.",
-                        "type": [
-                            "null",
-                            "string",
-                            "object"
+                        "required": [
+                            "hideKeyboard"
                         ],
-                        "additionalProperties": false,
                         "properties": {
-                            "appId": {
-                                "type": "string",
-                                "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
-                            },
-                            "clearState": {
-                                "type": "boolean",
-                                "description": "Indicates whether to clear the app's state before launching. Defaults to false."
-                            },
-                            "clearKeychain": {
-                                "type": "boolean",
-                                "description": "Clears the entire iOS keychain. Applicable only for iOS."
-                            },
-                            "stopApp": {
-                                "type": "boolean",
-                                "description": "Stops the app before launching. Defaults to true."
-                            },
-                            "permissions": {
+                            "hideKeyboard": {
                                 "type": "object",
-                                "description": "Overrides permissions for the app.",
-                                "additionalProperties": {
-                                    "type": "string",
-                                    "enum": [
-                                        "allow",
-                                        "deny",
-                                        "unset"
-                                    ],
-                                    "description": "Sets the permission state (allow, deny, unset) for a specific permission."
-                                },
+                                "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
+                                "additionalProperties": false,
                                 "properties": {
-                                    "all": {
+                                    "label": {
+                                        "title": "hideKeyboard.label",
                                         "type": "string",
-                                        "enum": [
-                                            "allow",
-                                            "deny",
-                                            "unset"
-                                        ],
-                                        "description": "Sets the permission state for all permissions."
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "hideKeyboard.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
                                     }
-                                }
-                            },
-                            "arguments": {
-                                "description": "Arguments to pass to the app.",
-                                "type": "object",
-                                "additionalProperties": true
-                            },
-                            "label": {
-                                "title": "launchApp.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "launchApp.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Hide the keyboard so that we can see the whole screen",
+                                        "optional": true
+                                    }
+                                ]
                             }
-                        },
-                        "examples": [
+                        }
+                    }
+                ]
+            },
+            "InputText": {
+                "title": "inputText",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "inputText"
+                ],
+                "properties": {
+                    "inputText": {
+                        "oneOf": [
                             {
-                                "appId": "com.example.myapp",
-                                "clearState": true,
-                                "permissions": {
-                                    "notifications": "allow",
-                                    "location": "deny",
-                                    "all": "unset"
-                                }
+                                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            {
+                                "description": "Inputs the specified text regardless of whether any text field is currently focused. Unicode characters are not yet supported on Android.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "title": "inputText.text",
+                                        "type": "string",
+                                        "description": "The text to input."
+                                    },
+                                    "label": {
+                                        "title": "inputText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "text"
+                                ]
                             }
                         ]
+                    }
+                },
+                "examples": [
+                    "Hello, World!",
+                    "user@example.com",
+                    "${DYNAMIC_VARIABLE}",
+                    {
+                        "text": "Hello, World!"
+                    }
+                ]
+            },
+            "LaunchApp": {
+                "oneOf": [
+                    {
+                        "title": "launchApp",
+                        "description": "Launches the app under test without additional configuration",
+                        "type": "string",
+                        "const": "launchApp"
                     },
+                    {
+                        "title": "launchApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "launchApp"
+                        ],
+                        "properties": {
+                            "launchApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Launches the specified app without additional configuration",
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    {
+                                        "description": "Launches the app with additional configuration",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "type": "string",
+                                                "description": "Specifies the app ID (package name on Android, bundle ID on iOS) to launch."
+                                            },
+                                            "clearState": {
+                                                "type": "boolean",
+                                                "description": "Indicates whether to clear the app's state before launching. Defaults to false."
+                                            },
+                                            "clearKeychain": {
+                                                "type": "boolean",
+                                                "description": "Clears the entire iOS keychain. Applicable only for iOS."
+                                            },
+                                            "stopApp": {
+                                                "type": "boolean",
+                                                "description": "Stops the app before launching. Defaults to true."
+                                            },
+                                            "permissions": {
+                                                "type": "object",
+                                                "description": "Overrides permissions for the app.",
+                                                "additionalProperties": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "allow",
+                                                        "deny",
+                                                        "unset"
+                                                    ],
+                                                    "description": "Sets the permission state (allow, deny, unset) for a specific permission."
+                                                },
+                                                "properties": {
+                                                    "all": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "allow",
+                                                            "deny",
+                                                            "unset"
+                                                        ],
+                                                        "description": "Sets the permission state for all permissions."
+                                                    }
+                                                }
+                                            },
+                                            "arguments": {
+                                                "description": "Arguments to pass to the app.",
+                                                "type": "object",
+                                                "additionalProperties": true
+                                            },
+                                            "label": {
+                                                "title": "launchApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "launchApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "OpenLink": {
+                "title": "openLink",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "openLink"
+                ],
+                "properties": {
+                    "openLink": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
+                                "minLength": 1,
+                                "examples": [
+                                    {
+                                        "description": "Open a simple link as a string",
+                                        "example": "- openLink: \"https://example.com\""
+                                    }
+                                ]
+                            },
+                            {
+                                "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "link": {
+                                        "title": "openLink.link",
+                                        "type": "string",
+                                        "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
+                                        "description": "The URL or deep link to open on the device."
+                                    },
+                                    "autoVerify": {
+                                        "title": "openLink.autoVerify",
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
+                                    },
+                                    "browser": {
+                                        "title": "openLink.browser",
+                                        "type": "boolean",
+                                        "default": false,
+                                        "description": "Forces the link to open in the web browser on Android. Defaults to false."
+                                    },
+                                    "label": {
+                                        "title": "openLink.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "openLink.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "link"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Open a link with autoVerify enabled",
+                                        "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
+                                    },
+                                    {
+                                        "description": "Open a link in the browser",
+                                        "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "PressKey": {
+                "title": "pressKey",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "pressKey"
+                ],
+                "properties": {
                     "pressKey": {
-                        "title": "pressKey",
-                        "description": "Command to press a specific key on the device or remote. Supports standard device keys and Android TV remote controls.",
                         "oneOf": [
                             {
                                 "type": "string",
@@ -533,6 +1141,8 @@
                                 "additionalProperties": false,
                                 "properties": {
                                     "key": {
+                                        "title": "pressKey.key",
+                                        "description": "The key to press",
                                         "type": "string",
                                         "enum": [
                                             "home",
@@ -567,22 +1177,126 @@
                                     }
                                 }
                             }
-                        ],
-                        "examples": [
-                            "home",
-                            "enter",
-                            "volume up",
-                            "Remote Dpad Center",
+                        ]
+                    }
+                },
+                "examples": [
+                    "home",
+                    "enter",
+                    "volume up",
+                    "Remote Dpad Center",
+                    {
+                        "key": "back",
+                        "label": "Press the back key"
+                    }
+                ]
+            },
+            "RecordingStart": {
+                "title": "startRecording",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "startRecording"
+                ],
+                "properties": {
+                    "startRecording": {
+                        "oneOf": [
                             {
-                                "key": "back",
-                                "label": "Press the back key"
+                                "type": "string",
+                                "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                                "minLength": 1,
+                                "examples": [
+                                    "recording1.mp4",
+                                    "session_test.mp4"
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "path": {
+                                        "title": "startRecording.path",
+                                        "type": "string",
+                                        "description": "The name of the screen recording file. The file is saved in the same directory as the test flow."
+                                    },
+                                    "label": {
+                                        "title": "startRecording.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "startRecording.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "path"
+                                ],
+                                "examples": [
+                                    {
+                                        "path": "recording1.mp4",
+                                        "label": "Start recording the test flow"
+                                    }
+                                ]
                             }
                         ]
+                    }
+                }
+            },
+            "RecordingStop": {
+                "oneOf": [
+                    {
+                        "title": "stopRecording",
+                        "description": "Command to stop the screen recording initiated by the startRecording command.",
+                        "type": "string",
+                        "const": "stopRecording"
                     },
-                    "repeat": {
-                        "title": "repeat",
-                        "description": "Command to repeat a set of commands either a specific number of times or until a condition is met.",
+                    {
+                        "title": "stopRecording",
                         "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "stopRecording"
+                        ],
+                        "properties": {
+                            "stopRecording": {
+                                "type": "object",
+                                "description": "Command to stop the screen recording initiated by the startRecording command.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "stopRecording.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "stopRecording.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Stop recording now - we're not interested in the rest",
+                                        "optional": false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "Repeat": {
+                "title": "repeat",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "repeat"
+                ],
+                "properties": {
+                    "repeat": {
                         "additionalProperties": false,
                         "properties": {
                             "times": {
@@ -656,104 +1370,127 @@
                                 ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "RunFlow": {
+                "title": "runFlow",
+                "description": "Run a subflow from a specified file or execute inline commands.",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "runFlow"
+                ],
+                "properties": {
                     "runFlow": {
-                        "title": "runFlow",
-                        "description": "Command to run a flow from a specified file or execute inline commands.",
-                        "type": [
-                            "object",
-                            "string"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "file": {
+                        "oneOf": [
+                            {
                                 "type": "string",
-                                "title": "runFlow.file",
-                                "description": "The file path of the flow to run."
+                                "minLength": 1
                             },
-                            "env": {
+                            {
                                 "type": "object",
-                                "title": "runFlow.env",
-                                "description": "Key-value pairs of environment variables to pass to the subflow.",
-                                "additionalProperties": {
-                                    "type": "string"
-                                }
-                            },
-                            "when": {
-                                "type": "object",
-                                "description": "Conditions to determine whether the flow should run.",
-                                "title": "runFlow.when",
-                                "additionalProperties": true,
+                                "additionalProperties": false,
                                 "properties": {
-                                    "visible": {
-                                        "title": "runFlow.when.visible",
-                                        "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
-                                        "$ref": "#/$defs/Element"
+                                    "file": {
+                                        "type": "string",
+                                        "title": "runFlow.file",
+                                        "description": "The file path of the flow to run."
                                     },
-                                    "notVisible": {
-                                        "title": "runFlow.when.notVisible",
-                                        "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
-                                        "$ref": "#/$defs/Element"
-                                    }
-                                }
-                            },
-                            "commands": {
-                                "type": "array",
-                                "title": "runFlow.commands",
-                                "description": "Inline commands to execute if not using a file.",
-                                "items": {
-                                    "$ref": "#/$defs/FlowContent/items"
-                                }
-                            },
-                            "label": {
-                                "title": "runFlow.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "runFlow.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            {
-                                "file": "subFlow.yaml",
-                                "env": {
-                                    "ENV_VARIABLE": "Value"
-                                }
-                            },
-                            {
-                                "commands": [
-                                    {
-                                        "tapOn": "Retry"
+                                    "env": {
+                                        "type": "object",
+                                        "title": "runFlow.env",
+                                        "description": "Key-value pairs of environment variables to pass to the subflow.",
+                                        "additionalProperties": {
+                                            "type": "string"
+                                        }
                                     },
-                                    {
-                                        "assertVisible": "Success"
-                                    }
-                                ]
-                            },
-                            {
-                                "when": {
-                                    "visible": {
-                                        "text": "Retry"
+                                    "when": {
+                                        "type": "object",
+                                        "description": "Conditions to determine whether the flow should run.",
+                                        "title": "runFlow.when",
+                                        "additionalProperties": true,
+                                        "properties": {
+                                            "visible": {
+                                                "title": "runFlow.when.visible",
+                                                "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            },
+                                            "notVisible": {
+                                                "title": "runFlow.when.notVisible",
+                                                "description": "Runs the flow if the specified element is visible. Supports shorthand (string) or a detailed selector (object).",
+                                                "$ref": "#/$defs/Element"
+                                            }
+                                        }
+                                    },
+                                    "commands": {
+                                        "type": "array",
+                                        "title": "runFlow.commands",
+                                        "description": "Inline commands to execute if not using a file.",
+                                        "items": {
+                                            "$ref": "#/$defs/FlowContent/items"
+                                        }
+                                    },
+                                    "label": {
+                                        "title": "runFlow.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "runFlow.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
                                     }
                                 },
-                                "commands": [
+                                "examples": [
                                     {
-                                        "tapOn": "Retry"
+                                        "file": "subFlow.yaml",
+                                        "env": {
+                                            "ENV_VARIABLE": "Value"
+                                        }
+                                    },
+                                    {
+                                        "commands": [
+                                            {
+                                                "tapOn": "Retry"
+                                            },
+                                            {
+                                                "assertVisible": "Success"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "when": {
+                                            "visible": {
+                                                "text": "Retry"
+                                            }
+                                        },
+                                        "commands": [
+                                            {
+                                                "tapOn": "Retry"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "RunScript": {
+                "title": "runScript",
+                "description": "Run a subflow from a specified file or execute inline commands.",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "runScript"
+                ],
+                "properties": {
                     "runScript": {
-                        "title": "runScript",
-                        "description": "Command to run a JavaScript file, optionally passing environment variables and running conditionally.",
                         "oneOf": [
                             {
                                 "type": "string",
-                                "description": "The file path of the JavaScript file to execute."
+                                "minLength": 1
                             },
                             {
                                 "type": "object",
@@ -802,33 +1539,41 @@
                                         "type": "boolean",
                                         "description": "Indicates if the action is optional."
                                     }
-                                }
-                            }
-                        ],
-                        "examples": [
-                            {
-                                "file": "scripts/myScript.js",
-                                "env": {
-                                    "API_KEY": "12345"
-                                }
-                            },
-                            {
-                                "file": "scripts/login.js",
-                                "platform": "Android"
-                            },
-                            {
-                                "file": "scripts/checkSystem.js",
-                                "env": {
-                                    "SYSTEM_CHECK": "true"
                                 },
-                                "platform": "iOS"
+                                "examples": [
+                                    {
+                                        "file": "scripts/myScript.js",
+                                        "env": {
+                                            "API_KEY": "12345"
+                                        }
+                                    },
+                                    {
+                                        "file": "scripts/login.js",
+                                        "platform": "Android"
+                                    },
+                                    {
+                                        "file": "scripts/checkSystem.js",
+                                        "env": {
+                                            "SYSTEM_CHECK": "true"
+                                        },
+                                        "platform": "iOS"
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "ScrollUntilVisible": {
+                "title": "scrollUntilVisible",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "scrollUntilVisible"
+                ],
+                "properties": {
                     "scrollUntilVisible": {
-                        "title": "scrollUntilVisible",
-                        "description": "Command to scroll towards a direction until the specified element becomes visible.",
-                        "type": "object",
+                        "description": "Command to scroll until an element is visible",
                         "additionalProperties": false,
                         "properties": {
                             "element": {
@@ -909,9 +1654,140 @@
                                 "direction": "UP"
                             }
                         ]
+                    }
+                }
+            },
+            "StopApp": {
+                "oneOf": [
+                    {
+                        "title": "stopApp",
+                        "description": "Command to stop the application under test",
+                        "type": "string",
+                        "const": "stopApp"
                     },
+                    {
+                        "title": "stopApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "stopApp"
+                        ],
+                        "properties": {
+                            "stopApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to stop the application specified by its package ID.",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": [
+                                            "com.example.someApp"
+                                        ]
+                                    },
+                                    {
+                                        "description": "Command to stop the application specified by its package ID.",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "stopApp.appId",
+                                                "type": "string",
+                                                "description": "The app ID to stop. If not provided, the app under test is stopped."
+                                            },
+                                            "label": {
+                                                "title": "stopApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "stopApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            {
+                                                "appId": "com.example.someApp",
+                                                "label": "Stop Some App",
+                                                "optional": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "StopAppKill": {
+                "oneOf": [
+                    {
+                        "title": "killApp",
+                        "description": "Command to kill the application under test",
+                        "type": "string",
+                        "const": "killApp"
+                    },
+                    {
+                        "title": "killApp",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "killApp"
+                        ],
+                        "properties": {
+                            "killApp": {
+                                "oneOf": [
+                                    {
+                                        "description": "Command to kill the application specified by its package ID.",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "examples": [
+                                            "com.example.someApp"
+                                        ]
+                                    },
+                                    {
+                                        "description": "Command to kill the application specified by its package ID.",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "appId": {
+                                                "title": "killApp.appId",
+                                                "type": "string",
+                                                "description": "The app ID to kill. If not provided, the app under test is killed."
+                                            },
+                                            "label": {
+                                                "title": "killApp.label",
+                                                "type": "string",
+                                                "description": "Description of the action to be performed."
+                                            },
+                                            "optional": {
+                                                "title": "killApp.optional",
+                                                "type": "boolean",
+                                                "description": "Indicates if the action is optional."
+                                            }
+                                        },
+                                        "examples": [
+                                            {
+                                                "appId": "com.example.someApp",
+                                                "label": "Kill Some App",
+                                                "optional": false
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "Swipe": {
+                "title": "swipe",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "swipe"
+                ],
+                "properties": {
                     "swipe": {
-                        "title": "swipe",
                         "description": "Command to perform swipe gestures with control over start and end points, direction, speed, and optional element targeting.",
                         "type": "object",
                         "additionalProperties": false,
@@ -998,479 +1874,509 @@
                                 "duration": 400
                             }
                         ]
-                    },
-                    "tapOn": {
-                        "title": "tapOn",
-                        "description": "Command to tap on a view, specified using text, ID, point, or detailed selectors.",
-                        "type": [
-                            "object",
-                            "string"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "Matches element with the specified text. Supports regular expressions."
-                            },
-                            "id": {
-                                "type": "string",
-                                "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                            },
-                            "index": {
-                                "type": "number",
-                                "minimum": 0,
-                                "description": "0-based index to specify which element to select among similar matches."
-                            },
-                            "width": {
-                                "type": "integer",
-                                "description": "Matches element with the specified width."
-                            },
-                            "height": {
-                                "type": "integer",
-                                "description": "Matches element with the specified height."
-                            },
-                            "tolerance": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "description": "Tolerance to apply when comparing width and height."
-                            },
-                            "enabled": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified enabled state."
-                            },
-                            "checked": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified checked state."
-                            },
-                            "focused": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified focused state."
-                            },
-                            "selected": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified selected state."
-                            },
-                            "retryTapIfNoChange": {
-                                "type": "boolean",
-                                "default": true,
-                                "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                            },
-                            "below": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is below another element with the specified text."
-                            },
-                            "above": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is above another element."
-                            },
-                            "leftOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the left of another element with the specified text."
-                            },
-                            "rightOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the right of another element with the specified text."
-                            },
-                            "containsChild": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that contains a child with the specified text."
-                            },
-                            "point": {
-                                "description": "Point on the screen to tap on, either relative or absolute.",
-                                "type": "string",
-                                "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                            },
-                            "containsDescendants": {
-                                "description": "Matches an element that has all the specified descendant elements.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/$defs/Element"
-                                }
-                            },
-                            "repeat": {
-                                "type": "number",
-                                "minimum": 1,
-                                "description": "Number of times to repeat the tap action."
-                            },
-                            "delay": {
-                                "type": "number",
-                                "minimum": 0,
-                                "description": "Delay in milliseconds between repeated taps. Default is 100ms."
-                            },
-                            "waitToSettleTimeoutMs": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "description": "Time in milliseconds to wait for the screen to settle after the tap."
-                            },
-                            "label": {
-                                "title": "tapOn.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "tapOn.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
+                    }
+                }
+            },
+            "TakeScreenshot": {
+                "title": "takeScreenshot",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "takeScreenshot"
+                ],
+                "properties": {
+                    "takeScreenshot": {
+                        "oneOf": [
                             {
-                                "text": "Submit"
-                            },
-                            {
-                                "id": "login-button",
-                                "enabled": true
-                            },
-                            {
-                                "text": "Next",
-                                "below": {
-                                    "text": "Terms and Conditions"
-                                }
-                            }
-                        ]
-                    },
-                    "doubleTapOn": {
-                        "title": "doubleTapOn",
-                        "description": "Command to double tap on a view, specified using text, ID, point, or detailed selectors.",
-                        "type": [
-                            "object",
-                            "string"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "text": {
                                 "type": "string",
-                                "description": "Matches element with the specified text. Supports regular expressions."
-                            },
-                            "id": {
-                                "type": "string",
-                                "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                            },
-                            "index": {
-                                "type": "number",
-                                "minimum": 0,
-                                "description": "0-based index to specify which element to select among similar matches."
-                            },
-                            "width": {
-                                "type": "integer",
-                                "description": "Matches element with the specified width."
-                            },
-                            "height": {
-                                "type": "integer",
-                                "description": "Matches element with the specified height."
-                            },
-                            "tolerance": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "description": "Tolerance to apply when comparing width and height."
-                            },
-                            "enabled": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified enabled state."
-                            },
-                            "checked": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified checked state."
-                            },
-                            "focused": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified focused state."
-                            },
-                            "selected": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified selected state."
-                            },
-                            "retryTapIfNoChange": {
-                                "type": "boolean",
-                                "default": true,
-                                "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                            },
-                            "below": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is below another element with the specified text."
-                            },
-                            "above": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is above another element."
-                            },
-                            "leftOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the left of another element with the specified text."
-                            },
-                            "rightOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the right of another element with the specified text."
-                            },
-                            "containsChild": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that contains a child with the specified text."
-                            },
-                            "point": {
-                                "description": "Point on the screen to tap on, either relative or absolute.",
-                                "type": "string",
-                                "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                            },
-                            "containsDescendants": {
-                                "description": "Matches an element that has all the specified descendant elements.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/$defs/Element"
-                                }
-                            },
-                            "repeat": {
-                                "type": "number",
-                                "minimum": 1,
-                                "description": "Number of times to repeat the tap action."
-                            },
-                            "delay": {
-                                "type": "number",
-                                "minimum": 0,
-                                "default": 100,
-                                "description": "Delay in milliseconds between repeated taps. Default is 100ms."
-                            },
-                            "label": {
-                                "title": "doubleTapOn.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "doubleTapOn.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            {
-                                "text": "Submit"
-                            },
-                            {
-                                "id": "login-button",
-                                "enabled": true
-                            },
-                            {
-                                "text": "Next",
-                                "below": {
-                                    "text": "Terms and Conditions"
-                                }
-                            }
-                        ]
-                    },
-                    "longPressOn": {
-                        "title": "longPressOn",
-                        "description": "Long press a view on the screen.",
-                        "type": [
-                            "object",
-                            "string"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "text": {
-                                "type": "string",
-                                "description": "Matches element with the specified text. Supports regular expressions."
-                            },
-                            "id": {
-                                "type": "string",
-                                "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                            },
-                            "index": {
-                                "type": "number",
-                                "minimum": 0,
-                                "description": "0-based index to specify which element to select among similar matches."
-                            },
-                            "width": {
-                                "type": "integer",
-                                "description": "Matches element with the specified width."
-                            },
-                            "height": {
-                                "type": "integer",
-                                "description": "Matches element with the specified height."
-                            },
-                            "tolerance": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "description": "Tolerance to apply when comparing width and height."
-                            },
-                            "enabled": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified enabled state."
-                            },
-                            "checked": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified checked state."
-                            },
-                            "focused": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified focused state."
-                            },
-                            "selected": {
-                                "type": "boolean",
-                                "description": "Matches element with the specified selected state."
-                            },
-                            "retryTapIfNoChange": {
-                                "type": "boolean",
-                                "default": true,
-                                "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                            },
-                            "below": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is below another element with the specified text."
-                            },
-                            "above": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that is above another element."
-                            },
-                            "leftOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the left of another element with the specified text."
-                            },
-                            "rightOf": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element to the right of another element with the specified text."
-                            },
-                            "containsChild": {
-                                "$ref": "#/$defs/Element",
-                                "description": "Matches an element that contains a child with the specified text."
-                            },
-                            "point": {
-                                "description": "Point on the screen to tap on, either relative or absolute.",
-                                "type": "string",
-                                "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                            },
-                            "containsDescendants": {
-                                "description": "Matches an element that has all the specified descendant elements.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/$defs/Element"
-                                }
-                            },
-                            "label": {
-                                "title": "longPressOn.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "longPressOn.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            {
-                                "text": "Hold"
-                            },
-                            {
-                                "id": "settings-icon"
-                            },
-                            {
-                                "text": "Drag",
-                                "below": {
-                                    "text": "Drag Here"
-                                }
-                            }
-                        ]
-                    },
-                    "waitForAnimationToEnd": {
-                        "title": "waitForAnimationToEnd",
-                        "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "timeout": {
-                                "title": "waitForAnimationToEnd.timeout",
-                                "description": "Optional timeout in milliseconds after which the command is marked as successful and the flow continues.",
-                                "oneOf": [
-                                    {
-                                        "type": "number",
-                                        "minimum": 1
-                                    },
-                                    {
-                                        "type": "string",
-                                        "pattern": "^\\$\\{[^}]+\\}$",
-                                        "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
-                                    }
+                                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
+                                "minLength": 1,
+                                "examples": [
+                                    "screen1",
+                                    "login_screen"
                                 ]
                             },
-                            "label": {
-                                "title": "waitForAnimationToEnd.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "waitForAnimationToEnd.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
                             {
-                                "timeout": 5000
+                                "type": "object",
+                                "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "path": {
+                                        "title": "takeScreenshot.path",
+                                        "type": "string",
+                                        "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
+                                    },
+                                    "label": {
+                                        "title": "takeScreenshot.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "takeScreenshot.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "path"
+                                ],
+                                "examples": [
+                                    {
+                                        "path": "LoginScreen",
+                                        "label": "Capture the login screen",
+                                        "optional": true
+                                    }
+                                ]
                             }
                         ]
-                    },
-                    "startRecording": {
-                        "title": "startRecording",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "description": "Command to initiate a screen recording and save it with the specified name in the same directory as the test flow.",
-                        "additionalProperties": false,
-                        "properties": {
-                            "path": {
-                                "title": "startRecording.name",
-                                "type": "string",
-                                "description": "The name of the screen recording file. The file is saved in the same directory as the test flow."
-                            },
-                            "label": {
-                                "title": "startRecording.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "startRecording.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            "recording1.mp4",
-                            "session_test.mp4"
-                        ]
-                    },
-                    "stopRecording": {
-                        "title": "stopRecording",
-                        "description": "Command to stop a running screen recording.",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "label": {
-                                "title": "stopRecording.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "stopRecording.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
+                    }
+                }
+            },
+            "TapOn": {
+                "title": "tapOn",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "tapOn"
+                ],
+                "properties": {
+                    "tapOn": {
+                        "oneOf": [
                             {
-                                "label": "Stop recording now - we're not interested in the rest"
+                                "type": "string",
+                                "description": "Tap on an element identified via its text",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified text. Supports regular expressions."
+                                    },
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                    },
+                                    "index": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "0-based index to specify which element to select among similar matches."
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified width."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified height."
+                                    },
+                                    "tolerance": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Tolerance to apply when comparing width and height."
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified enabled state."
+                                    },
+                                    "checked": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified checked state."
+                                    },
+                                    "focused": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified focused state."
+                                    },
+                                    "selected": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified selected state."
+                                    },
+                                    "retryTapIfNoChange": {
+                                        "type": "boolean",
+                                        "default": true,
+                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
+                                    },
+                                    "below": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is below another element with the specified text."
+                                    },
+                                    "above": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is above another element."
+                                    },
+                                    "leftOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the left of another element with the specified text."
+                                    },
+                                    "rightOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the right of another element with the specified text."
+                                    },
+                                    "containsChild": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that contains a child with the specified text."
+                                    },
+                                    "point": {
+                                        "description": "Point on the screen to tap on, either relative or absolute.",
+                                        "type": "string",
+                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
+                                    },
+                                    "containsDescendants": {
+                                        "description": "Matches an element that has all the specified descendant elements.",
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/$defs/Element"
+                                        }
+                                    },
+                                    "repeat": {
+                                        "type": "number",
+                                        "minimum": 1,
+                                        "description": "Number of times to repeat the tap action."
+                                    },
+                                    "delay": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
+                                    },
+                                    "waitToSettleTimeoutMs": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
+                                    },
+                                    "label": {
+                                        "title": "tapOn.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "tapOn.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "text": "Submit"
+                                    },
+                                    {
+                                        "id": "login-button",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "text": "Next",
+                                        "below": {
+                                            "text": "Terms and Conditions"
+                                        }
+                                    }
+                                ]
                             }
                         ]
-                    },
+                    }
+                }
+            },
+            "TapOnDouble": {
+                "title": "doubleTapOn",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "doubleTapOn"
+                ],
+                "properties": {
+                    "doubleTapOn": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Double tap on an element, identified via its text",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "description": "Double tap on an element, specified using text, ID, point, or detailed selectors.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified text. Supports regular expressions."
+                                    },
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                    },
+                                    "index": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "0-based index to specify which element to select among similar matches."
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified width."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified height."
+                                    },
+                                    "tolerance": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Tolerance to apply when comparing width and height."
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified enabled state."
+                                    },
+                                    "checked": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified checked state."
+                                    },
+                                    "focused": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified focused state."
+                                    },
+                                    "selected": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified selected state."
+                                    },
+                                    "retryTapIfNoChange": {
+                                        "type": "boolean",
+                                        "default": true,
+                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
+                                    },
+                                    "below": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is below another element with the specified text."
+                                    },
+                                    "above": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is above another element."
+                                    },
+                                    "leftOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the left of another element with the specified text."
+                                    },
+                                    "rightOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the right of another element with the specified text."
+                                    },
+                                    "containsChild": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that contains a child with the specified text."
+                                    },
+                                    "point": {
+                                        "description": "Point on the screen to tap on, either relative or absolute.",
+                                        "type": "string",
+                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
+                                    },
+                                    "containsDescendants": {
+                                        "description": "Matches an element that has all the specified descendant elements.",
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/$defs/Element"
+                                        }
+                                    },
+                                    "repeat": {
+                                        "type": "number",
+                                        "minimum": 1,
+                                        "description": "Number of times to repeat the tap action."
+                                    },
+                                    "delay": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
+                                    },
+                                    "waitToSettleTimeoutMs": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
+                                    },
+                                    "label": {
+                                        "title": "doubleTapOn.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "doubleTapOn.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "text": "Submit"
+                                    },
+                                    {
+                                        "id": "login-button",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "text": "Next",
+                                        "below": {
+                                            "text": "Terms and Conditions"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "TapOnLong": {
+                "title": "longPressOn",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "longPressOn"
+                ],
+                "properties": {
+                    "longPressOn": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Long press on an element, identified via its text",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "description": "Long press on an element, specified using text, ID, point, or detailed selectors.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified text. Supports regular expressions."
+                                    },
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                    },
+                                    "index": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "0-based index to specify which element to select among similar matches."
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified width."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified height."
+                                    },
+                                    "tolerance": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Tolerance to apply when comparing width and height."
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified enabled state."
+                                    },
+                                    "checked": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified checked state."
+                                    },
+                                    "focused": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified focused state."
+                                    },
+                                    "selected": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified selected state."
+                                    },
+                                    "retryTapIfNoChange": {
+                                        "type": "boolean",
+                                        "default": true,
+                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
+                                    },
+                                    "below": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is below another element with the specified text."
+                                    },
+                                    "above": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is above another element."
+                                    },
+                                    "leftOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the left of another element with the specified text."
+                                    },
+                                    "rightOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the right of another element with the specified text."
+                                    },
+                                    "containsChild": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that contains a child with the specified text."
+                                    },
+                                    "point": {
+                                        "description": "Point on the screen to tap on, either relative or absolute.",
+                                        "type": "string",
+                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
+                                    },
+                                    "containsDescendants": {
+                                        "description": "Matches an element that has all the specified descendant elements.",
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/$defs/Element"
+                                        }
+                                    },
+                                    "repeat": {
+                                        "type": "number",
+                                        "minimum": 1,
+                                        "description": "Number of times to repeat the tap action."
+                                    },
+                                    "delay": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
+                                    },
+                                    "waitToSettleTimeoutMs": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
+                                    },
+                                    "label": {
+                                        "title": "longTapOn.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "longTapOn.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "text": "Submit"
+                                    },
+                                    {
+                                        "id": "login-button",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "text": "Next",
+                                        "below": {
+                                            "text": "Terms and Conditions"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "Travel": {
+                "title": "travel",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "travel"
+                ],
+                "properties": {
                     "travel": {
-                        "title": "travel",
-                        "type": "object",
+                        "description": "Command to mock user motion by specifying a set of lat/long coordinates and a speed.",
                         "properties": {
                             "points": {
                                 "title": "travel.points",
@@ -1505,7 +2411,6 @@
                             "speed"
                         ],
                         "additionalProperties": false,
-                        "description": "Command to mock user motion by specifying a set of lat/long coordinates and a speed.",
                         "examples": [
                             {
                                 "points": [
@@ -1530,385 +2435,66 @@
                                 "speed": 7900
                             }
                         ]
-                    },
-                    "killApp": {
-                        "title": "killApp",
-                        "description": "Command to kill the app on Android, triggering a System-initiated Process Death. On iOS and Web, it is an alias for stopApp.",
-                        "type": [
-                            "null",
-                            "string",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "appId": {
-                                "title": "killApp.appId",
-                                "type": "string",
-                                "description": "The app ID to kill. If not provided, the app under test is killed."
-                            },
-                            "label": {
-                                "title": "killApp.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "killApp.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            "com.example.someapp",
-                            {
-                                "appId": "com.example.someapp",
-                                "label": "Kill SomeApp"
-                            }
-                        ]
-                    },
-                    "stopApp": {
-                        "title": "stopApp",
-                        "description": "Command to stop current application if it is running or an arbitrary app specified by its ID.",
-                        "type": [
-                            "null",
-                            "string",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "appId": {
-                                "title": "stopApp.appId",
-                                "type": "string",
-                                "description": "The app ID to stop. If not provided, the app under test is stopped."
-                            },
-                            "label": {
-                                "title": "stopApp.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "stopApp.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            "com.example.someapp"
-                        ]
-                    },
-                    "openLink": {
-                        "title": "openLink",
-                        "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "properties": {
-                            "link": {
-                                "title": "openLink.link",
-                                "type": "string",
-                                "pattern": "^(https?|ftp):\\/\\/([\\w.-]+)(:[0-9]+)?(\\/.*)?$",
-                                "description": "The URL or deep link to open on the device."
-                            },
-                            "autoVerify": {
-                                "title": "openLink.autoVerify",
-                                "type": "boolean",
-                                "default": false,
-                                "description": "Indicates whether to auto-verify the web link to open in your app. Defaults to false."
-                            },
-                            "browser": {
-                                "title": "openLink.browser",
-                                "type": "boolean",
-                                "default": false,
-                                "description": "Forces the link to open in the web browser on Android. Defaults to false."
-                            },
-                            "label": {
-                                "title": "openLink.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "openLink.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "required": [
-                            "link"
-                        ],
-                        "examples": [
-                            {
-                                "description": "Open a simple link as a string",
-                                "example": "- openLink: \"https://example.com\""
-                            },
-                            {
-                                "description": "Open a link with autoVerify enabled",
-                                "example": "- openLink:\n    link: \"https://example.com/path\"\n    autoVerify: true"
-                            },
-                            {
-                                "description": "Open a link in the browser",
-                                "example": "- openLink:\n    link: \"http://example.com\"\n    browser: true"
-                            }
-                        ],
-                        "description": "Command to open a link (deep link or web link) on the device, with optional auto-verification and browser control."
-                    },
-                    "pasteText": {
-                        "title": "pasteText",
-                        "description": "Command to paste text copied with copyTextFrom into the currently focused field. Ensure the text field is in focus before using this command.",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "label": {
-                                "title": "pasteText.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "pasteText.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            {
-                                "label": "Paste the previously copied text"
-                            }
-                        ]
-                    },
-                    "back": {
-                        "title": "back",
-                        "description": "Command to navigate user to the previous screen (Android-only at the moment)",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "label": {
-                                "title": "back.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "back.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            {
-                                "label": "Go back to the previous screen"
-                            }
-                        ]
-                    },
-                    "clearKeychain": {
-                        "title": "clearKeychain",
-                        "description": "Command to clear the entire iOS keychain (not applicable on Android)",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "label": {
-                                "title": "clearKeychain.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "clearKeychain.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            {
-                                "label": "Clear the keychain"
-                            }
-                        ]
-                    },
-                    "clearState": {
-                        "title": "clearState",
-                        "description": "Command to clear the application state",
-                        "type": [
-                            "null",
-                            "string",
-                            "object"
-                        ],
-                        "additionalProperties": false,
-                        "properties": {
-                            "appId": {
-                                "title": "clearState.appId",
-                                "type": "string",
-                                "description": "The app ID to clear the state for. If not provided, the app under test is cleared."
-                            },
-                            "label": {
-                                "title": "clearState.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "clearState.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "examples": [
-                            null,
-                            "com.example.someapp"
-                        ]
-                    },
-                    "hideKeyboard": {
-                        "title": "hideKeyboard",
-                        "description": "Command to hide the software keyboard. Note: May be flaky on iOS.",
-                        "type": [
-                            "null",
-                            "object"
-                        ],
-                        "properties": {
-                            "label": {
-                                "title": "hideKeyboard.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "hideKeyboard.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "additionalProperties": false,
-                        "examples": [
-                            null,
-                            {
-                                "label": "Hide the keyboard so that we can see the whole screen"
-                            }
-                        ]
-                    },
-                    "takeScreenshot": {
-                        "title": "takeScreenshot",
-                        "type": [
-                            "string",
-                            "object"
-                        ],
-                        "properties": {
-                            "path": {
-                                "title": "takeScreenshot.path",
-                                "type": "string",
-                                "description": "The file name or path (relative to the Maestro workspace directory) to save the screenshot as a PNG file."
-                            },
-                            "label": {
-                                "title": "takeScreenshot.label",
-                                "type": "string",
-                                "description": "Description of the action to be performed."
-                            },
-                            "optional": {
-                                "title": "takeScreenshot.optional",
-                                "type": "boolean",
-                                "description": "Indicates if the action is optional."
-                            }
-                        },
-                        "required": [
-                            "path"
-                        ],
-                        "description": "Command to take a screenshot and save it as a PNG file in the Maestro workspace.",
-                        "examples": [
-                            null,
-                            "com.example.someapp"
-                        ]
                     }
                 }
-            }
-        },
-        "Condition": {
-            "type": "object",
-            "$comment": "`true` doesn't seem to work as a property, so we allow additional properties",
-            "additionalProperties": true,
-            "properties": {
-                "visible": {
-                    "$ref": "#/$defs/Element"
-                },
-                "notVisible": {
-                    "$ref": "#/$defs/Element"
-                }
-            }
-        },
-        "Direction": {
-            "type": "string",
-            "enum": [
-                "UP",
-                "DOWN",
-                "LEFT",
-                "RIGHT"
-            ]
-        },
-        "Platform": {
-            "type": "string",
-            "enum": [
-                "Android",
-                "iOS",
-                "Web"
-            ]
-        },
-        "Element": {
-            "type": [
-                "string",
-                "object"
-            ],
-            "additionalProperties": false,
-            "properties": {
-                "text": {
-                    "type": "string",
-                    "title": "Finds text that matches regexp"
-                },
-                "id": {
-                    "type": "string",
-                    "title": "Finds id that matches regexp"
-                },
-                "index": {
-                    "type": "number",
-                    "title": "0-based index of the view to select among those that match all other criteria"
-                },
-                "width": {
-                    "type": "number",
-                    "title": "Finds element of a given width"
-                },
-                "height": {
-                    "type": "number",
-                    "title": "Finds element of a given height"
-                },
-                "tolerance": {
-                    "type": "number",
-                    "title": "Tolerance to apply when comparing width and height"
-                },
-                "enabled": {
-                    "type": "boolean",
-                    "title": "Searches for view with a given \"enabled\" state"
-                },
-                "checked": {
-                    "type": "boolean",
-                    "title": "Searches for view with a given \"checked\" state"
-                },
-                "focused": {
-                    "type": "boolean",
-                    "title": "Searches for view with a given \"focused\" state"
-                },
-                "selected": {
-                    "type": "boolean",
-                    "title": "Searches for view with a given \"selected\" state"
-                },
-                "optional": {
-                    "type": "boolean",
-                    "title": "If set to true, test won't fail if view can't be found",
-                    "default": false
-                }
+            },
+            "WaitForAnimationToEnd": {
+                "oneOf": [
+                    {
+                        "title": "waitForAnimationToEnd",
+                        "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
+                        "type": "string",
+                        "const": "waitForAnimationToEnd"
+                    },
+                    {
+                        "title": "waitForAnimationToEnd",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "waitForAnimationToEnd"
+                        ],
+                        "properties": {
+                            "waitForAnimationToEnd": {
+                                "type": "object",
+                                "description": "Command to wait until an ongoing animation or video ends and the screen becomes static.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "timeout": {
+                                        "title": "waitForAnimationToEnd.timeout",
+                                        "description": "Optional timeout in milliseconds after which the command is marked as successful and the flow continues.",
+                                        "oneOf": [
+                                            {
+                                                "type": "number",
+                                                "minimum": 1
+                                            },
+                                            {
+                                                "type": "string",
+                                                "pattern": "^\\$\\{[^}]+\\}$",
+                                                "description": "A dynamic timeout value, e.g., `${output.constants.LONGTIMEOUT}`"
+                                            }
+                                        ]
+                                    },
+                                    "label": {
+                                        "title": "waitForAnimationToEnd.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "waitForAnimationToEnd.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "examples": [
+                    {
+                        "timeout": 5000,
+                        "label": "Wait for animation to end"
+                    }
+                ]
             }
         }
     }
