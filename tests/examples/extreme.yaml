@@ -158,9 +158,10 @@ onFlowComplete:
     label: 'Paste the text'
     optional: true
 
-# https://github.com/Mastersam07/maestro-workbench/issues/24
-#- pressKey: 'Home'
-#- pressKey: 'Back'
+- pressKey: 'HOME'
+- pressKey: 'BACK'
+- pressKey: 'Home'
+- pressKey: 'Back'
 - pressKey: 'home'
 - pressKey: 'back'
 - pressKey:
