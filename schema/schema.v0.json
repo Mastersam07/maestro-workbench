@@ -128,6 +128,9 @@
                         "$ref": "#/$defs/Commands/RunScript"
                     },
                     {
+                        "$ref": "#/$defs/Commands/Scroll"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
                     },
                     {
@@ -1562,6 +1565,49 @@
                         ]
                     }
                 }
+            },
+            "Scroll": {
+                "oneOf": [
+                    {
+                        "title": "scroll",
+                        "description": "Command to do a simple vertical scroll",
+                        "type": "string",
+                        "const": "scroll"
+                    },
+                    {
+                        "title": "scroll",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "scroll"
+                        ],
+                        "properties": {
+                            "scroll": {
+                                "type": "object",
+                                "description": "Command to do a simple vertical scroll",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "scroll.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "scroll.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Scroll down a bit",
+                                        "optional": false
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "ScrollUntilVisible": {
                 "title": "scrollUntilVisible",
