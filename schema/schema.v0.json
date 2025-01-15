@@ -104,6 +104,9 @@
                         "$ref": "#/$defs/Commands/ExtendedWaitUntil"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ExtractTextWithAI"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/HideKeyboard"
                     },
                     {
@@ -1011,6 +1014,69 @@
                                     "selected": false
                                 },
                                 "timeout": 7000
+                            }
+                        ]
+                    }
+                }
+            },
+            "ExtractTextWithAI": {
+                "title": "extractTextWithAI",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "extractTextWithAI"
+                ],
+                "properties": {
+                    "extractTextWithAI": {
+                        "oneOf": [
+                            {
+                                "description": "Takes a screenshot and tries to extract text value from the screen using an LLM.",
+                                "type": "string",
+                                "minLength": 1,
+                                "examples": [
+                                    "CAPTCHA value"
+                                ]
+                            },
+                            {
+                                "description": "Takes a screenshot and tries to extract text value from the screen using an LLM.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "query": {
+                                        "title": "extractTextWithAI.query",
+                                        "type": "string",
+                                        "description": "Query specifying the text to extract."
+                                    },
+                                    "outputVariable": {
+                                        "title": "extractTextWithAI.outputVariable",
+                                        "type": "string",
+                                        "description": "Variable name to store the extracted text in."
+                                    },
+                                    "label": {
+                                        "title": "extractTextWithAI.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "extractTextWithAI.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "query"
+                                ],
+                                "examples": [
+                                    {
+                                        "query": "Title of the first item in the basket"
+                                    },
+                                    {
+                                        "query": "Title of the first item in the basket",
+                                        "outputVariable": "firstItemTitle",
+                                        "label": "Extract the title of the first item in the basket",
+                                        "optional": false
+                                    }
+                                ]
                             }
                         ]
                     }
