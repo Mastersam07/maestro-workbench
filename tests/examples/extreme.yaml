@@ -49,9 +49,11 @@ onFlowComplete:
 - assertVisible: 
     text: 'Form Test'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/28
-#- assertWithAI:
-#    assertion: Login and password text fields are visible.
+- assertWithAI: 'Login and password text fields are visible.'
+- assertWithAI:
+    assertion: 'Login and password text fields are visible.'
+    label: 'Check for login fields with AI'
+    optional: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/21
 #- copyTextFrom:

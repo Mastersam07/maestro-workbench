@@ -83,6 +83,9 @@
                         "$ref": "#/$defs/Commands/AssertVisible"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AssertWithAI"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/Back"
                     },
                     {
@@ -608,6 +611,63 @@
                                         "text": "Sign In",
                                         "id": "sign_in_button",
                                         "focused": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "AssertWithAI": {
+                "title": "assertWithAI",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertWithAI"
+                ],
+                "properties": {
+                    "assertWithAI": {
+                        "oneOf": [
+                            {
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt combined with assertion, and asks the model if assertion is true.",
+                                "type": "string",
+                                "minLength": 1,
+                                "examples": [
+                                    "Login fields are visible"
+                                ]
+                            },
+                            {
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt combined with assertion, and asks the model if assertion is true.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "assertion": {
+                                        "title": "assertWithAI.assertion",
+                                        "type": "string",
+                                        "description": "The instruction to pass to the LLM"
+                                    },
+                                    "label": {
+                                        "title": "assertWithAI.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertWithAI.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "assertion"
+                                ],
+                                "examples": [
+                                    {
+                                        "assertion": "Login fields are visible"
+                                    },
+                                    {
+                                        "assertion": "Basket total is the sum of the products in the basket",
+                                        "label": "Check basket total maths",
+                                        "optional": true
                                     }
                                 ]
                             }
