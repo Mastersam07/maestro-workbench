@@ -71,6 +71,9 @@
                         "$ref": "#/$defs/Commands/AddMedia"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AssertNoDefectsWithAI"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/AssertNotVisible"
                     },
                     {
@@ -379,6 +382,49 @@
                         ]
                     }
                 }
+            },
+            "AssertNoDefectsWithAI": {
+                "oneOf": [
+                    {
+                        "title": "assertNoDefectsWithAI",
+                        "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt, and asks the model if it sees any common defects.",
+                        "type": "string",
+                        "const": "assertNoDefectsWithAI"
+                    },
+                    {
+                        "title": "assertNoDefectsWithAI",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "assertNoDefectsWithAI"
+                        ],
+                        "properties": {
+                            "assertNoDefectsWithAI": {
+                                "type": "object",
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt, and asks the model if it sees any common defects.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "assertNoDefectsWithAI.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertNoDefectsWithAI.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "See if there's any defects on this screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "AssertNotVisible": {
                 "title": "assertNotVisible",

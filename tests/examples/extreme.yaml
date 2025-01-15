@@ -23,6 +23,11 @@ onFlowComplete:
       - "./assets/foo.mp4"
     optional: true
 
+- assertNoDefectsWithAI
+- assertNoDefectsWithAI:
+    label: 'Check for defects with AI'
+    optional: false
+
 - assertNotVisible: 'kwyjibo'
 - assertNotVisible:
     text: 'kwyjibo'
@@ -47,9 +52,6 @@ onFlowComplete:
 # https://github.com/Mastersam07/maestro-workbench/issues/28
 #- assertWithAI:
 #    assertion: Login and password text fields are visible.
-
-# https://github.com/Mastersam07/maestro-workbench/issues/29
-#- assertNoDefectsWithAI
 
 # https://github.com/Mastersam07/maestro-workbench/issues/21
 #- copyTextFrom:
