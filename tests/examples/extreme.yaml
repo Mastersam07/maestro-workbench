@@ -182,15 +182,28 @@ onFlowComplete:
       - tapOn:
           id: 'fabAddIcon'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/7
-# - retry:
-#     maxRetries: 3
-#     commands:
-#       - tapOn:
-#           id: 'fabAddIcon'
-#           retryTapIfNoChange: false
-#       - waitForAnimationToEnd
-#       - assertVisible: '2'
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+          retryTapIfNoChange: false
+      - waitForAnimationToEnd
+- retry:
+    commands:
+        - tapOn: 'My Button'
+- retry:
+    maxRetries: 0
+    file: runOnce.yaml
+- retry:
+    file: folder/some-flow.yaml
+- retry:
+    maxRetries: 3
+    file: folder/some-flow.yaml
+    env:
+        MYVAR: "foo"
+    label: 'Run the flow. Retry on failure'
+    optional: false
 
 - runFlow: setup.yaml
 - runFlow:
