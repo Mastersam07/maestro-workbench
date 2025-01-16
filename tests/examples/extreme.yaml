@@ -105,16 +105,24 @@ onFlowComplete:
     label: 'Hide the keyboard'
     optional: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/27
-#- inputRandomEmail
-#- inputRandomEmail
-#- inputRandomNumber
-#- inputRandomNumber:
-#    length: 4
-#- inputRandomPersonName
-#- inputRandomText
-#- inputRandomText:
-#    length: 4
+- inputRandomEmail
+- inputRandomEmail:
+    label: 'Enter an email address'
+    optional: true
+- inputRandomNumber
+- inputRandomNumber:
+    length: 4
+    label: 'Enter a number'
+    optional: false
+- inputRandomPersonName
+- inputRandomPersonName:
+    label: 'Enter a name'
+    optional: false
+- inputRandomText
+- inputRandomText:
+    length: 4
+    label: 'Enter some text'
+    optional: false
 
 - inputText: 'foo'
 - inputText: ${MYVAR}

@@ -116,6 +116,18 @@
                         "$ref": "#/$defs/Commands/HideKeyboard"
                     },
                     {
+                        "$ref": "#/$defs/Commands/InputRandomEmail"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomNumber"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomPersonName"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomText"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/InputText"
                     },
                     {
@@ -1227,6 +1239,188 @@
                                 "examples": [
                                     {
                                         "label": "Hide the keyboard so that we can see the whole screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomEmail": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomEmail",
+                        "const": "inputRandomEmail",
+                        "description": "Command to input a random email address into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomEmail",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomEmail"
+                        ],
+                        "properties": {
+                            "inputRandomEmail": {
+                                "type": "object",
+                                "description": "Command to input a random email address into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "inputRandomEmail.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomEmail.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random email address",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomNumber": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomNumber",
+                        "const": "inputRandomNumber",
+                        "description": "Command to input a random number into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomNumber",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomNumber"
+                        ],
+                        "properties": {
+                            "inputRandomNumber": {
+                                "type": "object",
+                                "description": "Command to input a random number into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "length": {
+                                        "title": "inputRandomNumber.length",
+                                        "type": "integer",
+                                        "description": "The length of the random number to input."
+                                    },
+                                    "label": {
+                                        "title": "inputRandomNumber.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomNumber.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random number",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomPersonName": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomPersonName",
+                        "const": "inputRandomPersonName",
+                        "description": "Command to input a random forename and surname into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomPersonName",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomPersonName"
+                        ],
+                        "properties": {
+                            "inputRandomPersonName": {
+                                "type": "object",
+                                "description": "Command to input a random forename and surname into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "inputRandomPersonName.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomPersonName.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random name",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomText": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomText",
+                        "const": "inputRandomText",
+                        "description": "Command to input a random string into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomText",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomText"
+                        ],
+                        "properties": {
+                            "inputRandomText": {
+                                "type": "object",
+                                "description": "Command to input a random string into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "length": {
+                                        "title": "inputRandomText.length",
+                                        "type": "integer",
+                                        "description": "The length of the random number to input."
+                                    },
+                                    "label": {
+                                        "title": "inputRandomText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random string",
                                         "optional": true
                                     }
                                 ]
@@ -2611,7 +2805,7 @@
                                         "description": "Matches element with the specified width."
                                     },
                                     "height": {
-                                        "type": "integer",
+                                        "type": "in>teger",
                                         "description": "Matches element with the specified height."
                                     },
                                     "tolerance": {
