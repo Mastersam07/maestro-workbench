@@ -146,6 +146,9 @@
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
                     },
                     {
+                        "$ref": "#/$defs/Commands/SetLocation"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/StopApp"
                     },
                     {
@@ -1982,6 +1985,62 @@
                                     "id": "scrollable-section"
                                 },
                                 "direction": "UP"
+                            }
+                        ]
+                    }
+                }
+            },
+            "SetLocation": {
+                "title": "setLocation",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "setLocation"
+                ],
+                "properties": {
+                    "setLocation": {
+                        "description": "Command that applies a mock geolocation to the device.",
+                        "properties": {
+                            "latitude": {
+                                "title": "setLocation.latitude",
+                                "type": "number",
+                                "minimum": -90,
+                                "maximum": 90,
+                                "description": "Numerical representation of degrees latitude."
+                            },
+                            "longitude": {
+                                "title": "setLocation.longitude",
+                                "type": "number",
+                                "minimum": -180,
+                                "maximum": 180,
+                                "description": "Numerical representation of degrees longitude."
+                            },
+                            "label": {
+                                "title": "setLocation.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "setLocation.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "required": [
+                            "latitude",
+                            "longitude"
+                        ],
+                        "additionalProperties": false,
+                        "examples": [
+                            {
+                                "latitude": 37.7749,
+                                "longitude": -122.4194
+                            },
+                            {
+                                "latitude": 34.0522,
+                                "longitude": -118.2437,
+                                "label": "Set location to Los Angeles",
+                                "optional": false
                             }
                         ]
                     }

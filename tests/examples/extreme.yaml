@@ -278,10 +278,14 @@ onFlowComplete:
 #- setAirplaneMode: enabled
 #- setAirplaneMode: disabled
 
-# https://github.com/Mastersam07/maestro-workbench/issues/32
-#- setLocation:
-#    latitude: 52.3599976
-#    longitude: 4.8830301
+- setLocation:
+    latitude: 52.3599976
+    longitude: 4.8830301
+- setLocation:
+    latitude: 52.3599976
+    longitude: 4.8830301
+    label: 'Set the location'
+    optional: false
 
 - startRecording: recording
 - startRecording: 
