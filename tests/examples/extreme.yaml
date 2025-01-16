@@ -274,9 +274,17 @@ onFlowComplete:
     visibilityPercentage: 100
     centerElement: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/31
-#- setAirplaneMode: enabled
-#- setAirplaneMode: disabled
+- setAirplaneMode: enabled
+- setAirplaneMode: disabled
+- setAirplaneMode:
+    value: 'enabled'
+    label: 'Enable airplane mode'
+    optional: false
+
+- toggleAirplaneMode
+- toggleAirplaneMode:
+    label: 'Toggle airplane mode'
+    optional: false
 
 - setLocation:
     latitude: 52.3599976

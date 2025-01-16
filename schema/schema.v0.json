@@ -71,6 +71,12 @@
                         "$ref": "#/$defs/Commands/AddMedia"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AirplaneModeSet"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AirplaneModeToggle"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/AssertNoDefectsWithAI"
                     },
                     {
@@ -391,6 +397,107 @@
                         ]
                     }
                 }
+            },
+            "AirplaneModeSet": {
+                "title": "setAirplaneMode",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "setAirplaneMode"
+                ],
+                "properties": {
+                    "setAirplaneMode": {
+                        "oneOf": [
+                            {
+                                "description": "Command to enable or disable airplane mode on the device",
+                                "type": "string",
+                                "enum": [
+                                    "enabled",
+                                    "disabled"
+                                ]
+                            },
+                            {
+                                "description": "Command to enable or disable airplane mode on the device",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "value": {
+                                        "title": "setAirplaneMode.value",
+                                        "type": "string",
+                                        "enum": [
+                                            "enabled",
+                                            "disabled"
+                                        ],
+                                        "description": "Whether to enable or disable airplane mode"
+                                    },
+                                    "label": {
+                                        "title": "setAirplaneMode.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "setAirplaneMode.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "value": "enabled"
+                                    },
+                                    {
+                                        "value": "disabled",
+                                        "label": "Disable airplane mode",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "AirplaneModeToggle": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "toggleAirplaneMode",
+                        "const": "toggleAirplaneMode",
+                        "description": "Command to toggle airplane mode on the device"
+                    },
+                    {
+                        "type": "object",
+                        "title": "toggleAirplaneMode",
+                        "additionalProperties": false,
+                        "required": [
+                            "toggleAirplaneMode"
+                        ],
+                        "properties": {
+                            "toggleAirplaneMode": {
+                                "type": "object",
+                                "description": "Command to toggle airplane mode on the device",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "toggleAirplaneMode.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "toggleAirplaneMode.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Toggle airplane mode",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "AssertNoDefectsWithAI": {
                 "oneOf": [
