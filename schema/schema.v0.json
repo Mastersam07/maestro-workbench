@@ -71,13 +71,19 @@
                         "$ref": "#/$defs/Commands/AddMedia"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AssertNoDefectsWithAI"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/AssertNotVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AssertTrue"
                     },
                     {
                         "$ref": "#/$defs/Commands/AssertVisible"
                     },
                     {
-                        "$ref": "#/$defs/Commands/AssertTrue"
+                        "$ref": "#/$defs/Commands/AssertWithAI"
                     },
                     {
                         "$ref": "#/$defs/Commands/Back"
@@ -96,6 +102,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/ExtendedWaitUntil"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/ExtractTextWithAI"
                     },
                     {
                         "$ref": "#/$defs/Commands/HideKeyboard"
@@ -380,6 +389,49 @@
                     }
                 }
             },
+            "AssertNoDefectsWithAI": {
+                "oneOf": [
+                    {
+                        "title": "assertNoDefectsWithAI",
+                        "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt, and asks the model if it sees any common defects.",
+                        "type": "string",
+                        "const": "assertNoDefectsWithAI"
+                    },
+                    {
+                        "title": "assertNoDefectsWithAI",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "assertNoDefectsWithAI"
+                        ],
+                        "properties": {
+                            "assertNoDefectsWithAI": {
+                                "type": "object",
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt, and asks the model if it sees any common defects.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "assertNoDefectsWithAI.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertNoDefectsWithAI.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "See if there's any defects on this screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
             "AssertNotVisible": {
                 "title": "assertNotVisible",
                 "type": "object",
@@ -441,6 +493,62 @@
                                     {
                                         "id": "progress_bar",
                                         "enabled": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "AssertTrue": {
+                "title": "assertTrue",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "assertTrue"
+                ],
+                "properties": {
+                    "assertTrue": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "minLength": 1,
+                                "examples": [
+                                    {
+                                        "description": "Simple assertion with a JavaScript condition as a string",
+                                        "example": "- assertTrue: \"2 + 2 === 4\""
+                                    }
+                                ]
+                            },
+                            {
+                                "description": "A JavaScript expression to assert its truthiness",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "condition": {
+                                        "title": "assertTrue.condition",
+                                        "type": "string",
+                                        "description": "A JavaScript expression that is evaluated for truthiness"
+                                    },
+                                    "label": {
+                                        "title": "assertTrue.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "assertTrue.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "condition"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Detailed assertion with condition and label",
+                                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
                                     }
                                 ]
                             }
@@ -513,55 +621,56 @@
                     }
                 }
             },
-            "AssertTrue": {
-                "title": "assertTrue",
+            "AssertWithAI": {
+                "title": "assertWithAI",
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                    "assertTrue"
+                    "assertWithAI"
                 ],
                 "properties": {
-                    "assertTrue": {
+                    "assertWithAI": {
                         "oneOf": [
                             {
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt combined with assertion, and asks the model if assertion is true.",
                                 "type": "string",
-                                "description": "A JavaScript expression to assert its truthiness",
                                 "minLength": 1,
                                 "examples": [
-                                    {
-                                        "description": "Simple assertion with a JavaScript condition as a string",
-                                        "example": "- assertTrue: \"2 + 2 === 4\""
-                                    }
+                                    "Login fields are visible"
                                 ]
                             },
                             {
-                                "description": "A JavaScript expression to assert its truthiness",
+                                "description": "Command that takes a screenshot, uploads it to an LLM with a pre-made prompt combined with assertion, and asks the model if assertion is true.",
                                 "type": "object",
                                 "additionalProperties": false,
                                 "properties": {
-                                    "condition": {
-                                        "title": "assertTrue.condition",
+                                    "assertion": {
+                                        "title": "assertWithAI.assertion",
                                         "type": "string",
-                                        "description": "A JavaScript expression that is evaluated for truthiness"
+                                        "description": "The instruction to pass to the LLM"
                                     },
                                     "label": {
-                                        "title": "assertTrue.label",
+                                        "title": "assertWithAI.label",
                                         "type": "string",
                                         "description": "Description of the action to be performed."
                                     },
                                     "optional": {
-                                        "title": "assertTrue.optional",
+                                        "title": "assertWithAI.optional",
                                         "type": "boolean",
                                         "description": "Indicates if the action is optional."
                                     }
                                 },
                                 "required": [
-                                    "condition"
+                                    "assertion"
                                 ],
                                 "examples": [
                                     {
-                                        "description": "Detailed assertion with condition and label",
-                                        "example": "- assertTrue:\n    condition: \"document.querySelector('#button').disabled === false\"\n    label: \"Verify button is enabled\""
+                                        "assertion": "Login fields are visible"
+                                    },
+                                    {
+                                        "assertion": "Basket total is the sum of the products in the basket",
+                                        "label": "Check basket total maths",
+                                        "optional": true
                                     }
                                 ]
                             }
@@ -905,6 +1014,69 @@
                                     "selected": false
                                 },
                                 "timeout": 7000
+                            }
+                        ]
+                    }
+                }
+            },
+            "ExtractTextWithAI": {
+                "title": "extractTextWithAI",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "extractTextWithAI"
+                ],
+                "properties": {
+                    "extractTextWithAI": {
+                        "oneOf": [
+                            {
+                                "description": "Takes a screenshot and tries to extract text value from the screen using an LLM.",
+                                "type": "string",
+                                "minLength": 1,
+                                "examples": [
+                                    "CAPTCHA value"
+                                ]
+                            },
+                            {
+                                "description": "Takes a screenshot and tries to extract text value from the screen using an LLM.",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "query": {
+                                        "title": "extractTextWithAI.query",
+                                        "type": "string",
+                                        "description": "Query specifying the text to extract."
+                                    },
+                                    "outputVariable": {
+                                        "title": "extractTextWithAI.outputVariable",
+                                        "type": "string",
+                                        "description": "Variable name to store the extracted text in."
+                                    },
+                                    "label": {
+                                        "title": "extractTextWithAI.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "extractTextWithAI.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "query"
+                                ],
+                                "examples": [
+                                    {
+                                        "query": "Title of the first item in the basket"
+                                    },
+                                    {
+                                        "query": "Title of the first item in the basket",
+                                        "outputVariable": "firstItemTitle",
+                                        "label": "Extract the title of the first item in the basket",
+                                        "optional": false
+                                    }
+                                ]
                             }
                         ]
                     }

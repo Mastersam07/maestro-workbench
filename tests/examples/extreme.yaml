@@ -23,6 +23,11 @@ onFlowComplete:
       - "./assets/foo.mp4"
     optional: true
 
+- assertNoDefectsWithAI
+- assertNoDefectsWithAI:
+    label: 'Check for defects with AI'
+    optional: false
+
 - assertNotVisible: 'kwyjibo'
 - assertNotVisible:
     text: 'kwyjibo'
@@ -44,12 +49,11 @@ onFlowComplete:
 - assertVisible: 
     text: 'Form Test'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/28
-#- assertWithAI:
-#    assertion: Login and password text fields are visible.
-
-# https://github.com/Mastersam07/maestro-workbench/issues/29
-#- assertNoDefectsWithAI
+- assertWithAI: 'Login and password text fields are visible.'
+- assertWithAI:
+    assertion: 'Login and password text fields are visible.'
+    label: 'Check for login fields with AI'
+    optional: false
 
 # https://github.com/Mastersam07/maestro-workbench/issues/21
 #- copyTextFrom:
@@ -89,8 +93,12 @@ onFlowComplete:
     notVisible:
       text: 'Non Existent Text'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/30
-#- extractTextWithAI: 'CAPTCHA Value'
+- extractTextWithAI: 'CAPTCHA Value'
+- extractTextWithAI:
+    query: 'CAPTCHA Value'
+    outputVariable: 'theCaptchaValue'
+    label: 'Extract the CAPTCHA value'
+    optional: false
 
 - hideKeyboard
 - hideKeyboard:
