@@ -55,9 +55,9 @@ onFlowComplete:
     label: 'Check for login fields with AI'
     optional: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/21
-#- copyTextFrom:
-#    text: '\d+'
+- copyTextFrom: '.*Total.*'
+- copyTextFrom:
+    text: '\d+'
 
 - back
 - back:
