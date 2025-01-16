@@ -2933,7 +2933,7 @@
                                         "description": "Matches element with the specified width."
                                     },
                                     "height": {
-                                        "type": "in>teger",
+                                        "type": "integer",
                                         "description": "Matches element with the specified height."
                                     },
                                     "tolerance": {
