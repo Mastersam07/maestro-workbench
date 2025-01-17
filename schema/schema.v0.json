@@ -71,6 +71,12 @@
                         "$ref": "#/$defs/Commands/AddMedia"
                     },
                     {
+                        "$ref": "#/$defs/Commands/AirplaneModeSet"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/AirplaneModeToggle"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/AssertNoDefectsWithAI"
                     },
                     {
@@ -95,6 +101,9 @@
                         "$ref": "#/$defs/Commands/ClearState"
                     },
                     {
+                        "$ref": "#/$defs/Commands/ClipboardCopyTextFrom"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ClipboardPasteText"
                     },
                     {
@@ -108,6 +117,18 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/HideKeyboard"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomEmail"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomNumber"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomPersonName"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/InputRandomText"
                     },
                     {
                         "$ref": "#/$defs/Commands/InputText"
@@ -144,6 +165,9 @@
                     },
                     {
                         "$ref": "#/$defs/Commands/ScrollUntilVisible"
+                    },
+                    {
+                        "$ref": "#/$defs/Commands/SetLocation"
                     },
                     {
                         "$ref": "#/$defs/Commands/StopApp"
@@ -388,6 +412,107 @@
                         ]
                     }
                 }
+            },
+            "AirplaneModeSet": {
+                "title": "setAirplaneMode",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "setAirplaneMode"
+                ],
+                "properties": {
+                    "setAirplaneMode": {
+                        "oneOf": [
+                            {
+                                "description": "Command to enable or disable airplane mode on the device",
+                                "type": "string",
+                                "enum": [
+                                    "enabled",
+                                    "disabled"
+                                ]
+                            },
+                            {
+                                "description": "Command to enable or disable airplane mode on the device",
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "value": {
+                                        "title": "setAirplaneMode.value",
+                                        "type": "string",
+                                        "enum": [
+                                            "enabled",
+                                            "disabled"
+                                        ],
+                                        "description": "Whether to enable or disable airplane mode"
+                                    },
+                                    "label": {
+                                        "title": "setAirplaneMode.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "setAirplaneMode.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "value": "enabled"
+                                    },
+                                    {
+                                        "value": "disabled",
+                                        "label": "Disable airplane mode",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "AirplaneModeToggle": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "toggleAirplaneMode",
+                        "const": "toggleAirplaneMode",
+                        "description": "Command to toggle airplane mode on the device"
+                    },
+                    {
+                        "type": "object",
+                        "title": "toggleAirplaneMode",
+                        "additionalProperties": false,
+                        "required": [
+                            "toggleAirplaneMode"
+                        ],
+                        "properties": {
+                            "toggleAirplaneMode": {
+                                "type": "object",
+                                "description": "Command to toggle airplane mode on the device",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "toggleAirplaneMode.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "toggleAirplaneMode.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Toggle airplane mode",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "AssertNoDefectsWithAI": {
                 "oneOf": [
@@ -823,6 +948,131 @@
                     }
                 ]
             },
+            "ClipboardCopyTextFrom": {
+                "title": "copyTextFrom",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "copyTextFrom"
+                ],
+                "properties": {
+                    "copyTextFrom": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "description": "Copy text from an element identified via its text (or regular expression)",
+                                "minLength": 1
+                            },
+                            {
+                                "type": "object",
+                                "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified text. Supports regular expressions."
+                                    },
+                                    "id": {
+                                        "type": "string",
+                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
+                                    },
+                                    "index": {
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "description": "0-based index to specify which element to select among similar matches."
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified width."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "description": "Matches element with the specified height."
+                                    },
+                                    "tolerance": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "description": "Tolerance to apply when comparing width and height."
+                                    },
+                                    "enabled": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified enabled state."
+                                    },
+                                    "checked": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified checked state."
+                                    },
+                                    "focused": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified focused state."
+                                    },
+                                    "selected": {
+                                        "type": "boolean",
+                                        "description": "Matches element with the specified selected state."
+                                    },
+                                    "below": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is below another element with the specified text."
+                                    },
+                                    "above": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that is above another element."
+                                    },
+                                    "leftOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the left of another element with the specified text."
+                                    },
+                                    "rightOf": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element to the right of another element with the specified text."
+                                    },
+                                    "containsChild": {
+                                        "$ref": "#/$defs/Element",
+                                        "description": "Matches an element that contains a child with the specified text."
+                                    },
+                                    "point": {
+                                        "description": "Point on the screen to tap on, either relative or absolute.",
+                                        "type": "string",
+                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
+                                    },
+                                    "containsDescendants": {
+                                        "description": "Matches an element that has all the specified descendant elements.",
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/$defs/Element"
+                                        }
+                                    },
+                                    "label": {
+                                        "title": "copyTextFrom.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "copyTextFrom.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "id": "title-bar"
+                                    },
+                                    {
+                                        "id": "login-button",
+                                        "enabled": true
+                                    },
+                                    {
+                                        "text": ".*£.*",
+                                        "below": {
+                                            "text": "Subtotal"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
             "ClipboardPasteText": {
                 "oneOf": [
                     {
@@ -1117,6 +1367,188 @@
                                 "examples": [
                                     {
                                         "label": "Hide the keyboard so that we can see the whole screen",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomEmail": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomEmail",
+                        "const": "inputRandomEmail",
+                        "description": "Command to input a random email address into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomEmail",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomEmail"
+                        ],
+                        "properties": {
+                            "inputRandomEmail": {
+                                "type": "object",
+                                "description": "Command to input a random email address into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "inputRandomEmail.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomEmail.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random email address",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomNumber": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomNumber",
+                        "const": "inputRandomNumber",
+                        "description": "Command to input a random number into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomNumber",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomNumber"
+                        ],
+                        "properties": {
+                            "inputRandomNumber": {
+                                "type": "object",
+                                "description": "Command to input a random number into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "length": {
+                                        "title": "inputRandomNumber.length",
+                                        "type": "integer",
+                                        "description": "The length of the random number to input."
+                                    },
+                                    "label": {
+                                        "title": "inputRandomNumber.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomNumber.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random number",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomPersonName": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomPersonName",
+                        "const": "inputRandomPersonName",
+                        "description": "Command to input a random forename and surname into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomPersonName",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomPersonName"
+                        ],
+                        "properties": {
+                            "inputRandomPersonName": {
+                                "type": "object",
+                                "description": "Command to input a random forename and surname into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "label": {
+                                        "title": "inputRandomPersonName.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomPersonName.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random name",
+                                        "optional": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "InputRandomText": {
+                "oneOf": [
+                    {
+                        "type": "string",
+                        "title": "inputRandomText",
+                        "const": "inputRandomText",
+                        "description": "Command to input a random string into the currently focused field"
+                    },
+                    {
+                        "type": "object",
+                        "title": "inputRandomText",
+                        "additionalProperties": false,
+                        "required": [
+                            "inputRandomText"
+                        ],
+                        "properties": {
+                            "inputRandomText": {
+                                "type": "object",
+                                "description": "Command to input a random string into the currently focused field",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "length": {
+                                        "title": "inputRandomText.length",
+                                        "type": "integer",
+                                        "description": "The length of the random number to input."
+                                    },
+                                    "label": {
+                                        "title": "inputRandomText.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "inputRandomText.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "examples": [
+                                    {
+                                        "label": "Input a random string",
                                         "optional": true
                                     }
                                 ]
@@ -1982,6 +2414,62 @@
                                     "id": "scrollable-section"
                                 },
                                 "direction": "UP"
+                            }
+                        ]
+                    }
+                }
+            },
+            "SetLocation": {
+                "title": "setLocation",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "setLocation"
+                ],
+                "properties": {
+                    "setLocation": {
+                        "description": "Command that applies a mock geolocation to the device.",
+                        "properties": {
+                            "latitude": {
+                                "title": "setLocation.latitude",
+                                "type": "number",
+                                "minimum": -90,
+                                "maximum": 90,
+                                "description": "Numerical representation of degrees latitude."
+                            },
+                            "longitude": {
+                                "title": "setLocation.longitude",
+                                "type": "number",
+                                "minimum": -180,
+                                "maximum": 180,
+                                "description": "Numerical representation of degrees longitude."
+                            },
+                            "label": {
+                                "title": "setLocation.label",
+                                "type": "string",
+                                "description": "Description of the action to be performed."
+                            },
+                            "optional": {
+                                "title": "setLocation.optional",
+                                "type": "boolean",
+                                "description": "Indicates if the action is optional."
+                            }
+                        },
+                        "required": [
+                            "latitude",
+                            "longitude"
+                        ],
+                        "additionalProperties": false,
+                        "examples": [
+                            {
+                                "latitude": 37.7749,
+                                "longitude": -122.4194
+                            },
+                            {
+                                "latitude": 34.0522,
+                                "longitude": -118.2437,
+                                "label": "Set location to Los Angeles",
+                                "optional": false
                             }
                         ]
                     }
