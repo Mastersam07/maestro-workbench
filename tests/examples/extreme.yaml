@@ -23,6 +23,11 @@ onFlowComplete:
       - "./assets/foo.mp4"
     optional: true
 
+- assertNoDefectsWithAI
+- assertNoDefectsWithAI:
+    label: 'Check for defects with AI'
+    optional: false
+
 - assertNotVisible: 'kwyjibo'
 - assertNotVisible:
     text: 'kwyjibo'
@@ -44,15 +49,15 @@ onFlowComplete:
 - assertVisible: 
     text: 'Form Test'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/28
-#- assertWithAI:
-#    assertion: Login and password text fields are visible.
+- assertWithAI: 'Login and password text fields are visible.'
+- assertWithAI:
+    assertion: 'Login and password text fields are visible.'
+    label: 'Check for login fields with AI'
+    optional: false
 
-- assertNoDefectsWithAI
-
-# https://github.com/Mastersam07/maestro-workbench/issues/21
-#- copyTextFrom:
-#    text: '\d+'
+- copyTextFrom: '.*Total.*'
+- copyTextFrom:
+    text: '\d+'
 
 - back
 - back:
@@ -63,11 +68,17 @@ onFlowComplete:
     optional: false
 
 - clearState
+- clearState: com.example.someapp
 - clearState:
+    appId: com.example.someapp
     label: 'Wipe the data'
+    optional: true
 
 - eraseText
 - eraseText: 3
+- eraseText:
+    charactersToErase: 10
+    label: 'Delete ten chars'
 
 # https://github.com/Mastersam07/maestro-workbench/issues/22
 #- evalScript: ${output.test = 'foo'}
@@ -82,21 +93,36 @@ onFlowComplete:
     notVisible:
       text: 'Non Existent Text'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/30
-#- extractTextWithAI: 'CAPTCHA Value'
+- extractTextWithAI: 'CAPTCHA Value'
+- extractTextWithAI:
+    query: 'CAPTCHA Value'
+    outputVariable: 'theCaptchaValue'
+    label: 'Extract the CAPTCHA value'
+    optional: false
 
 - hideKeyboard
+- hideKeyboard:
+    label: 'Hide the keyboard'
+    optional: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/27
-#- inputRandomEmail
-#- inputRandomEmail
-#- inputRandomNumber
-#- inputRandomNumber:
-#    length: 4
-#- inputRandomPersonName
-#- inputRandomText
-#- inputRandomText:
-#    length: 4
+- inputRandomEmail
+- inputRandomEmail:
+    label: 'Enter an email address'
+    optional: true
+- inputRandomNumber
+- inputRandomNumber:
+    length: 4
+    label: 'Enter a number'
+    optional: false
+- inputRandomPersonName
+- inputRandomPersonName:
+    label: 'Enter a name'
+    optional: false
+- inputRandomText
+- inputRandomText:
+    length: 4
+    label: 'Enter some text'
+    optional: false
 
 - inputText: 'foo'
 - inputText: ${MYVAR}
@@ -105,6 +131,13 @@ onFlowComplete:
     label: 'Enter username'
 
 - killApp
+- killApp: com.example
+- killApp:
+    appId: com.example
+    label: 'Kill the Example app'
+    optional: false
+
+- launchApp: com.example
 
 - launchApp:
     appId: com.example.example
@@ -121,13 +154,36 @@ onFlowComplete:
 
 - launchApp
 
-- pasteText
+- openLink: https://example.com
+- openLink: 'example://login'
+# https://github.com/Mastersam07/maestro-workbench/issues/37
+#- openLink:
+#    link: 'example://login'
+- openLink: 
+    link: https://example.com
+    autoVerify: true
+    label: 'Open link in app'
+- openLink: 
+    link: https://example.com
+    browser: true
+    label: 'Open link in browser'
+    optional: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/24
-#- pressKey: 'Home'
-#- pressKey: 'Back'
+- pasteText
+- pasteText:
+    label: 'Paste the text'
+    optional: true
+
+- pressKey: 'HOME'
+- pressKey: 'BACK'
+- pressKey: 'Home'
+- pressKey: 'Back'
 - pressKey: 'home'
 - pressKey: 'back'
+- pressKey:
+    key: 'home'
+    label: 'Press the home key'
+    optional: false
 
 - repeat:
     times: 3
@@ -142,16 +198,30 @@ onFlowComplete:
       - tapOn:
           id: 'fabAddIcon'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/7
-# - retry:
-#     maxRetries: 3
-#     commands:
-#       - tapOn:
-#           id: 'fabAddIcon'
-#           retryTapIfNoChange: false
-#       - waitForAnimationToEnd
-#       - assertVisible: '2'
+- retry:
+    maxRetries: 3
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+          retryTapIfNoChange: false
+      - waitForAnimationToEnd
+- retry:
+    commands:
+        - tapOn: 'My Button'
+- retry:
+    maxRetries: 0
+    file: runOnce.yaml
+- retry:
+    file: folder/some-flow.yaml
+- retry:
+    maxRetries: 3
+    file: folder/some-flow.yaml
+    env:
+        MYVAR: "foo"
+    label: 'Run the flow. Retry on failure'
+    optional: false
 
+- runFlow: setup.yaml
 - runFlow:
     commands:
       - assertTrue: ${output.test == 'bar'}
@@ -184,6 +254,7 @@ onFlowComplete:
           commands:
             - tapOn: 'Thing2'
 
+- runScript: setup.js
 - runScript:
     env:
       THIS_THING: "six"
@@ -198,27 +269,39 @@ onFlowComplete:
     file: myScript.js
 
 - scroll
-# https://github.com/Mastersam07/maestro-workbench/issues/34
-#- scroll:
-#    label: 
+- scroll:
+    label: 'Scroll down'
+    optional: false
 
 - scrollUntilVisible:
     element:
-      id: "viewId" # or any other selector
-    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
-    timeout: 50000 # (optional, default: 20000) ms
-    speed: 40 # 0-100 (optional, default: 40) Scroll speed. Higher values scroll faster.
-    visibilityPercentage: 100 # 0-100 (optional, default: 100) Percentage of element visible in viewport
-    centerElement: false # true|false (optional, default: false)
+      id: "viewId"
+    direction: DOWN
+    timeout: 50000
+    speed: 40
+    visibilityPercentage: 100
+    centerElement: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/31
-#- setAirplaneMode: enabled
-#- setAirplaneMode: disabled
+- setAirplaneMode: enabled
+- setAirplaneMode: disabled
+- setAirplaneMode:
+    value: 'enabled'
+    label: 'Enable airplane mode'
+    optional: false
 
-# https://github.com/Mastersam07/maestro-workbench/issues/32
-#- setLocation:
-#    latitude: 52.3599976
-#    longitude: 4.8830301
+- toggleAirplaneMode
+- toggleAirplaneMode:
+    label: 'Toggle airplane mode'
+    optional: false
+
+- setLocation:
+    latitude: 52.3599976
+    longitude: 4.8830301
+- setLocation:
+    latitude: 52.3599976
+    longitude: 4.8830301
+    label: 'Set the location'
+    optional: false
 
 - startRecording: recording
 - startRecording: 
@@ -229,8 +312,13 @@ onFlowComplete:
 - stopApp: com.android.chrome
 - stopApp:
     appId: com.android.chrome
+    label: 'Stop Chrome'
+    optional: true
 
 - stopRecording
+- stopRecording:
+    label: 'Stop recording'
+    optional: false
 
 - swipe:  
     start: 90%, 50%
@@ -252,6 +340,8 @@ onFlowComplete:
 - takeScreenshot: MainScreen
 - takeScreenshot:
     path: LoginScreen
+    label: 'Take a screenshot of the login screen'
+    optional: false
 
 - tapOn: "My text"
 - tapOn: .*Some Regex.*
@@ -294,5 +384,11 @@ onFlowComplete:
       - 0.1,0.1
       - 0.0,0.1
     speed: 7900
+    label: 'Fake some movement'
+    optional: false
 
 - waitForAnimationToEnd
+- waitForAnimationToEnd:
+    timeout: 10000
+    label: 'Wait for the animation to end'
+    optional: false

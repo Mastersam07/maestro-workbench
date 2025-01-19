@@ -15,4 +15,7 @@
             "tests/examples/*.yaml"
         ]
     },
+    "cSpell.words": [
+        "airplane"
+    ],
 }
