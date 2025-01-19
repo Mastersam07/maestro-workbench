@@ -1201,7 +1201,7 @@
                             },
                             {
                                 "type": "object",
-                                "description": "evalScript",
+                                "description": "Inline JavaScript code to evaluate",
                                 "additionalProperties": false,
                                 "properties": {
                                     "script": {
