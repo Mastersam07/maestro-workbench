@@ -17,7 +17,7 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
 ## Features
 
-- **IntelliSense and Syntax Highlighting**: Provides code completions and highlights syntax for Maestro YAML files, reducing errors and improving readability. For a table of supported commands, see [here](https://github.com/Mastersam07/maestro-workbench/blob/dev/COMMAND.md).
+- **IntelliSense and Syntax Highlighting**: Provides code completions and highlights syntax for Maestro YAML files, reducing errors and improving readability.
 
 - **Schema Validation**: Ensure the correctness of your Maestro YAML files with integrated schema validation, highlighting errors and enforcing best practices.
 
