@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2025-01-21
+
+### Added
+
+- Support for all maestro commands
+- Improved intellisense
+
 ## [0.4.3] - 2025-01-09
 
 ### Fixed
