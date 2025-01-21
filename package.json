@@ -158,7 +158,9 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "mocha --import=tsx tests/**/*.test.ts --exit && vscode-test"
+    "test:unit": "mocha --import=tsx tests/**/*.test.ts --exit",
+    "test:integration": "vscode-test",
+    "test": "npm run test:unit && npm run test:integration"
   },
   "devDependencies": {
     "@types/chai": "^5.0.1",

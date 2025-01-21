@@ -110,6 +110,9 @@
                         "$ref": "#/$defs/Commands/EraseText"
                     },
                     {
+                        "$ref": "#/$defs/Commands/EvalScript"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/ExtendedWaitUntil"
                     },
                     {
@@ -1174,6 +1177,63 @@
                         "charactersToErase": 5
                     }
                 ]
+            },
+            "EvalScript": {
+                "title": "evalScript",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "evalScript"
+                ],
+                "properties": {
+                    "evalScript": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Inline JavaScript code to evaluate",
+                                "examples": [
+                                    {
+                                        "description": "evalScript with inline JavaScript",
+                                        "example": "- evalScript: ${output.number = 1 + 1}"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "object",
+                                "description": "Inline JavaScript code to evaluate",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "script": {
+                                        "title": "evalScript.script",
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "description": "JavaScript code to evaluate"
+                                    },
+                                    "label": {
+                                        "title": "evalScript.label",
+                                        "type": "string",
+                                        "description": "Description of the action to be performed."
+                                    },
+                                    "optional": {
+                                        "title": "evalScript.optional",
+                                        "type": "boolean",
+                                        "description": "Indicates if the action is optional."
+                                    }
+                                },
+                                "required": [
+                                    "script"
+                                ],
+                                "examples": [
+                                    {
+                                        "description": "Detailed evalScript with label and script",
+                                        "example": "- evalScript:\n    script: ${output.number = 1 + 1}\n    label: \"Set output number\""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
             },
             "ExtendedWaitUntil": {
                 "title": "extendedWaitUntil",

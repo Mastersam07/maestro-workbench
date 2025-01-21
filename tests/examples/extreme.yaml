@@ -80,8 +80,10 @@ onFlowComplete:
     charactersToErase: 10
     label: 'Delete ten chars'
 
-# https://github.com/Mastersam07/maestro-workbench/issues/22
-#- evalScript: ${output.test = 'foo'}
+- evalScript: ${output.test = 'foo'}
+- evalScript: 
+    script: ${output.test = 'foo'}
+    label: 'Evalscript test'
 
 - extendedWaitUntil:
     timeout: 10000
