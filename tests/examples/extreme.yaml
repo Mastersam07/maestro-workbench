@@ -394,3 +394,16 @@ onFlowComplete:
     timeout: 10000
     label: 'Wait for the animation to end'
     optional: false
+
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - swipe:
+          from:
+            id: 'android:id/numberpicker_input'
+            index: 2
+          direction: DOWN
+      - tapOn:
+          id: 'android:id/button1'
+          text: 'OK'
