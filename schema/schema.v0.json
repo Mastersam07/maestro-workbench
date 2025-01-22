@@ -2679,18 +2679,7 @@
                                 "type": "object",
                                 "title": "swipe.from",
                                 "additionalProperties": false,
-                                "properties": {
-                                    "id": {
-                                        "title": "swipe.from.id",
-                                        "type": "string",
-                                        "description": "ID of the element to swipe from."
-                                    },
-                                    "text": {
-                                        "title": "swipe.text",
-                                        "type": "string",
-                                        "description": "Text of the element to swipe from."
-                                    }
-                                }
+                                "$ref": "#/$defs/Element"
                             },
                             "start": {
                                 "title": "swipe.start",
