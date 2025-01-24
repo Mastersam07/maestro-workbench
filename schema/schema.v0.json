@@ -2678,7 +2678,6 @@
                             "from": {
                                 "type": "object",
                                 "title": "swipe.from",
-                                "additionalProperties": false,
                                 "$ref": "#/$defs/Element"
                             },
                             "start": {
