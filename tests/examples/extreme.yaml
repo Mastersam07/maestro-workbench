@@ -334,6 +334,7 @@ onFlowComplete:
 - swipe:
    from: 
      id: "feeditem_identifier"
+     index: 0
    direction: UP
 - swipe:
     direction: LEFT
