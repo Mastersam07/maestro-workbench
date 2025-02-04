@@ -68,6 +68,9 @@
             "items": {
                 "oneOf": [
                     {
+                        "$ref": "#/$defs/Commands/Action"
+                    },
+                    {
                         "$ref": "#/$defs/Commands/AddMedia"
                     },
                     {
@@ -347,6 +350,27 @@
             ]
         },
         "Commands": {
+            "Action": {
+                "title": "action",
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "action"
+                ],
+                "properties": {
+                    "action": {
+                        "type": "string",
+                        "description": "The action to be performed",
+                        "enum": [
+                            "back",
+                            "clearKeychain",
+                            "hideKeyboard",
+                            "pasteText",
+                            "scroll"
+                        ]
+                    }
+                }
+            },
             "AddMedia": {
                 "title": "addMedia",
                 "type": "object",
