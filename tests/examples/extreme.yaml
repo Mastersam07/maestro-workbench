@@ -14,6 +14,12 @@ onFlowComplete:
   - runFlow: teardown.yaml
   - runScript: teardown.js
 ---
+- action: 'back'
+- action: 'hideKeyboard'
+- action: 'scroll'
+- action: 'clearKeychain'
+- action: 'pasteText'
+
 - addMedia:
     - "./assets/foo.png"
     - "./assets/foo.mp4"
