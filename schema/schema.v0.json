@@ -286,6 +286,74 @@
                     "type": "boolean",
                     "title": "If set to true, test won't fail if view can't be found",
                     "default": false
+                },
+                "above": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for is above the one described by this element"
+                },
+                "below": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for is below the one described by this element"
+                },
+                "leftOf": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for is to the left of the one described by this element"
+                },
+                "rightOf": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for is to the right of the one described by this element"
+                },
+                "containsChild": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for contains the one described by this element"
+                },
+                "containsDescendants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/Element"
+                    },
+                    "title": "The element we're looking for contains all the elements described by this array, somewhere in the element tree"
+                },
+                "childOf": {
+                    "$ref": "#/$defs/Element",
+                    "title": "The element we're looking for is a child of the one described by this element"
+                },
+                "point": {
+                    "description": "Point on the screen to tap on, either relative or absolute.",
+                    "type": "string",
+                    "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Description of the action to be performed. Used in console output."
+                },
+                "repeat": {
+                    "type": "integer",
+                    "description": "Number of times to repeat a tap",
+                    "minimum": 0
+                },
+                "delay": {
+                    "type": "integer",
+                    "description": "Delay in milliseconds between repeats",
+                    "minimum": 0
+                },
+                "traits": {
+                    "type": "string",
+                    "description": "Space separated list of traits. Can be text, long-text, or square",
+                    "$comment": "Tighter validation would need to be an enum of all 15 possible combinations of 1/2/3 of these traits"
+                },
+                "waitUntilVisible": {
+                    "type": "boolean",
+                    "description": "Wait until the element is visible before performing the tap"
+                },
+                "retryTapIfNoChange": {
+                    "type": "boolean",
+                    "description": "Retry the tap if the screen doesn't change after the tap"
+                },
+                "waitToSettleTimeoutMs": {
+                    "type": "integer",
+                    "description": "Time in milliseconds to wait for the screen to settle after the action",
+                    "minimum": 0
                 }
             }
         },
