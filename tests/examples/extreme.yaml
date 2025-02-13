@@ -398,6 +398,9 @@ onFlowComplete:
     retryTapIfNoChange: false
     waitToSettleTimeoutMs: 500
     label: 'Tap a square thing thrice when it appears'
+- tapOn:
+    text: 'Add to Basket'
+    index: ${output.index}
 
 - longPressOn: Text
 - longPressOn:

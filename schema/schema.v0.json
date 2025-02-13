@@ -251,8 +251,11 @@
                     "title": "Finds id that matches regexp"
                 },
                 "index": {
-                    "type": "number",
-                    "title": "0-based index of the view to select among those that match all other criteria"
+                    "type": [
+                        "string",
+                        "number"
+                    ],
+                    "title": "0-based index of the view to select among those that match all other criteria. Can also be a JavaScript expression."
                 },
                 "width": {
                     "type": "number",
