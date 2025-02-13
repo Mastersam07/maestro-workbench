@@ -1286,14 +1286,12 @@
                         "oneOf": [
                             {
                                 "required": [
-                                    "visible",
-                                    "timeout"
+                                    "visible"
                                 ]
                             },
                             {
                                 "required": [
-                                    "notVisible",
-                                    "timeout"
+                                    "notVisible"
                                 ]
                             }
                         ],
