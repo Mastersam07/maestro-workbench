@@ -206,6 +206,24 @@ onFlowComplete:
       - tapOn:
           id: 'fabAddIcon'
 
+- repeat:
+    while:
+      visible:
+        text: 'Some Text'
+        containsChild:
+          id: 'someChild'
+        containsDescendants:
+          - id: 'someDescendant1'
+          - text: 'someDescendant2'
+            below:
+              id: 'someDescendant1'
+          - id: 'someDescendant3'
+        childOf:
+          id: 'someParent'
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+
 - retry:
     maxRetries: 3
     commands:
@@ -371,6 +389,15 @@ onFlowComplete:
 - tapOn:
     text: "A text with a hyperlink"
     point: "90%,50%"
+- tapOn:
+    id: "someId"
+    repeat: 3
+    delay: 100
+    traits: 'square'
+    waitUntilVisible: true
+    retryTapIfNoChange: false
+    waitToSettleTimeoutMs: 500
+    label: 'Tap a square thing thrice when it appears'
 
 - longPressOn: Text
 - longPressOn:
