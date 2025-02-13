@@ -984,120 +984,24 @@
                 ],
                 "properties": {
                     "copyTextFrom": {
-                        "oneOf": [
+                        "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
                             {
-                                "type": "string",
-                                "description": "Copy text from an element identified via its text (or regular expression)",
-                                "minLength": 1
+                                "id": "title-bar"
                             },
                             {
-                                "type": "object",
-                                "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified text. Supports regular expressions."
-                                    },
-                                    "id": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                                    },
-                                    "index": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "0-based index to specify which element to select among similar matches."
-                                    },
-                                    "width": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified width."
-                                    },
-                                    "height": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified height."
-                                    },
-                                    "tolerance": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Tolerance to apply when comparing width and height."
-                                    },
-                                    "enabled": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified enabled state."
-                                    },
-                                    "checked": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified checked state."
-                                    },
-                                    "focused": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified focused state."
-                                    },
-                                    "selected": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified selected state."
-                                    },
-                                    "below": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is below another element with the specified text."
-                                    },
-                                    "above": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is above another element."
-                                    },
-                                    "leftOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the left of another element with the specified text."
-                                    },
-                                    "rightOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the right of another element with the specified text."
-                                    },
-                                    "containsChild": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that contains a child with the specified text."
-                                    },
-                                    "point": {
-                                        "description": "Point on the screen to tap on, either relative or absolute.",
-                                        "type": "string",
-                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                                    },
-                                    "containsDescendants": {
-                                        "description": "Matches an element that has all the specified descendant elements.",
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/$defs/Element"
-                                        }
-                                    },
-                                    "label": {
-                                        "title": "copyTextFrom.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "copyTextFrom.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    {
-                                        "id": "title-bar"
-                                    },
-                                    {
-                                        "id": "login-button",
-                                        "enabled": true
-                                    },
-                                    {
-                                        "text": ".*£.*",
-                                        "below": {
-                                            "text": "Subtotal"
-                                        }
-                                    }
-                                ]
+                                "id": "login-button",
+                                "enabled": true
+                            },
+                            {
+                                "text": ".*£.*",
+                                "below": {
+                                    "text": "Subtotal"
+                                }
                             }
                         ]
-                    }
+            }
                 }
             },
             "ClipboardPasteText": {
@@ -2831,137 +2735,21 @@
                 ],
                 "properties": {
                     "tapOn": {
-                        "oneOf": [
+                        "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
                             {
-                                "type": "string",
-                                "description": "Tap on an element identified via its text",
-                                "minLength": 1
+                                "text": "Submit"
                             },
                             {
-                                "type": "object",
-                                "description": "Command to tap on a view, specified using text, ID, point, or other detailed selectors.",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified text. Supports regular expressions."
-                                    },
-                                    "id": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                                    },
-                                    "index": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "0-based index to specify which element to select among similar matches."
-                                    },
-                                    "width": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified width."
-                                    },
-                                    "height": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified height."
-                                    },
-                                    "tolerance": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Tolerance to apply when comparing width and height."
-                                    },
-                                    "enabled": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified enabled state."
-                                    },
-                                    "checked": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified checked state."
-                                    },
-                                    "focused": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified focused state."
-                                    },
-                                    "selected": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified selected state."
-                                    },
-                                    "retryTapIfNoChange": {
-                                        "type": "boolean",
-                                        "default": true,
-                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                                    },
-                                    "below": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is below another element with the specified text."
-                                    },
-                                    "above": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is above another element."
-                                    },
-                                    "leftOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the left of another element with the specified text."
-                                    },
-                                    "rightOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the right of another element with the specified text."
-                                    },
-                                    "containsChild": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that contains a child with the specified text."
-                                    },
-                                    "point": {
-                                        "description": "Point on the screen to tap on, either relative or absolute.",
-                                        "type": "string",
-                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                                    },
-                                    "containsDescendants": {
-                                        "description": "Matches an element that has all the specified descendant elements.",
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/$defs/Element"
-                                        }
-                                    },
-                                    "repeat": {
-                                        "type": "number",
-                                        "minimum": 1,
-                                        "description": "Number of times to repeat the tap action."
-                                    },
-                                    "delay": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
-                                    },
-                                    "waitToSettleTimeoutMs": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
-                                    },
-                                    "label": {
-                                        "title": "tapOn.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "tapOn.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    {
-                                        "text": "Submit"
-                                    },
-                                    {
-                                        "id": "login-button",
-                                        "enabled": true
-                                    },
-                                    {
-                                        "text": "Next",
-                                        "below": {
-                                            "text": "Terms and Conditions"
-                                        }
-                                    }
-                                ]
+                                "id": "login-button",
+                                "enabled": true
+                            },
+                            {
+                                "text": "Next",
+                                "below": {
+                                    "text": "Terms and Conditions"
+                                }
                             }
                         ]
                     }
@@ -2975,138 +2763,22 @@
                     "doubleTapOn"
                 ],
                 "properties": {
-                    "doubleTapOn": {
-                        "oneOf": [
+                    "doubleTapOn": {   
+                        "description": "Double tap on an element, specified using text, ID, point, or detailed selectors.",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
                             {
-                                "type": "string",
-                                "description": "Double tap on an element, identified via its text",
-                                "minLength": 1
+                                "text": "Submit"
                             },
                             {
-                                "type": "object",
-                                "description": "Double tap on an element, specified using text, ID, point, or detailed selectors.",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified text. Supports regular expressions."
-                                    },
-                                    "id": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                                    },
-                                    "index": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "0-based index to specify which element to select among similar matches."
-                                    },
-                                    "width": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified width."
-                                    },
-                                    "height": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified height."
-                                    },
-                                    "tolerance": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Tolerance to apply when comparing width and height."
-                                    },
-                                    "enabled": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified enabled state."
-                                    },
-                                    "checked": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified checked state."
-                                    },
-                                    "focused": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified focused state."
-                                    },
-                                    "selected": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified selected state."
-                                    },
-                                    "retryTapIfNoChange": {
-                                        "type": "boolean",
-                                        "default": true,
-                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                                    },
-                                    "below": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is below another element with the specified text."
-                                    },
-                                    "above": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is above another element."
-                                    },
-                                    "leftOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the left of another element with the specified text."
-                                    },
-                                    "rightOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the right of another element with the specified text."
-                                    },
-                                    "containsChild": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that contains a child with the specified text."
-                                    },
-                                    "point": {
-                                        "description": "Point on the screen to tap on, either relative or absolute.",
-                                        "type": "string",
-                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                                    },
-                                    "containsDescendants": {
-                                        "description": "Matches an element that has all the specified descendant elements.",
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/$defs/Element"
-                                        }
-                                    },
-                                    "repeat": {
-                                        "type": "number",
-                                        "minimum": 1,
-                                        "description": "Number of times to repeat the tap action."
-                                    },
-                                    "delay": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
-                                    },
-                                    "waitToSettleTimeoutMs": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
-                                    },
-                                    "label": {
-                                        "title": "doubleTapOn.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "doubleTapOn.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    {
-                                        "text": "Submit"
-                                    },
-                                    {
-                                        "id": "login-button",
-                                        "enabled": true
-                                    },
-                                    {
-                                        "text": "Next",
-                                        "below": {
-                                            "text": "Terms and Conditions"
-                                        }
-                                    }
-                                ]
+                                "id": "login-button",
+                                "enabled": true
+                            },
+                            {
+                                "text": "Next",
+                                "below": {
+                                    "text": "Terms and Conditions"
+                                }
                             }
                         ]
                     }
@@ -3121,137 +2793,21 @@
                 ],
                 "properties": {
                     "longPressOn": {
-                        "oneOf": [
+                        "description": "Long press on an element, specified using text, ID, point, or detailed selectors.",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
                             {
-                                "type": "string",
-                                "description": "Long press on an element, identified via its text",
-                                "minLength": 1
+                                "text": "Submit"
                             },
                             {
-                                "type": "object",
-                                "description": "Long press on an element, specified using text, ID, point, or detailed selectors.",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified text. Supports regular expressions."
-                                    },
-                                    "id": {
-                                        "type": "string",
-                                        "description": "Matches element with the specified accessibility ID. Supports regular expressions."
-                                    },
-                                    "index": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "0-based index to specify which element to select among similar matches."
-                                    },
-                                    "width": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified width."
-                                    },
-                                    "height": {
-                                        "type": "integer",
-                                        "description": "Matches element with the specified height."
-                                    },
-                                    "tolerance": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Tolerance to apply when comparing width and height."
-                                    },
-                                    "enabled": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified enabled state."
-                                    },
-                                    "checked": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified checked state."
-                                    },
-                                    "focused": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified focused state."
-                                    },
-                                    "selected": {
-                                        "type": "boolean",
-                                        "description": "Matches element with the specified selected state."
-                                    },
-                                    "retryTapIfNoChange": {
-                                        "type": "boolean",
-                                        "default": true,
-                                        "description": "Determines whether to retry the tap if no hierarchy change is detected."
-                                    },
-                                    "below": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is below another element with the specified text."
-                                    },
-                                    "above": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that is above another element."
-                                    },
-                                    "leftOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the left of another element with the specified text."
-                                    },
-                                    "rightOf": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element to the right of another element with the specified text."
-                                    },
-                                    "containsChild": {
-                                        "$ref": "#/$defs/Element",
-                                        "description": "Matches an element that contains a child with the specified text."
-                                    },
-                                    "point": {
-                                        "description": "Point on the screen to tap on, either relative or absolute.",
-                                        "type": "string",
-                                        "pattern": "^(\\d+%,\\s?\\d+%)|(\\d+,\\s?\\d+)$"
-                                    },
-                                    "containsDescendants": {
-                                        "description": "Matches an element that has all the specified descendant elements.",
-                                        "type": "array",
-                                        "items": {
-                                            "$ref": "#/$defs/Element"
-                                        }
-                                    },
-                                    "repeat": {
-                                        "type": "number",
-                                        "minimum": 1,
-                                        "description": "Number of times to repeat the tap action."
-                                    },
-                                    "delay": {
-                                        "type": "number",
-                                        "minimum": 0,
-                                        "description": "Delay in milliseconds between repeated taps. Default is 100ms."
-                                    },
-                                    "waitToSettleTimeoutMs": {
-                                        "type": "integer",
-                                        "minimum": 0,
-                                        "description": "Time in milliseconds to wait for the screen to settle after the tap."
-                                    },
-                                    "label": {
-                                        "title": "longTapOn.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "longTapOn.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    {
-                                        "text": "Submit"
-                                    },
-                                    {
-                                        "id": "login-button",
-                                        "enabled": true
-                                    },
-                                    {
-                                        "text": "Next",
-                                        "below": {
-                                            "text": "Terms and Conditions"
-                                        }
-                                    }
-                                ]
+                                "id": "login-button",
+                                "enabled": true
+                            },
+                            {
+                                "text": "Next",
+                                "below": {
+                                    "text": "Terms and Conditions"
+                                }
                             }
                         ]
                     }
