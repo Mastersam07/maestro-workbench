@@ -80,6 +80,12 @@ onFlowComplete:
     label: 'Wipe the data'
     optional: true
 
+- copyTextFrom: '.*Total.*'
+- copyTextFrom:
+    text: '\d+'
+    label: 'Copy the total'
+    optional: false
+
 - eraseText
 - eraseText: 3
 - eraseText:
@@ -202,6 +208,24 @@ onFlowComplete:
 - repeat:
     while:
       true: ${output.counter < 3}
+    commands:
+      - tapOn:
+          id: 'fabAddIcon'
+
+- repeat:
+    while:
+      visible:
+        text: 'Some Text'
+        containsChild:
+          id: 'someChild'
+        containsDescendants:
+          - id: 'someDescendant1'
+          - text: 'someDescendant2'
+            below:
+              id: 'someDescendant1'
+          - id: 'someDescendant3'
+        childOf:
+          id: 'someParent'
     commands:
       - tapOn:
           id: 'fabAddIcon'
@@ -371,6 +395,18 @@ onFlowComplete:
 - tapOn:
     text: "A text with a hyperlink"
     point: "90%,50%"
+- tapOn:
+    id: "someId"
+    repeat: 3
+    delay: 100
+    traits: 'square'
+    waitUntilVisible: true
+    retryTapIfNoChange: false
+    waitToSettleTimeoutMs: 500
+    label: 'Tap a square thing thrice when it appears'
+- tapOn:
+    text: 'Add to Basket'
+    index: ${output.index}
 
 - longPressOn: Text
 - longPressOn:
