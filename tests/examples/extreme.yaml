@@ -80,6 +80,12 @@ onFlowComplete:
     label: 'Wipe the data'
     optional: true
 
+- copyTextFrom: '.*Total.*'
+- copyTextFrom:
+    text: '\d+'
+    label: 'Copy the total'
+    optional: false
+
 - eraseText
 - eraseText: 3
 - eraseText:
