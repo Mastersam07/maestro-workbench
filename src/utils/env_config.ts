@@ -5,10 +5,6 @@ export async function getEnvironmentVariables(testItem?: vscode.TestItem): Promi
     const config = vscode.workspace.getConfiguration('maestroWorkbench');
     let envVariables = config.get<{ [key: string]: string }>('envVariables', {});
 
-    if (testItem && globalState.envOverrides.has(testItem.id)) {
-        envVariables = { ...envVariables, ...globalState.envOverrides.get(testItem.id) };
-    }
-
     const resolvedEnv: { [key: string]: string } = {};
     for (const [key, value] of Object.entries(envVariables)) {
         const envMatch = value.match(/^\{ENV:([^:]+)(?::(.+))?\}$/);
