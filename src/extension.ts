@@ -29,11 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(controller);
 
 	discoverTests(controller);
-
 	registerTestProfiles(controller);
-
 	promptForRating(context);
-
 	updateFileWatcherAndTreeView(controller, context);
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
@@ -58,7 +55,6 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
-
 	updateYamlSchemaAssociations(schemaPath);
 }
 

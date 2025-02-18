@@ -3,6 +3,7 @@ import { exec, ChildProcess } from 'child_process';
 
 import { getFilePatterns } from '../utils/utils';
 import { globalState } from '../state/state';
+import { constructTestCommand } from '../utils/maestro_env_config';
 
 export function registerTestProfiles(controller: vscode.TestController) {
 	controller.createRunProfile(
@@ -61,7 +62,7 @@ async function runHandler(
 
 
 		try {
-			await executeTest(test, token);
+			await executeTestWithEnv(test, token);
 			run.passed(test);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'An unknown error occurred.';
@@ -72,9 +73,8 @@ async function runHandler(
 	run.end();
 }
 
-function executeTest(test: vscode.TestItem, token: vscode.CancellationToken): Promise<ChildProcess> {
-	return new Promise((resolve, reject) => {
-
+async function executeTestWithEnv(test: vscode.TestItem, token: vscode.CancellationToken): Promise<ChildProcess> {
+    return new Promise(async (resolve, reject) => {
 		const { uri } = test;
 		if (!uri) {
 			return reject(new Error('Test item URI is undefined.'));
@@ -87,51 +87,42 @@ function executeTest(test: vscode.TestItem, token: vscode.CancellationToken): Pr
 			return reject(new Error('Workspace folder is undefined.'));
 		}
 
-		const process = exec(`maestro test ${fsPath}`, { cwd: workspaceFolder }, (error, stdout, stderr) => {
+        const command = await constructTestCommand(test);
 
-			if (token.isCancellationRequested) {
-				return reject(new Error('Test execution cancelled.'));
-			}
-
-			if (error) {
-				const errorMessage = stdout.trim() === '' ? stderr : stdout;
-				reject(new Error(errorMessage));
-			} else {
-				resolve(process);
-			}
-
-		});
-
-		token.onCancellationRequested(() => {
-			process.kill();
-			reject(new Error('Test execution cancelled.'));
-		});
-	});
+        const process = exec(command, { cwd: workspaceFolder }, (error, stdout, stderr) => {
+            if (token.isCancellationRequested) {
+                return reject(new Error('Test execution cancelled.'));
+            }
+            if (error) {
+                const errorMessage = stdout.trim() === '' ? stderr : stdout;
+                return reject(new Error(errorMessage));
+            }
+            resolve(process);
+        });
+        token.onCancellationRequested(() => {
+            process.kill();
+            reject(new Error('Test execution cancelled.'));
+        });
+    });
 }
 
 export function watchTestFiles(controller: vscode.TestController) {
-
 	if (globalState.fileWatcher) {
 		globalState.fileWatcher?.dispose();
 	}
-
 	globalState.fileWatcher = vscode.workspace.createFileSystemWatcher("**/*.{yaml,yml}");
-
 	globalState.fileWatcher.onDidCreate(uri => {
 		addTestFile(controller, uri);
 		globalState.treeDataProvider?.refresh();
 	});
-
 	globalState.fileWatcher.onDidChange(uri => {
 		updateTestFile(controller, uri);
 		globalState.treeDataProvider?.refresh();
 	});
-
 	globalState.fileWatcher.onDidDelete(uri => {
 		removeTestFile(controller, uri);
 		globalState.treeDataProvider?.refresh();
 	});
-
 	return globalState.fileWatcher;
 }
 
@@ -151,10 +142,7 @@ function removeTestFile(controller: vscode.TestController, uri: vscode.Uri) {
 	controller.items.delete(uri.path);
 }
 
-
-
 export async function refreshTestExplorer(controller: vscode.TestController) {
 	controller.items.forEach(item => controller.items.delete(item.id));
-
 	await discoverTests(controller);
 }
