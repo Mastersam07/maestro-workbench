@@ -11,6 +11,7 @@
 </div>
 
 ---
+[![🚀 Maestro Workbench Release](https://github.com/Mastersam07/maestro-workbench/actions/workflows/release.yaml/badge.svg?branch=dev)](https://github.com/Mastersam07/maestro-workbench/actions/workflows/release.yaml)
 
 
 Maestro Workbench is a Visual Studio Code extension designed to enhance the development and testing of Maestro YAML files. It offers features such as IntelliSense, syntax highlighting, formatting, test execution, and output visualization to streamline your workflow.
