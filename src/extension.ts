@@ -32,14 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	registerTestProfiles(controller);
 
-	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
-
-	const firstUse = context.globalState.get<number>('firstUse', Date.now());
-	const now = Date.now();
-
-	if (now - firstUse >= TIME_THRESHOLD) {
-		promptForRating(context);
-	}
+	promptForRating(context);
 
 	updateFileWatcherAndTreeView(controller, context);
 
