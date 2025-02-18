@@ -9,15 +9,17 @@ export async function getEnvironmentVariables(testItem?: vscode.TestItem): Promi
         envVariables = { ...envVariables, ...globalState.envOverrides.get(testItem.id) };
     }
 
-    const filteredEnv: { [key: string]: string } = Object.fromEntries(
-        Object.entries(process.env)
-            .filter(([_, value]) => value !== undefined)
-            .map(([key, value]) => [key, value as string])
-    );
+    const resolvedEnv: { [key: string]: string } = {};
+    for (const [key, value] of Object.entries(envVariables)) {
+        if (value.startsWith('$')) {
+            const envVarName = value.substring(1);
+            resolvedEnv[key] = process.env[envVarName] || '';
+        } else {
+            resolvedEnv[key] = value;
+        }
+    }
 
-    const mergedEnv = { ...filteredEnv, ...envVariables };
-
-    return mergedEnv;
+    return resolvedEnv;
 }
 
 export async function constructTestCommand(testItem: vscode.TestItem): Promise<string> {

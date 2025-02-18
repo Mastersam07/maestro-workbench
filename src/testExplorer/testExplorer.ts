@@ -3,7 +3,7 @@ import { exec, ChildProcess } from 'child_process';
 
 import { getFilePatterns } from '../utils/utils';
 import { globalState } from '../state/state';
-import { constructTestCommand } from '../utils/maestro_env_config';
+import { constructTestCommand } from '../utils/env_config';
 
 export function registerTestProfiles(controller: vscode.TestController) {
 	controller.createRunProfile(

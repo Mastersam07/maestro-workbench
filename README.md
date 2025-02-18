@@ -63,6 +63,15 @@ Maestro Workbench allows customization of file patterns to detect Maestro YAML f
 ]
 ```
 
+**Variables:**
+
+```json
+"maestroWorkbench.envVariables": {
+  "API_URL": "https://example.com",
+  "TOKEN": "$HOME"
+}
+```
+
 To modify these patterns, navigate to your VS Code settings and update the maestroWorkbench.filePatterns configuration.
 
 ## Contributing
