@@ -68,8 +68,8 @@ Maestro Workbench allows customization of file patterns to detect Maestro YAML f
 ```json
 "maestroWorkbench.envVariables": {
   "API_URL": "https://example.com",
-  "TOKEN": "$HOME",
-  "AUTH_TOKEN": "$AUTH_TOKEN:default123"
+  "TOKEN": "{ENV:TOKEN}",
+  "AUTH_TOKEN": "{ENV:AUTH_TOKEN:default123}"
 }
 ```
 

@@ -11,9 +11,11 @@ export async function getEnvironmentVariables(testItem?: vscode.TestItem): Promi
 
     const resolvedEnv: { [key: string]: string } = {};
     for (const [key, value] of Object.entries(envVariables)) {
-        if (value.startsWith('$')) {
-            const [envVarName, defaultValue] = value.substring(1).split(':');
-            resolvedEnv[key] = process.env[envVarName] || defaultValue || '';
+        const envMatch = value.match(/^\{ENV:([^:]+)(?::(.+))?\}$/);
+        if (envMatch) {
+            const envVarName = envMatch[1];
+            const defaultValue = envMatch[2] || '';
+            resolvedEnv[key] = process.env[envVarName] || defaultValue;
         } else {
             resolvedEnv[key] = value;
         }
