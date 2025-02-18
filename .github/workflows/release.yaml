@@ -1,0 +1,56 @@
+name: 🚀 Maestro Workbench Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release Version (e.g., v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release & Publish to VS Code Marketplace
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install vsce (VS Code Extension CLI)
+        run: npm install -g @vscode/vsce
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Package VS Code Extension
+        run: vsce package
+      
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f ${{ inputs.version }}
+          git push origin -f ${{ inputs.version }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: "*.vsix"
+
+      - name: Publish to VS Code Marketplace
+        run: vsce publish --packagePath *.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
