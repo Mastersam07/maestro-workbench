@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.1] - 2025-02-18
+
+### Fixed
+
+- Schema: Support for missing element selector options
+- Schema: Support for providing element selector index by JS expression
+- Schema: Fix required properties for extendedWaitUntil
+
 ## [0.9.0] - 2025-01-21
 
 ### Added
