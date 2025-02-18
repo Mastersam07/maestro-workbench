@@ -12,8 +12,8 @@ export async function getEnvironmentVariables(testItem?: vscode.TestItem): Promi
     const resolvedEnv: { [key: string]: string } = {};
     for (const [key, value] of Object.entries(envVariables)) {
         if (value.startsWith('$')) {
-            const envVarName = value.substring(1);
-            resolvedEnv[key] = process.env[envVarName] || '';
+            const [envVarName, defaultValue] = value.substring(1).split(':');
+            resolvedEnv[key] = process.env[envVarName] || defaultValue || '';
         } else {
             resolvedEnv[key] = value;
         }
