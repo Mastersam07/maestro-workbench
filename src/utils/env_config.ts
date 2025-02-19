@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { globalState } from '../state/state';
 
 export async function getEnvironmentVariables(testItem?: vscode.TestItem): Promise<{ [key: string]: string }> {
     const config = vscode.workspace.getConfiguration('maestroWorkbench');
@@ -24,8 +23,4 @@ export async function constructTestCommand(testItem: vscode.TestItem): Promise<s
     const envVariables = await getEnvironmentVariables(testItem);
     const envArgs = Object.entries(envVariables).map(([key, value]) => `-e ${key}="${value}"`).join(' ');
     return `maestro test ${envArgs} ${testItem.uri?.fsPath}`;
-}
-
-export function loadEnvVariable(key: string): string | undefined {
-    return process.env[key];
 }
