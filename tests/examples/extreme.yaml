@@ -40,6 +40,9 @@ onFlowComplete:
 - assertNotVisible:
     text: 'Form Test'
     enabled: false
+    below: 'Some Text'
+    above:
+      text: 'Other Text'
 
 - assertTrue: ${"test" == "test"}
 - assertTrue:
@@ -54,6 +57,7 @@ onFlowComplete:
 - assertVisible: 'Login'
 - assertVisible: 
     text: 'Form Test'
+    below: 'Some Text'
 
 - assertWithAI: 'Login and password text fields are visible.'
 - assertWithAI:

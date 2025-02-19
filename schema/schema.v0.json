@@ -664,60 +664,17 @@
                 ],
                 "properties": {
                     "assertNotVisible": {
-                        "oneOf": [
+                        "description": "Assert that an element is not visible through an element selector",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
+                            "Loading Spinner",
                             {
-                                "type": "string",
-                                "description": "Assert that an element is not visible through text",
-                                "minLength": 1
+                                "text": "Error Message",
+                                "checked": false
                             },
                             {
-                                "description": "Assert that an element is not visible through an element selector",
-                                "type": "object",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "enabled": {
-                                        "type": "boolean"
-                                    },
-                                    "checked": {
-                                        "type": "boolean"
-                                    },
-                                    "focused": {
-                                        "type": "boolean"
-                                    },
-                                    "selected": {
-                                        "type": "boolean"
-                                    },
-                                    "index": {
-                                        "type": "integer"
-                                    },
-                                    "label": {
-                                        "title": "assertNotVisible.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "assertNotVisible.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    "Loading Spinner",
-                                    {
-                                        "text": "Error Message",
-                                        "checked": false
-                                    },
-                                    {
-                                        "id": "progress_bar",
-                                        "enabled": false
-                                    }
-                                ]
+                                "id": "progress_bar",
+                                "enabled": false
                             }
                         ]
                     }
@@ -788,57 +745,14 @@
                 ],
                 "properties": {
                     "assertVisible": {
-                        "oneOf": [
+                        "description": "Assert that an element is visible through an element selector",
+                        "$ref": "#/$defs/Element",
+                        "examples": [
+                            "Login Button",
                             {
-                                "type": "string",
-                                "description": "Assert that an element is visible through text",
-                                "minLength": 1
-                            },
-                            {
-                                "description": "Assert that an element is visible through an element selector",
-                                "type": "object",
-                                "additionalProperties": false,
-                                "properties": {
-                                    "text": {
-                                        "type": "string"
-                                    },
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "enabled": {
-                                        "type": "boolean"
-                                    },
-                                    "checked": {
-                                        "type": "boolean"
-                                    },
-                                    "focused": {
-                                        "type": "boolean"
-                                    },
-                                    "selected": {
-                                        "type": "boolean"
-                                    },
-                                    "index": {
-                                        "type": "integer"
-                                    },
-                                    "label": {
-                                        "title": "assertVisible.label",
-                                        "type": "string",
-                                        "description": "Description of the action to be performed."
-                                    },
-                                    "optional": {
-                                        "title": "assertVisible.optional",
-                                        "type": "boolean",
-                                        "description": "Indicates if the action is optional."
-                                    }
-                                },
-                                "examples": [
-                                    "Login Button",
-                                    {
-                                        "text": "Sign In",
-                                        "id": "sign_in_button",
-                                        "focused": true
-                                    }
-                                ]
+                                "text": "Sign In",
+                                "id": "sign_in_button",
+                                "focused": true
                             }
                         ]
                     }
