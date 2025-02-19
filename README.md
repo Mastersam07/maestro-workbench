@@ -38,6 +38,8 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
   https://github.com/user-attachments/assets/4c72c7e0-2eeb-4ab3-9bf7-8fec572b2b6f
 
+- **Environment Variable Support**: Define environment variables within your workspace settings and reference system environment variables using `{ENV:VAR_NAME}` syntax. Support for default values is also available, e.g., `{ENV:API_KEY:default123}`.
+
 - **Integrated Tree View**: Visualize and manage your Maestro test files within a dedicated tree view, providing quick access and organization as well as viewing flow dependencies.
 
   https://github.com/user-attachments/assets/b2b8d083-b1fa-4ae3-a5c3-e9a2f7f388d4
@@ -63,17 +65,24 @@ Maestro Workbench allows customization of file patterns to detect Maestro YAML f
 ]
 ```
 
-**Variables:**
+To modify these patterns, navigate to your VS Code settings and update the maestroWorkbench.filePatterns configuration.
 
+### **Environment Variables Configuration**
+
+Maestro Workbench supports defining and referencing environment variables in your tests. Configure them in your workspace settings under `maestroWorkbench.envVariables`.
+
+Example Configuration:
 ```json
 "maestroWorkbench.envVariables": {
-  "API_URL": "https://example.com",
-  "TOKEN": "{ENV:TOKEN}",
-  "AUTH_TOKEN": "{ENV:AUTH_TOKEN:default123}"
+    "API_URL": "https://example.com",
+    "TOKEN": "{ENV:TOKEN}",
+    "AUTH_TOKEN": "{ENV:API_KEY:default_token}"
 }
 ```
 
-To modify these patterns, navigate to your VS Code settings and update the maestroWorkbench.filePatterns configuration.
+- Use raw values directly (`API_URL`).
+- Reference system environment variables (`{ENV:TOKEN}`).
+- Provide default values (`{ENV:API_KEY:default_token}`) if the variable is not set.
 
 ## Contributing
 
