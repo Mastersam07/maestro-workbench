@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.2] - 2025-02-19
+
+### Fixed
+
+- Schema: Support for all element selectors in AssertVisible / AssertNotVisible
+
 ## [0.9.1] - 2025-02-18
 
 ### Fixed
