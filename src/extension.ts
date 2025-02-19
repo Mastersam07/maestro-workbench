@@ -41,6 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	vscode.workspace.onDidChangeConfiguration((e) => {
+		if (e.affectsConfiguration('maestroWorkbench.envVariables')) {
+			vscode.window.showInformationMessage('Maestro test variables updated.');
+		}
+	});
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('maestroWorkbench.refreshTree', () => {
 			if (globalState.treeDataProvider) { globalState.treeDataProvider.refresh(); }
