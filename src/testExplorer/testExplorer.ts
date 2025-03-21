@@ -4,6 +4,7 @@ import { exec, ChildProcess } from 'child_process';
 import { getFilePatterns } from '../utils/utils';
 import { globalState } from '../state/state';
 import { constructTestCommand } from '../utils/env_config';
+import { selectDevice, getDefaultDevice } from '../utils/device';
 
 export function registerTestProfiles(controller: vscode.TestController) {
 	controller.createRunProfile(
@@ -87,22 +88,37 @@ async function executeTestWithEnv(test: vscode.TestItem, token: vscode.Cancellat
 			return reject(new Error('Workspace folder is undefined.'));
 		}
 
-        const command = await constructTestCommand(test);
+        try {
+            let deviceId = await getDefaultDevice();
+            if (!deviceId) {
+                deviceId = await selectDevice();
+                if (!deviceId) {
+                    return reject(new Error('No device selected'));
+                }
+            }
 
-        const process = exec(command, { cwd: workspaceFolder }, (error, stdout, stderr) => {
-            if (token.isCancellationRequested) {
-                return reject(new Error('Test execution cancelled.'));
-            }
-            if (error) {
-                const errorMessage = stdout.trim() === '' ? stderr : stdout;
-                return reject(new Error(errorMessage));
-            }
-            resolve(process);
-        });
-        token.onCancellationRequested(() => {
-            process.kill();
-            reject(new Error('Test execution cancelled.'));
-        });
+            const baseCommand = await constructTestCommand(test);
+            
+            const command = `maestro --device ${deviceId} ${baseCommand.replace('maestro test', 'test')}`;
+
+            const process = exec(command, { cwd: workspaceFolder }, (error, stdout, stderr) => {
+                if (token.isCancellationRequested) {
+                    return reject(new Error('Test execution cancelled.'));
+                }
+                if (error) {
+                    const errorMessage = stdout.trim() === '' ? stderr : stdout;
+                    return reject(new Error(errorMessage));
+                }
+                resolve(process);
+            });
+
+            token.onCancellationRequested(() => {
+                process.kill();
+                reject(new Error('Test execution cancelled.'));
+            });
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
