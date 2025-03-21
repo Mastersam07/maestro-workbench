@@ -5,6 +5,7 @@ import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
 import { checkYamlExtension, getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
+import { getAvailableDevices } from './utils/device';
 
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, context: vscode.ExtensionContext) {
@@ -59,6 +60,22 @@ export function activate(context: vscode.ExtensionContext) {
 			terminal.sendText("maestro studio");
 		})
 	);
+
+	let listDevicesCommand = vscode.commands.registerCommand('maestroWorkbench.listDevices', async () => {
+		const devices = await getAvailableDevices();
+		if (devices.length === 0) {
+			vscode.window.showInformationMessage('No devices found. Please connect a device and try again.');
+			return;
+		}
+
+		const message = devices.map(device => 
+			`${device.name} (${device.id}) - ${device.type}`
+		).join('\n');
+
+		vscode.window.showInformationMessage('Available Devices:\n' + message);
+	});
+
+	context.subscriptions.push(listDevicesCommand);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 	updateYamlSchemaAssociations(schemaPath);
