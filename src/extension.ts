@@ -29,18 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(controller);
 
 	discoverTests(controller);
-
 	registerTestProfiles(controller);
-
-	const TIME_THRESHOLD = 5 * 24 * 60 * 60 * 1000;
-
-	const firstUse = context.globalState.get<number>('firstUse', Date.now());
-	const now = Date.now();
-
-	if (now - firstUse >= TIME_THRESHOLD) {
-		promptForRating(context);
-	}
-
+	promptForRating(context);
 	updateFileWatcherAndTreeView(controller, context);
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
@@ -48,6 +38,12 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showInformationMessage('Maestro File patterns updated. Refreshing workbench...');
 			updateFileWatcherAndTreeView(controller, context);
 			updateYamlSchemaAssociations(schemaPath);
+		}
+	});
+
+	vscode.workspace.onDidChangeConfiguration((e) => {
+		if (e.affectsConfiguration('maestroWorkbench.envVariables')) {
+			vscode.window.showInformationMessage('Maestro test variables updated.');
 		}
 	});
 
@@ -65,7 +61,6 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
-
 	updateYamlSchemaAssociations(schemaPath);
 }
 
