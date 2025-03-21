@@ -53,6 +53,16 @@ async function runHandler(
 		run.end();
 	});
 
+	let deviceId = await getDefaultDevice();
+	if (!deviceId) {
+		deviceId = await selectDevice();
+		if (!deviceId) {
+			queue.forEach(test => run.skipped(test));
+			run.end();
+			return;
+		}
+	}
+
 	while (queue.length > 0) {
 		const test = queue.pop()!;
 		if (request.exclude?.includes(test)) {
@@ -61,9 +71,8 @@ async function runHandler(
 
 		run.started(test);
 
-
 		try {
-			await executeTestWithEnv(test, token);
+			await executeTestWithEnv(test, token, deviceId);
 			run.passed(test);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'An unknown error occurred.';
@@ -74,8 +83,12 @@ async function runHandler(
 	run.end();
 }
 
-async function executeTestWithEnv(test: vscode.TestItem, token: vscode.CancellationToken): Promise<ChildProcess> {
-    return new Promise(async (resolve, reject) => {
+async function executeTestWithEnv(
+	test: vscode.TestItem, 
+	token: vscode.CancellationToken,
+	deviceId: string
+): Promise<ChildProcess> {
+	return new Promise(async (resolve, reject) => {
 		const { uri } = test;
 		if (!uri) {
 			return reject(new Error('Test item URI is undefined.'));
@@ -88,38 +101,29 @@ async function executeTestWithEnv(test: vscode.TestItem, token: vscode.Cancellat
 			return reject(new Error('Workspace folder is undefined.'));
 		}
 
-        try {
-            let deviceId = await getDefaultDevice();
-            if (!deviceId) {
-                deviceId = await selectDevice();
-                if (!deviceId) {
-                    return reject(new Error('No device selected'));
-                }
-            }
+		try {
+			const baseCommand = await constructTestCommand(test);
+			const command = `maestro --device ${deviceId} ${baseCommand.replace('maestro test', 'test')}`;
 
-            const baseCommand = await constructTestCommand(test);
-            
-            const command = `maestro --device ${deviceId} ${baseCommand.replace('maestro test', 'test')}`;
+			const process = exec(command, { cwd: workspaceFolder }, (error, stdout, stderr) => {
+				if (token.isCancellationRequested) {
+					return reject(new Error('Test execution cancelled.'));
+				}
+				if (error) {
+					const errorMessage = stdout.trim() === '' ? stderr : stdout;
+					return reject(new Error(errorMessage));
+				}
+				resolve(process);
+			});
 
-            const process = exec(command, { cwd: workspaceFolder }, (error, stdout, stderr) => {
-                if (token.isCancellationRequested) {
-                    return reject(new Error('Test execution cancelled.'));
-                }
-                if (error) {
-                    const errorMessage = stdout.trim() === '' ? stderr : stdout;
-                    return reject(new Error(errorMessage));
-                }
-                resolve(process);
-            });
-
-            token.onCancellationRequested(() => {
-                process.kill();
-                reject(new Error('Test execution cancelled.'));
-            });
-        } catch (error) {
-            reject(error);
-        }
-    });
+			token.onCancellationRequested(() => {
+				process.kill();
+				reject(new Error('Test execution cancelled.'));
+			});
+		} catch (error) {
+			reject(error);
+		}
+	});
 }
 
 export function watchTestFiles(controller: vscode.TestController) {
