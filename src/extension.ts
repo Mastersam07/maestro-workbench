@@ -63,32 +63,40 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	let listDevicesCommand = vscode.commands.registerCommand('maestroWorkbench.listDevices', async () => {
-		const devices = await getAvailableDevices();
-		
 		if (!deviceOutputChannel) {
 			deviceOutputChannel = vscode.window.createOutputChannel('Maestro Devices');
 		}
 
 		deviceOutputChannel.clear();
 		deviceOutputChannel.show(true);
+		deviceOutputChannel.appendLine('Fetching available devices...');
 
-		if (devices.length === 0) {
-			deviceOutputChannel.appendLine('No devices found. Please connect a device and try again.');
-			return;
-		}
-
-		const groupedDevices = devices.reduce((acc, device) => {
-			if (!acc[device.type]) {
-				acc[device.type] = [];
+		await vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Fetching Maestro Devices",
+			cancellable: false
+		}, async (progress) => {
+			progress.report({ message: "Scanning for devices..." });
+			const devices = await getAvailableDevices();
+			
+			if (devices.length === 0) {
+				deviceOutputChannel.appendLine('No devices found. Please connect a device and try again.');
+				return;
 			}
-			acc[device.type].push(device);
-			return acc;
-		}, {} as Record<string, typeof devices>);
 
-		Object.entries(groupedDevices).forEach(([type, deviceList]) => {
-			deviceOutputChannel.appendLine(`\n${type}:`);
-			deviceList.forEach(device => {
-				deviceOutputChannel.appendLine(`  • ${device.name} (${device.id})`);
+			const groupedDevices = devices.reduce((acc, device) => {
+				if (!acc[device.type]) {
+					acc[device.type] = [];
+				}
+				acc[device.type].push(device);
+				return acc;
+			}, {} as Record<string, typeof devices>);
+
+			Object.entries(groupedDevices).forEach(([type, deviceList]) => {
+				deviceOutputChannel.appendLine(`\n${type}:`);
+				deviceList.forEach(device => {
+					deviceOutputChannel.appendLine(`  • ${device.name} (${device.id})`);
+				});
 			});
 		});
 	});
