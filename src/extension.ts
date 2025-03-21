@@ -7,6 +7,7 @@ import { checkYamlExtension, getFilePatterns, getOrCreateTerminal, updateYamlSch
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
 import { getAvailableDevices } from './utils/device';
 
+let deviceOutputChannel: vscode.OutputChannel;
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, context: vscode.ExtensionContext) {
 	const filePatterns = getFilePatterns();
@@ -63,16 +64,33 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let listDevicesCommand = vscode.commands.registerCommand('maestroWorkbench.listDevices', async () => {
 		const devices = await getAvailableDevices();
+		
+		if (!deviceOutputChannel) {
+			deviceOutputChannel = vscode.window.createOutputChannel('Maestro Devices');
+		}
+
+		deviceOutputChannel.clear();
+		deviceOutputChannel.show(true);
+
 		if (devices.length === 0) {
-			vscode.window.showInformationMessage('No devices found. Please connect a device and try again.');
+			deviceOutputChannel.appendLine('No devices found. Please connect a device and try again.');
 			return;
 		}
 
-		const message = devices.map(device => 
-			`${device.name} (${device.id}) - ${device.type}`
-		).join('\n');
+		const groupedDevices = devices.reduce((acc, device) => {
+			if (!acc[device.type]) {
+				acc[device.type] = [];
+			}
+			acc[device.type].push(device);
+			return acc;
+		}, {} as Record<string, typeof devices>);
 
-		vscode.window.showInformationMessage('Available Devices:\n' + message);
+		Object.entries(groupedDevices).forEach(([type, deviceList]) => {
+			deviceOutputChannel.appendLine(`\n${type}:`);
+			deviceList.forEach(device => {
+				deviceOutputChannel.appendLine(`  • ${device.name} (${device.id})`);
+			});
+		});
 	});
 
 	context.subscriptions.push(listDevicesCommand);
