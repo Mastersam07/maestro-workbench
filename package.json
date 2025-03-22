@@ -47,12 +47,6 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "yaml.schemas": {
-      "./schema/maestro.schema.v0.json": [
-        "*.yaml",
-        "*.yml"
-      ]
-    },
     "languages": [
       {
         "id": "yaml",
