@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.3] - 2024-03-21
+### Fixed
+- Support for test variables
+- Support for selecting and setting test device
+- Fixed schema validation issues by properly managing YAML schema associations
+- Removed duplicate schema entries from global settings
+- Ensured schema configurations are properly scoped to workspace settings
+- Fixed issue where test schema configurations were being added to user settings
+
 ## [0.9.2] - 2025-02-19
 
 ### Fixed
