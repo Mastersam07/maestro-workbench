@@ -5,7 +5,9 @@ import { promptForRating } from './utils/rating';
 import { globalState } from './state/state';
 import { checkYamlExtension, getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
+import { getAvailableDevices } from './utils/device';
 
+let deviceOutputChannel: vscode.OutputChannel;
 
 function updateFileWatcherAndTreeView(controller: vscode.TestController, context: vscode.ExtensionContext) {
 	const filePatterns = getFilePatterns();
@@ -59,6 +61,47 @@ export function activate(context: vscode.ExtensionContext) {
 			terminal.sendText("maestro studio");
 		})
 	);
+
+	let listDevicesCommand = vscode.commands.registerCommand('maestroWorkbench.listDevices', async () => {
+		if (!deviceOutputChannel) {
+			deviceOutputChannel = vscode.window.createOutputChannel('Maestro Devices');
+		}
+
+		deviceOutputChannel.clear();
+		deviceOutputChannel.show(true);
+		deviceOutputChannel.appendLine('Fetching available devices...');
+
+		await vscode.window.withProgress({
+			location: vscode.ProgressLocation.Notification,
+			title: "Fetching Maestro Devices",
+			cancellable: false
+		}, async (progress) => {
+			progress.report({ message: "Scanning for devices..." });
+			const devices = await getAvailableDevices();
+			
+			if (devices.length === 0) {
+				deviceOutputChannel.appendLine('No devices found. Please connect a device and try again.');
+				return;
+			}
+
+			const groupedDevices = devices.reduce((acc, device) => {
+				if (!acc[device.type]) {
+					acc[device.type] = [];
+				}
+				acc[device.type].push(device);
+				return acc;
+			}, {} as Record<string, typeof devices>);
+
+			Object.entries(groupedDevices).forEach(([type, deviceList]) => {
+				deviceOutputChannel.appendLine(`\n${type}:`);
+				deviceList.forEach(device => {
+					deviceOutputChannel.appendLine(`  • ${device.name} (${device.id})`);
+				});
+			});
+		});
+	});
+
+	context.subscriptions.push(listDevicesCommand);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 	updateYamlSchemaAssociations(schemaPath);

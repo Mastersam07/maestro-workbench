@@ -104,6 +104,11 @@
         "command": "maestroWorkbench.runFolderTests",
         "title": "Run All Flows in Folder",
         "icon": "$(debug-start)"
+      },
+      {
+        "command": "maestroWorkbench.listDevices",
+        "title": "List Available Devices",
+        "icon": "$(device-desktop)"
       }
     ],
     "menus": {
@@ -115,6 +120,11 @@
         },
         {
           "command": "maestroWorkbench.refreshTree",
+          "when": "view == maestroBenchTreeView",
+          "group": "navigation"
+        },
+        {
+          "command": "maestroWorkbench.listDevices",
           "when": "view == maestroBenchTreeView",
           "group": "navigation"
         }
@@ -142,6 +152,11 @@
             "**/.maestro/**/*.yml"
           ],
           "description": "Glob patterns to locate Maestro files. You can customize these to include or exclude specific directories."
+        },
+        "maestroWorkbench.defaultDevice": {
+          "type": "string",
+          "default": "",
+          "description": "Default device to run tests on. Leave empty to use the first available device."
         }
       }
     }

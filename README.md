@@ -46,6 +46,92 @@ Maestro Workbench is a Visual Studio Code extension designed to enhance the deve
 
 - **Maestro Studio Integration**: Launch Maestro Studio directly from the extension.
 
+- **Test Explorer Integration**
+  - View all Maestro test files in the test explorer
+  - Run individual tests or all tests at once
+  - Automatic device selection for test execution
+  - Support for both Android and iOS devices
+  - Environment variable management for tests
+
+- **Device Management**
+  - List available Android and iOS devices
+  - Select device for test execution
+  - Set default device in settings
+  - Support for physical devices, simulators, and offline devices
+
+- **File Management**
+  - Tree view for Maestro test files
+  - Automatic test discovery
+  - File watching for changes
+  - YAML schema validation
+
+## Configuration
+
+### Device Settings
+
+You can configure the default device for test execution in VS Code settings:
+
+```json
+{
+    "maestroWorkbench.defaultDevice": "device-id"
+}
+```
+
+Leave this empty to be prompted for device selection each time you run tests.
+
+### Environment Variables
+
+Configure environment variables for your tests:
+
+```json
+{
+    "maestroWorkbench.envVariables": {
+        "API_URL": "https://example.com",
+        "TOKEN": "{ENV:TOKEN}",
+        "AUTH_TOKEN": "{ENV:API_KEY:default_token}"
+    }
+}
+```
+
+Environment variables can be:
+- Direct values: `"API_URL": "https://example.com"`
+- System environment variables: `"TOKEN": "{ENV:TOKEN}"`
+- System environment variables with defaults: `"AUTH_TOKEN": "{ENV:API_KEY:default_token}"`
+
+## Usage
+
+### Running Tests
+
+1. Open the Test Explorer view in VS Code
+2. Select one or more test files to run
+3. Click the "Run Tests" button or use the test explorer's run command
+4. If no default device is set, select a device from the list
+5. Tests will run on the selected device
+
+### Managing Devices
+
+1. Use the "List Available Devices" command to view all connected devices
+2. Devices are grouped by type (Android Device, iOS Device, iOS Simulator)
+3. Each device entry shows:
+   - Device name
+   - Device ID
+   - Device type and status
+
+### Setting Default Device
+
+1. Open VS Code settings
+2. Search for "maestroWorkbench.defaultDevice"
+3. Enter the device ID of your preferred device
+4. The device will be used automatically when running tests
+
+## Commands
+
+- `maestroWorkbench.listDevices`: List all available devices
+- `maestroWorkbench.runTest`: Run a specific test file
+- `maestroWorkbench.runFolderTests`: Run all tests in a folder
+- `maestroWorkbench.refreshTree`: Refresh the test explorer
+- `maestroWorkbench.openMaestroStudio`: Open Maestro Studio
+
 ## Requirements
 
 Ensure that you have Maestro installed on your system to utilize the testing features of this extension. You can download and install Maestro from the [official repository](https://maestro.mobile.dev/getting-started/installing-maestro).
@@ -67,22 +153,14 @@ Maestro Workbench allows customization of file patterns to detect Maestro YAML f
 
 To modify these patterns, navigate to your VS Code settings and update the maestroWorkbench.filePatterns configuration.
 
-### **Environment Variables Configuration**
+* `maestroWorkbench.filePatterns`: Glob patterns to locate Maestro files
+* `maestroWorkbench.defaultDevice`: Default device to run tests on
+* `maestroWorkbench.envVariables`: Environment variables for test execution
 
-Maestro Workbench supports defining and referencing environment variables in your tests. Configure them in your workspace settings under `maestroWorkbench.envVariables`.
+## Known Issues
 
-Example Configuration:
-```json
-"maestroWorkbench.envVariables": {
-    "API_URL": "https://example.com",
-    "TOKEN": "{ENV:TOKEN}",
-    "AUTH_TOKEN": "{ENV:API_KEY:default_token}"
-}
-```
-
-- Use raw values directly (`API_URL`).
-- Reference system environment variables (`{ENV:TOKEN}`).
-- Provide default values (`{ENV:API_KEY:default_token}`) if the variable is not set.
+- Device selection is required for each test run if no default device is set
+- Some iOS simulator features may require Xcode to be running
 
 ## Contributing
 
