@@ -104,7 +104,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(listDevicesCommand);
 
 	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
-	updateYamlSchemaAssociations(schemaPath);
 }
 
 export function deactivate() {
