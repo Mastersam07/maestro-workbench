@@ -23,6 +23,8 @@ function updateFileWatcherAndTreeView(controller: vscode.TestController, context
 export function activate(context: vscode.ExtensionContext) {
 	checkYamlExtension();
 
+	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
+
 	const controller = vscode.tests.createTestController(
 		'maestroWorkbenchTestProvider',
 		'Maestro Tests'
@@ -102,8 +104,6 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(listDevicesCommand);
-
-	const schemaPath = vscode.Uri.file(path.join(context.extensionPath, "schema", "schema.v0.json")).toString();
 }
 
 export function deactivate() {
