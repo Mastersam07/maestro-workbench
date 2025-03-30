@@ -91,13 +91,26 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             );
         });
 
-        const filePaths = fileItems
+        // Filter files based on configured patterns
+        const filteredItems = fileItems.filter(item => {
+            if (item.contextValue === FileType.Folder) {
+                return true; // Always show folders
+            }
+            // Check if the file matches any of our patterns
+            const relativePath = path.relative(vscode.workspace.workspaceFolders![0].uri.fsPath, item.resourceUri.fsPath);
+            return this.filePatterns.some(pattern => {
+                const glob = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
+                return glob.test(relativePath);
+            });
+        });
+
+        const filePaths = filteredItems
             .filter((item) => item.contextValue === FileType.File)
             .map((item) => item.resourceUri.fsPath);
 
         this.analyzeDependencies(filePaths);
 
-        fileItems.forEach((item) => {
+        filteredItems.forEach((item) => {
             if (item.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
                 item.collapsibleState =
@@ -107,7 +120,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             }
         });
 
-        return fileItems;
+        return filteredItems;
     }
 
     private createTreeItemsFromPaths(filePaths: string[], rootPath: string): FileItem[] {
