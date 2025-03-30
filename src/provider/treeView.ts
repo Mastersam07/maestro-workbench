@@ -34,7 +34,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             if (element.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(element.resourceUri.fsPath) || [];
                 const uniqueDependencies = new Set(dependencies);
-                console.log(`uniqueDependencies: ${uniqueDependencies}`)
                 return Array.from(uniqueDependencies).map((dep) => {
                     const isMissing = !fs.existsSync(dep);
                     return new FileItem(
@@ -43,7 +42,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                         vscode.Uri.file(dep),
                         FileType.Dependency,
                         isMissing ? 'Missing dependency' : 'Dependency',
-                        isMissing ? 'error' : 'link'
+                        isMissing ? 'error' : undefined
                     );
                 });
             }
@@ -125,7 +124,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
     private shouldIncludeFile(relativePath: string): boolean {
         const normalizedPath = relativePath.replace(/\\/g, '/');
-        return this.filePatterns.some(pattern => 
+        return this.filePatterns.some(pattern =>
             minimatch(normalizedPath, pattern, { dot: true })
         );
     }
@@ -174,33 +173,36 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                 const dependencies = new Set<string>();
 
                 parsedDocuments.forEach((doc) => {
-                    if (Array.isArray(doc)) {
-                        doc.forEach((flow) => {
-                            if (flow.runFlow && flow.runFlow.file) {
-                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
-                                dependencies.add(dependencyPath);
-                            }
+                    const parsed = doc.toJS();
+                    const flows = Array.isArray(parsed) ? parsed : [parsed];
 
-                            if (flow.runScript && flow.runScript.file) {
-                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
-                                dependencies.add(dependencyPath);
-                            }
+                    flows.forEach((flow) => {
+                        if (!flow) return;
 
-                            if (flow.addMedia) {
-                                if (Array.isArray(flow.addMedia)) {
-                                    flow.addMedia.forEach((mediaFile: string) => {
-                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
-                                        dependencies.add(dependencyPath);
-                                    });
-                                } else if (flow.addMedia.files && Array.isArray(flow.addMedia.files)) {
-                                    flow.addMedia.files.forEach((mediaFile: string) => {
-                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
-                                        dependencies.add(dependencyPath);
-                                    });
-                                }
+                        if (flow.runFlow && flow.runFlow.file) {
+                            const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
+                            dependencies.add(dependencyPath);
+                        }
+
+                        if (flow.runScript && flow.runScript.file) {
+                            const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
+                            dependencies.add(dependencyPath);
+                        }
+
+                        if (flow.addMedia) {
+                            if (Array.isArray(flow.addMedia)) {
+                                flow.addMedia.forEach((mediaFile: string) => {
+                                    const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                    dependencies.add(dependencyPath);
+                                });
+                            } else if (flow.addMedia.files && Array.isArray(flow.addMedia.files)) {
+                                flow.addMedia.files.forEach((mediaFile: string) => {
+                                    const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                    dependencies.add(dependencyPath);
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 });
 
                 this.dependencyMap.set(filePath, Array.from(dependencies));
