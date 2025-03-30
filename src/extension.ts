@@ -32,6 +32,62 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(controller);
 
+	// Register document link provider for runFlow references
+	const linkProvider = vscode.languages.registerDocumentLinkProvider(
+		{ scheme: 'file', language: 'yaml' },
+		{
+			async provideDocumentLinks(document: vscode.TextDocument): Promise<vscode.DocumentLink[]> {
+				const links: vscode.DocumentLink[] = [];
+				const text = document.getText();
+				const runFlowRegex = /-?\s*runFlow:\s*(?:['"]([^'"]+)['"]|([^\s]+))/g;
+				const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
+
+				console.log('Document text:', text);
+				console.log('Looking for runFlow references...');
+
+				if (!workspaceFolder) {
+					return links;
+				}
+
+				let match;
+				while ((match = runFlowRegex.exec(text)) !== null) {
+					console.log('Found match:', match);
+					const filePath = match[1] || match[2];
+					const startPos = document.positionAt(match.index);
+					const endPos = document.positionAt(match.index + match[0].length);
+
+					console.log('File path:', filePath);
+					console.log('Start position:', startPos);
+					console.log('End position:', endPos);
+
+					// Try to resolve the file path
+					const targetPath = path.resolve(path.dirname(document.uri.fsPath), filePath);
+					const targetUri = vscode.Uri.file(targetPath);
+
+					console.log('Target path:', targetPath);
+
+					try {
+						await vscode.workspace.fs.stat(targetUri);
+						links.push(new vscode.DocumentLink(
+							new vscode.Range(startPos, endPos),
+							targetUri
+						));
+						console.log('Added link for:', targetPath);
+					} catch (error) {
+						console.log('File not found:', targetPath);
+						// File doesn't exist, skip this link
+						continue;
+					}
+				}
+
+				console.log('Total links found:', links.length);
+				return links;
+			}
+		}
+	);
+
+	context.subscriptions.push(linkProvider);
+
 	discoverTests(controller);
 	registerTestProfiles(controller);
 	promptForRating(context);
