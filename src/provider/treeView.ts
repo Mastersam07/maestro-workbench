@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import YAML from 'yaml';
+import { minimatch } from 'minimatch';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
@@ -33,6 +34,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             if (element.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(element.resourceUri.fsPath) || [];
                 const uniqueDependencies = new Set(dependencies);
+                console.log(`uniqueDependencies: ${uniqueDependencies}`)
                 return Array.from(uniqueDependencies).map((dep) => {
                     const isMissing = !fs.existsSync(dep);
                     return new FileItem(
@@ -91,17 +93,15 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             );
         });
 
-        // Filter files based on configured patterns
         const filteredItems = fileItems.filter(item => {
             if (item.contextValue === FileType.Folder) {
-                return true; // Always show folders
+                return true;
             }
-            // Check if the file matches any of our patterns
-            const relativePath = path.relative(vscode.workspace.workspaceFolders![0].uri.fsPath, item.resourceUri.fsPath);
-            return this.filePatterns.some(pattern => {
-                const glob = new RegExp('^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$');
-                return glob.test(relativePath);
-            });
+
+            const workspaceRoot = vscode.workspace.workspaceFolders![0].uri.fsPath;
+            const relativePath = path.relative(workspaceRoot, item.resourceUri.fsPath);
+
+            return this.shouldIncludeFile(relativePath);
         });
 
         const filePaths = filteredItems
@@ -121,6 +121,13 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         });
 
         return filteredItems;
+    }
+
+    private shouldIncludeFile(relativePath: string): boolean {
+        const normalizedPath = relativePath.replace(/\\/g, '/');
+        return this.filePatterns.some(pattern => 
+            minimatch(normalizedPath, pattern, { dot: true })
+        );
     }
 
     private createTreeItemsFromPaths(filePaths: string[], rootPath: string): FileItem[] {

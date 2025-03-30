@@ -190,6 +190,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "minimatch": "^10.0.1",
     "yaml": "^2.7.0"
   }
 }
