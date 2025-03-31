@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { exec, ChildProcess } from 'child_process';
+import * as path from 'path';
 
 import { getFilePatterns } from '../utils/utils';
 import { globalState } from '../state/state';
@@ -21,13 +22,37 @@ export async function discoverTests(controller: vscode.TestController) {
 
 	try {
 		const files = await vscode.workspace.findFiles(includePattern);
+		const testItems = new Map<string, vscode.TestItem>();
+
+		controller.items.forEach(item => controller.items.delete(item.id));
+
 		files.forEach(file => {
-
 			const relativePath = vscode.workspace.asRelativePath(file);
-			const testName = relativePath;
-
-			const testItem = controller.createTestItem(file.path, testName, file);
-			controller.items.add(testItem);
+			const parts = relativePath.split(path.sep);
+			
+			let currentPath = '';
+			let parentItem: vscode.TestItem | undefined;
+			
+			parts.forEach((part, index) => {
+				currentPath = currentPath ? path.join(currentPath, part) : part;
+				const isFile = index === parts.length - 1;
+				
+				let item = testItems.get(currentPath);
+				if (!item) {
+					item = controller.createTestItem(currentPath, part, file);
+					item.canResolveChildren = !isFile;
+					
+					if (parentItem) {
+						parentItem.children.add(item);
+					} else {
+						controller.items.add(item);
+					}
+					
+					testItems.set(currentPath, item);
+				}
+				
+				parentItem = item;
+			});
 		});
 	} catch (error) {
 		console.error('Error discovering test files:', error);
@@ -131,38 +156,34 @@ export function watchTestFiles(controller: vscode.TestController) {
 		globalState.fileWatcher?.dispose();
 	}
 	globalState.fileWatcher = vscode.workspace.createFileSystemWatcher("**/*.{yaml,yml}");
+	
+	let debounceTimeout: NodeJS.Timeout | undefined;
+	
+	const debouncedRefresh = () => {
+		if (debounceTimeout) {
+			clearTimeout(debounceTimeout);
+		}
+		debounceTimeout = setTimeout(() => {
+			refreshTestExplorer(controller);
+		}, 300);
+	};
+
 	globalState.fileWatcher.onDidCreate(uri => {
-		addTestFile(controller, uri);
-		globalState.treeDataProvider?.refresh();
+		debouncedRefresh();
 	});
+	
 	globalState.fileWatcher.onDidChange(uri => {
-		updateTestFile(controller, uri);
-		globalState.treeDataProvider?.refresh();
+		debouncedRefresh();
 	});
+	
 	globalState.fileWatcher.onDidDelete(uri => {
-		removeTestFile(controller, uri);
-		globalState.treeDataProvider?.refresh();
+		debouncedRefresh();
 	});
+	
 	return globalState.fileWatcher;
 }
 
-function addTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	const relativePath = vscode.workspace.asRelativePath(uri);
-	const testName = relativePath.replace(/\.(yaml|yml)$/, '');
-	const testItem = controller.createTestItem(uri.path, testName, uri);
-	controller.items.add(testItem);
-}
-
-function updateTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	removeTestFile(controller, uri);
-	addTestFile(controller, uri);
-}
-
-function removeTestFile(controller: vscode.TestController, uri: vscode.Uri) {
-	controller.items.delete(uri.path);
-}
-
 export async function refreshTestExplorer(controller: vscode.TestController) {
-	controller.items.forEach(item => controller.items.delete(item.id));
 	await discoverTests(controller);
+	globalState.treeDataProvider?.refresh();
 }
