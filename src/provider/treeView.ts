@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 import YAML from 'yaml';
+import { minimatch } from 'minimatch';
 
 export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
     private filePatterns: string[];
@@ -41,7 +42,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                         vscode.Uri.file(dep),
                         FileType.Dependency,
                         isMissing ? 'Missing dependency' : 'Dependency',
-                        isMissing ? 'error' : 'link'
+                        isMissing ? 'error' : undefined
                     );
                 });
             }
@@ -91,13 +92,24 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             );
         });
 
-        const filePaths = fileItems
+        const filteredItems = fileItems.filter(item => {
+            if (item.contextValue === FileType.Folder) {
+                return true;
+            }
+
+            const workspaceRoot = vscode.workspace.workspaceFolders![0].uri.fsPath;
+            const relativePath = path.relative(workspaceRoot, item.resourceUri.fsPath);
+
+            return this.shouldIncludeFile(relativePath);
+        });
+
+        const filePaths = filteredItems
             .filter((item) => item.contextValue === FileType.File)
             .map((item) => item.resourceUri.fsPath);
 
         this.analyzeDependencies(filePaths);
 
-        fileItems.forEach((item) => {
+        filteredItems.forEach((item) => {
             if (item.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
                 item.collapsibleState =
@@ -107,7 +119,14 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             }
         });
 
-        return fileItems;
+        return filteredItems;
+    }
+
+    private shouldIncludeFile(relativePath: string): boolean {
+        const normalizedPath = relativePath.replace(/\\/g, '/');
+        return this.filePatterns.some(pattern =>
+            minimatch(normalizedPath, pattern, { dot: true })
+        );
     }
 
     private createTreeItemsFromPaths(filePaths: string[], rootPath: string): FileItem[] {
@@ -154,33 +173,36 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
                 const dependencies = new Set<string>();
 
                 parsedDocuments.forEach((doc) => {
-                    if (Array.isArray(doc)) {
-                        doc.forEach((flow) => {
-                            if (flow.runFlow && flow.runFlow.file) {
-                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
-                                dependencies.add(dependencyPath);
-                            }
+                    const parsed = doc.toJS();
+                    const flows = Array.isArray(parsed) ? parsed : [parsed];
 
-                            if (flow.runScript && flow.runScript.file) {
-                                const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
-                                dependencies.add(dependencyPath);
-                            }
+                    flows.forEach((flow) => {
+                        if (!flow) return;
 
-                            if (flow.addMedia) {
-                                if (Array.isArray(flow.addMedia)) {
-                                    flow.addMedia.forEach((mediaFile: string) => {
-                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
-                                        dependencies.add(dependencyPath);
-                                    });
-                                } else if (flow.addMedia.files && Array.isArray(flow.addMedia.files)) {
-                                    flow.addMedia.files.forEach((mediaFile: string) => {
-                                        const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
-                                        dependencies.add(dependencyPath);
-                                    });
-                                }
+                        if (flow.runFlow && flow.runFlow.file) {
+                            const dependencyPath = path.resolve(path.dirname(filePath), flow.runFlow.file);
+                            dependencies.add(dependencyPath);
+                        }
+
+                        if (flow.runScript && flow.runScript.file) {
+                            const dependencyPath = path.resolve(path.dirname(filePath), flow.runScript.file);
+                            dependencies.add(dependencyPath);
+                        }
+
+                        if (flow.addMedia) {
+                            if (Array.isArray(flow.addMedia)) {
+                                flow.addMedia.forEach((mediaFile: string) => {
+                                    const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                    dependencies.add(dependencyPath);
+                                });
+                            } else if (flow.addMedia.files && Array.isArray(flow.addMedia.files)) {
+                                flow.addMedia.files.forEach((mediaFile: string) => {
+                                    const dependencyPath = path.resolve(path.dirname(filePath), mediaFile);
+                                    dependencies.add(dependencyPath);
+                                });
                             }
-                        });
-                    }
+                        }
+                    });
                 });
 
                 this.dependencyMap.set(filePath, Array.from(dependencies));
