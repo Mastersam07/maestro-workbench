@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.4] - 2024-04-02
+
+### Added
+
+- Collapsible tree view in test explorer ([#70](https://github.com/Mastersam07/maestro-workbench/issues/70))
+
+### Fixed
+
+- Fixed buggy treeview ([#65](https://github.com/Mastersam07/maestro-workbench/issues/65))
+- Fixed VSCode Config being created / amended in unrelated projects ([#73](https://github.com/Mastersam07/maestro-workbench/issues/73))
+
 ## [0.9.3] - 2024-03-21
 
 ### Added
