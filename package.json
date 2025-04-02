@@ -4,7 +4,7 @@
   "description": "A VS Code extension for Maestro YAML validation, IntelliSense, and testing.",
   "publisher": "Mastersam",
   "license": "MIT",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "icon": "assets/icon.png",
   "author": {
     "email": "abadasamuelosp@gmail.com",
@@ -74,7 +74,8 @@
       "maestroWorkbench": [
         {
           "id": "maestroBenchTreeView",
-          "name": "Maestro Workbench"
+          "name": "Maestro Workbench",
+          "icon": "assets/icon.svg"
         }
       ]
     },
