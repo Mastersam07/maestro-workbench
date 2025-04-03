@@ -103,13 +103,28 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             return this.shouldIncludeFile(relativePath);
         });
 
-        const filePaths = filteredItems
+        const nonEmptyFolders = await Promise.all(
+            filteredItems
+                .filter(item => item.contextValue === FileType.Folder)
+                .map(async (folder) => {
+                    const folderPath = folder.resourceUri.fsPath;
+                    const hasMatchingFiles = await this.hasMatchingFiles(folderPath);
+                    return hasMatchingFiles ? folder : null;
+                })
+        );
+
+        const finalItems = [
+            ...filteredItems.filter(item => item.contextValue !== FileType.Folder),
+            ...nonEmptyFolders.filter((item): item is FileItem => item !== null)
+        ];
+
+        const filePaths = finalItems
             .filter((item) => item.contextValue === FileType.File)
             .map((item) => item.resourceUri.fsPath);
 
         this.analyzeDependencies(filePaths);
 
-        filteredItems.forEach((item) => {
+        finalItems.forEach((item) => {
             if (item.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
                 item.collapsibleState =
@@ -119,7 +134,30 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             }
         });
 
-        return filteredItems;
+        return finalItems;
+    }
+
+    private async hasMatchingFiles(folderPath: string): Promise<boolean> {
+        const entries = await fs.promises.readdir(folderPath, { withFileTypes: true });
+        
+        for (const entry of entries) {
+            const fullPath = path.join(folderPath, entry.name);
+            
+            if (entry.isDirectory()) {
+                const hasMatchingFiles = await this.hasMatchingFiles(fullPath);
+                if (hasMatchingFiles) {
+                    return true;
+                }
+            } else {
+                const workspaceRoot = vscode.workspace.workspaceFolders![0].uri.fsPath;
+                const relativePath = path.relative(workspaceRoot, fullPath);
+                if (this.shouldIncludeFile(relativePath)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     private shouldIncludeFile(relativePath: string): boolean {
