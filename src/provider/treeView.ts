@@ -82,7 +82,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
         const fileItems = entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
-
+            
             const isFolder = entry.isDirectory();
             return new FileItem(
                 entry.name,
@@ -103,19 +103,21 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             return this.shouldIncludeFile(relativePath);
         });
 
-        const nonEmptyFolders = await Promise.all(
-            filteredItems
-                .filter(item => item.contextValue === FileType.Folder)
-                .map(async (folder) => {
-                    const folderPath = folder.resourceUri.fsPath;
-                    const hasMatchingFiles = await this.hasMatchingFiles(folderPath);
-                    return hasMatchingFiles ? folder : null;
-                })
-        );
+        const nonEmptyFolders = filteredItems
+            .filter(item => item.contextValue === FileType.Folder)
+            .filter(folder => {
+                const folderPath = folder.resourceUri.fsPath;
+                return filteredItems.some(item => {
+                    if (item.contextValue === FileType.File) {
+                        return item.resourceUri.fsPath.startsWith(folderPath + path.sep);
+                    }
+                    return false;
+                });
+            });
 
         const finalItems = [
             ...filteredItems.filter(item => item.contextValue !== FileType.Folder),
-            ...nonEmptyFolders.filter((item): item is FileItem => item !== null)
+            ...nonEmptyFolders
         ];
 
         const filePaths = finalItems
@@ -135,29 +137,6 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
         });
 
         return finalItems;
-    }
-
-    private async hasMatchingFiles(folderPath: string): Promise<boolean> {
-        const entries = await fs.promises.readdir(folderPath, { withFileTypes: true });
-        
-        for (const entry of entries) {
-            const fullPath = path.join(folderPath, entry.name);
-            
-            if (entry.isDirectory()) {
-                const hasMatchingFiles = await this.hasMatchingFiles(fullPath);
-                if (hasMatchingFiles) {
-                    return true;
-                }
-            } else {
-                const workspaceRoot = vscode.workspace.workspaceFolders![0].uri.fsPath;
-                const relativePath = path.relative(workspaceRoot, fullPath);
-                if (this.shouldIncludeFile(relativePath)) {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
     }
 
     private shouldIncludeFile(relativePath: string): boolean {
