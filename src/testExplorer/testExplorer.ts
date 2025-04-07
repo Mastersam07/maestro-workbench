@@ -28,7 +28,7 @@ export async function discoverTests(controller: vscode.TestController) {
 
 		files.forEach(file => {
 			const relativePath = vscode.workspace.asRelativePath(file);
-			const parts = relativePath.split(path.sep);
+			const parts = relativePath.split('/');
 			
 			let currentPath = '';
 			let parentItem: vscode.TestItem | undefined;
