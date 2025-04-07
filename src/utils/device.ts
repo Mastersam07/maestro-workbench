@@ -11,18 +11,25 @@ export interface Device {
 }
 
 export async function getAvailableDevices(): Promise<Device[]> {
+    const devices: Device[] = [];
+
     try {
         const { stdout: adbOutput } = await execAsync('adb devices');
         const androidDevices = parseAdbDevicesOutput(adbOutput);
+        devices.push(...androidDevices);
+    } catch (error) {
+        console.error('Error getting Android devices:', error);
+    }
 
+    try {
         const { stdout: xcrunOutput } = await execAsync('xcrun xctrace list devices');
         const iosDevices = parseXcrunDevicesOutput(xcrunOutput);
-
-        return [...androidDevices, ...iosDevices];
+        devices.push(...iosDevices);
     } catch (error) {
-        console.error('Error getting devices:', error);
-        return [];
+        console.error('Error getting iOS devices:', error);
     }
+
+    return devices;
 }
 
 export async function getDefaultDevice(): Promise<string | undefined> {
@@ -33,7 +40,7 @@ export async function getDefaultDevice(): Promise<string | undefined> {
 function parseAdbDevicesOutput(output: string): Device[] {
     const lines = output.split('\n');
     const devices: Device[] = [];
-    
+
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line && !line.includes('---')) {
@@ -47,7 +54,7 @@ function parseAdbDevicesOutput(output: string): Device[] {
             }
         }
     }
-    
+
     return devices;
 }
 
@@ -55,10 +62,10 @@ function parseXcrunDevicesOutput(output: string): Device[] {
     const lines = output.split('\n');
     const devices: Device[] = [];
     let currentSection = '';
-    
+
     for (const line of lines) {
         const trimmedLine = line.trim();
-        
+
         if (!trimmedLine || trimmedLine.startsWith('==')) {
             if (trimmedLine.startsWith('== Devices ==')) {
                 currentSection = 'device';
@@ -76,12 +83,12 @@ function parseXcrunDevicesOutput(output: string): Device[] {
             devices.push({
                 id,
                 name: version ? `${name} (${version})` : name,
-                type: currentSection === 'simulator' ? 'iOS Simulator' : 
-                      currentSection === 'offline' ? 'iOS Device (Offline)' : 'iOS Device'
+                type: currentSection === 'simulator' ? 'iOS Simulator' :
+                    currentSection === 'offline' ? 'iOS Device (Offline)' : 'iOS Device'
             });
         }
     }
-    
+
     return devices;
 }
 
