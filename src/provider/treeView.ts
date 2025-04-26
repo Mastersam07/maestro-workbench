@@ -82,7 +82,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
 
         const fileItems = entries.map((entry) => {
             const fullPath = path.join(folderPath, entry.name);
-
+            
             const isFolder = entry.isDirectory();
             return new FileItem(
                 entry.name,
@@ -103,13 +103,30 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             return this.shouldIncludeFile(relativePath);
         });
 
-        const filePaths = filteredItems
+        const nonEmptyFolders = filteredItems
+            .filter(item => item.contextValue === FileType.Folder)
+            .filter(folder => {
+                const folderPath = folder.resourceUri.fsPath;
+                return filteredItems.some(item => {
+                    if (item.contextValue === FileType.File) {
+                        return item.resourceUri.fsPath.startsWith(folderPath + path.sep);
+                    }
+                    return false;
+                });
+            });
+
+        const finalItems = [
+            ...filteredItems.filter(item => item.contextValue !== FileType.Folder),
+            ...nonEmptyFolders
+        ];
+
+        const filePaths = finalItems
             .filter((item) => item.contextValue === FileType.File)
             .map((item) => item.resourceUri.fsPath);
 
         this.analyzeDependencies(filePaths);
 
-        filteredItems.forEach((item) => {
+        finalItems.forEach((item) => {
             if (item.contextValue === FileType.File) {
                 const dependencies = this.dependencyMap.get(item.resourceUri.fsPath) || [];
                 item.collapsibleState =
@@ -119,7 +136,7 @@ export class MaestroWorkBenchTreeViewProvider implements vscode.TreeDataProvider
             }
         });
 
-        return filteredItems;
+        return finalItems;
     }
 
     private shouldIncludeFile(relativePath: string): boolean {
