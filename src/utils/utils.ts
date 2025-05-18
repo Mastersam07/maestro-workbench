@@ -38,25 +38,47 @@ export async function updateYamlSchemaAssociations(schemaPath: string = './schem
     const currentSchemas = yamlConfig.get<{ [key: string]: string[] }>('schemas') || {};
     const filePatterns = getFilePatterns();
 
-    // Create updated schemas by removing ALL entries that point to our schema file
-    const updatedSchemas = Object.fromEntries(
-        Object.entries(currentSchemas).filter(([schema]) => {
-            // Remove any schema entry that points to our schema file, regardless of the path
-            return !schema.endsWith('schema.v0.json');
-        })
-    );
+    const maestroPatterns = new Set(filePatterns);
 
-    // First, remove any schema registrations from global settings
-    const globalSchemas = Object.fromEntries(
-        Object.entries(currentSchemas).filter(([schema]) => 
-            !schema.endsWith('schema.v0.json')
-        )
-    );
-    await yamlConfig.update('schemas', globalSchemas, vscode.ConfigurationTarget.Global);
+    // Find all schema entries that might conflict with our patterns
+    const conflictingSchemas = Object.entries(currentSchemas).filter(([_, patterns]) => {
+        // Check if any of the patterns overlap with our Maestro patterns
+        return patterns.some(pattern => 
+            Array.from(maestroPatterns).some(maestroPattern => 
+                pattern === maestroPattern || 
+                pattern.includes(maestroPattern) || 
+                maestroPattern.includes(pattern)
+            )
+        );
+    });
 
-    // Then update workspace settings with our current configuration
-    updatedSchemas[schemaPath] = filePatterns;
-    await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Workspace);
+    if (conflictingSchemas.length > 0) {
+        const response = await vscode.window.showWarningMessage(
+            'Multiple YAML schemas are configured for Maestro files. This may cause validation conflicts. Would you like to resolve this?',
+            'Yes',
+            'No'
+        );
+
+        if (response === 'Yes') {
+            const updatedSchemas = { ...currentSchemas };
+            
+            conflictingSchemas.forEach(([schema]) => {
+                delete updatedSchemas[schema];
+            });
+
+            updatedSchemas[schemaPath] = filePatterns;
+
+            await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Workspace);
+            
+            vscode.window.showInformationMessage('YAML schema configuration has been updated to prevent conflicts.');
+        }
+    } else {
+        if (!currentSchemas[schemaPath]) {
+            const updatedSchemas = { ...currentSchemas };
+            updatedSchemas[schemaPath] = filePatterns;
+            await yamlConfig.update('schemas', updatedSchemas, vscode.ConfigurationTarget.Workspace);
+        }
+    }
 }
 
 export function checkYamlExtension() {
