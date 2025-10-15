@@ -104,6 +104,10 @@
         "command": "maestroWorkbench.listDevices",
         "title": "List Available Devices",
         "icon": "$(device-desktop)"
+      },
+      {
+        "command": "maestroWorkbench.openYamlFile",
+        "title": "Open YAML File"
       }
     ],
     "menus": {
