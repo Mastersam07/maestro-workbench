@@ -6,6 +6,7 @@ import { globalState } from './state/state';
 import { checkYamlExtension, getFilePatterns, getOrCreateTerminal, updateYamlSchemaAssociations } from './utils/utils';
 import { watchTestFiles, discoverTests, registerTestProfiles } from './testExplorer/testExplorer';
 import { getAvailableDevices } from './utils/device';
+import { registerYamlPathOpener } from './utils/yamlPathOpener';
 
 let deviceOutputChannel: vscode.OutputChannel;
 
@@ -36,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 	registerTestProfiles(controller);
 	promptForRating(context);
 	updateFileWatcherAndTreeView(controller, context);
+	registerYamlPathOpener(context);
 
 	vscode.workspace.onDidChangeConfiguration((e) => {
 		if (e.affectsConfiguration('maestroWorkbench.filePatterns')) {
